@@ -11,7 +11,7 @@ process.stdout.write(`${line}\n${msg}\n${line}\n`);
 
 module.exports = {
     mode: "production",
-    entry: "./src/main.js",
+    entry: "./Scripts/index.js",
     output: {
         path: path.resolve(process.cwd(), 'dist'),
         filename: "./bundle.min.js"
