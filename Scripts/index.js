@@ -1,6 +1,5 @@
 import 'phaser';
 
-// Import all your assets
 import backBg from '../assets/back bg.png';
 import horizontal from '../assets/horizontal.png';
 import down from '../assets/down.png';
@@ -18,9 +17,9 @@ function preload() {
     this.load.image('border-left', left);
     this.load.image('door-blue', doorBlue);
     this.load.image('door-red', doorRed);
-
-
     this.load.tilemapTiledJSON('map', level1);
+
+    
 }
 
 function create() {
@@ -44,8 +43,10 @@ function create() {
 }
 
 function update() {
-
+    
 }
+
+const game = new Phaser.Game(config);
 
 const config = {
     type: Phaser.AUTO,
@@ -58,4 +59,3 @@ const config = {
     }
 };
 
-const game = new Phaser.Game(config);
