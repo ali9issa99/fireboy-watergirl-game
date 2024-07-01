@@ -1,0 +1,59 @@
+{
+  "world": {
+    "width": 1000,
+    "height": 1000
+  },
+  "player": {
+    "x": 100,
+    "y": 600
+  },
+  "goal": {
+    "x": 900,
+    "y": 0
+  },
+  "platforms": [{
+      "x": 0,
+      "y": 550,
+      "numTiles": 25,
+      "key": "block"
+    },
+    {
+      "x": 100,
+      "y": 400,
+      "numTiles": 25,
+      "key": "block"
+    },
+    {
+      "x": 0,
+      "y": 250,
+      "numTiles": 25,
+      "key": "block"
+    },
+    {
+      "x": 800,
+      "y": 90,
+      "numTiles": 7,
+      "key": "block"
+    },
+    {
+      "x": 0,
+      "y": 680,
+      "numTiles": 6,
+      "key": "ground"
+    }
+  ],
+  "fires": [
+    {
+      "x": 500,
+      "y": 660
+    },
+    {
+      "x": 600,
+      "y": 230
+    },
+    {
+      "x": 700,
+      "y": 380
+    }
+  ]
+}
