@@ -6,6 +6,8 @@ gameScene.init = function() {
   // Player parameters
   this.playerSpeed = 150;
   this.jumpSpeed = -600;
+  this.reachedGoalRed = false;
+  this.reachedGoalBlue = false;
 };
 
 // Load asset files for our game
@@ -235,17 +237,17 @@ gameScene.setupLevel = function() {
     });
   }
 
-// Red goal setup
-if (this.levelData.goal_red) {
-  this.goal_red = this.add.sprite(this.levelData.goal_red.x, this.levelData.goal_red.y, 'goal_red');
-  this.physics.add.existing(this.goal_red, true); // Add as static body
-}
+  // Red goal setup
+  if (this.levelData.goal_red) {
+    this.goal_red = this.add.sprite(this.levelData.goal_red.x, this.levelData.goal_red.y, 'goal_red');
+    this.physics.add.existing(this.goal_red);
+  }
 
-// Blue goal setup
-if (this.levelData.goal_blue) {
-  this.goal_blue = this.add.sprite(this.levelData.goal_blue.x, this.levelData.goal_blue.y, 'goal_blue');
-  this.physics.add.existing(this.goal_blue, true); // Add as static body
-}
+  // Blue goal setup
+  if (this.levelData.goal_blue) {
+    this.goal_blue = this.add.sprite(this.levelData.goal_blue.x, this.levelData.goal_blue.y, 'goal_blue');
+    this.physics.add.existing(this.goal_blue);
+  }
 
 
   // Player_red setup
@@ -263,11 +265,42 @@ if (this.levelData.goal_blue) {
 gameScene.setupCollisions = function() {
   // Collisions
   this.physics.add.collider([this.player_red, this.player_blue, this.goal_red, this.goal_blue], this.platforms);
-  this.physics.add.collider([this.fires_blue, this.fires_red], this.platforms)
+  this.physics.add.collider([this.fires_blue, this.fires_red], this.platforms);
 
   // Overlaps
-  this.physics.add.overlap(this.player_red, [this.fires_blue, this.goal_red], this.restartGame, null, this);
-  this.physics.add.overlap(this.player_blue, [this.fires_red, this.goal_blue], this.restartGame, null, this);
+  this.physics.add.overlap(this.player_red, [this.fires_blue, this.goal_red], this.handleOverlapRed, null, this);
+  this.physics.add.overlap(this.player_blue, [this.fires_red, this.goal_blue], this.handleOverlapBlue, null, this);
+};
+
+// Handles overlap for player_red
+gameScene.handleOverlapRed = function(player, target) {
+  if (target.texture.key === 'fire_blue') {
+    this.restartGame();
+  } else if (target.texture.key === 'goal_red') {
+    this.reachedGoalRed = true;
+    player.body.enable = false; // Disable player physics
+    player.setVisible(false); // Hide player
+    this.checkGameEnd();
+  }
+};
+
+// Handles overlap for player_blue
+gameScene.handleOverlapBlue = function(player, target) {
+  if (target.texture.key === 'fire_red') {
+    this.restartGame();
+  } else if (target.texture.key === 'goal_blue') {
+    this.reachedGoalBlue = true;
+    player.body.enable = false; // Disable player physics
+    player.setVisible(false); // Hide player
+    this.checkGameEnd();
+  }
+};
+
+// Checks if both players have reached their goals and restarts the game if they have
+gameScene.checkGameEnd = function() {
+  if (this.reachedGoalRed && this.reachedGoalBlue) {
+    this.restartGame();
+  }
 };
 
 // Restarts the game
