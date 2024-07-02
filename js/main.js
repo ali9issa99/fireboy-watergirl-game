@@ -30,7 +30,7 @@ gameScene.preload = function() {
     spacing: 1
   });
 
-  this.load.spritesheet('fire', 'assets/images/fire_spritesheet.png', {
+  this.load.spritesheet('fire_red', 'assets/images/fire_red_spritesheet.png', {
     frameWidth: 20,
     frameHeight: 21,
     margin: 1,
@@ -57,17 +57,17 @@ gameScene.create = function() {
     });
   }
 
-  if(!this.anims.get('burning')) {
-    // fire animation
-    this.anims.create({
-      key: 'burning',
-      frames: this.anims.generateFrameNames('fire', {
-        frames: [0, 1]
-      }),
-      frameRate: 4,
-      repeat: -1
-    });
-  }
+  // if(!this.anims.get('burning')) {
+  //   // fire animation
+  //   this.anims.create({
+  //     key: 'burning',
+  //     frames: this.anims.generateFrameNames('fire_red', {
+  //       frames: [0, 1]
+  //     }),
+  //     frameRate: 4,
+  //     repeat: -1
+  //   });
+  // }
 
   // add all level elements
   this.setupLevel();
@@ -183,7 +183,7 @@ gameScene.setupLevel = function() {
   for (let i = 0; i < this.levelData.fires.length; i++) {
     let curr = this.levelData.fires[i];
 
-    let newObj = this.add.sprite(curr.x, curr.y, 'fire').setOrigin(0);
+    let newObj = this.add.sprite(curr.x, curr.y, 'fire_red').setOrigin(0);
 
     // play burning animation
     newObj.anims.play('burning');
