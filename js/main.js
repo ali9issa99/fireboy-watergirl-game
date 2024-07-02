@@ -297,3 +297,6 @@ let config = {
 
 // create the game, and pass it the configuration
 let game = new Phaser.Game(config);
+
+
+// REFERENCE: https://academy.zenva.com/lesson/full-source-code-mario-style-platformer-in-phaser-3/?zva_less_compl=1285286
