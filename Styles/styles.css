@@ -43,3 +43,55 @@ body {
   .hidden {
     display: none;
   }
+
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    
+}
+.redf{
+    color: rgb(204, 31, 31);
+    size: px;  
+    font-family: Georgia, 'Times New Roman', Times, serif;  
+}
+
+.and{
+color: rgb(220, 204, 61);
+font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.bluef{
+    color: rgb(25, 25, 167);
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.parallax {
+    display: flex;
+    height: 100%;
+    background-image: url('../Assets/background.jpg'); /* Path to your background image */
+    background-size: cover;
+    background-position: center;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    
+}
+
+.btns {
+    margin: 20px;
+    padding: 20px 120px;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for buttons */
+    border: none;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+}
+
+.btns:hover {
+    background-color: rgba(0, 0, 0, 0.7); /* Darker background on hover */
+}
