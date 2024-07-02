@@ -265,8 +265,8 @@ gameScene.setupCollisions = function() {
   this.physics.add.collider([this.fires_blue, this.fires_red], this.platforms)
 
   // Overlaps
-  this.physics.add.overlap(this.player_red, [this.fires_red, this.fires_blue, this.goal_red, this.goal_blue], this.restartGame, null, this);
-  this.physics.add.overlap(this.player_blue, [this.fires_red, this.fires_blue, this.goal_red, this.goal_blue], this.restartGame, null, this);
+  this.physics.add.overlap(this.player_red, [this.fires_blue, this.goal_red], this.restartGame, null, this);
+  this.physics.add.overlap(this.player_blue, [this.fires_red, this.goal_blue], this.restartGame, null, this);
 };
 
 // Restarts the game
