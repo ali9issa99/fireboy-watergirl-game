@@ -57,17 +57,17 @@ gameScene.create = function() {
     });
   }
 
-  // if(!this.anims.get('burning')) {
-  //   // fire animation
-  //   this.anims.create({
-  //     key: 'burning',
-  //     frames: this.anims.generateFrameNames('fire_red', {
-  //       frames: [0, 1]
-  //     }),
-  //     frameRate: 4,
-  //     repeat: -1
-  //   });
-  // }
+  if(!this.anims.get('burning')) {
+    // fire animation
+    this.anims.create({
+      key: 'burning',
+      frames: this.anims.generateFrameNames('fire_red', {
+        frames: [0, 1]
+      }),
+      frameRate: 4,
+      repeat: -1
+    });
+  }
 
   // add all level elements
   this.setupLevel();
