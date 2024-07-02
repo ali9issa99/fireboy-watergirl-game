@@ -2,7 +2,7 @@
 let gameScene = new Phaser.Scene('Game');
 
 // Parameters for our scene
-gameScene.init = function() {
+gameScene.init = function () {
   // Player parameters
   this.playerSpeed = 150;
   this.jumpSpeed = -600;
@@ -11,7 +11,7 @@ gameScene.init = function() {
 };
 
 // Load asset files for our game
-gameScene.preload = function() {
+gameScene.preload = function () {
   // Load images
   this.load.image('background', 'assets/images/l1_background.png');
   this.load.image('ground', 'assets/images/ground.png');
@@ -56,7 +56,7 @@ gameScene.preload = function() {
 };
 
 // Executed once, after assets were loaded
-gameScene.create = function() {
+gameScene.create = function () {
   // Background image
   this.add.image(0, 0, 'background').setOrigin(0, 0).setDisplaySize(this.cameras.main.width, this.cameras.main.height);
 
@@ -81,7 +81,7 @@ gameScene.create = function() {
   });
 
   // Input event listener
-  this.input.on('pointerdown', function(pointer) {
+  this.input.on('pointerdown', function (pointer) {
     console.log(pointer.x, pointer.y);
   });
 
@@ -97,7 +97,7 @@ gameScene.create = function() {
 };
 
 // Executed on every frame
-gameScene.update = function() {
+gameScene.update = function () {
   // Check if player_red is on the ground
   let onGroundRed = this.player_red.body.blocked.down || this.player_red.body.touching.down;
 
@@ -156,7 +156,7 @@ gameScene.update = function() {
 };
 
 // Sets up animations for players and fire
-gameScene.setupAnimations = function() {
+gameScene.setupAnimations = function () {
   // Animation for player_red
   if (!this.anims.get('walking_red')) {
     this.anims.create({
@@ -201,7 +201,7 @@ gameScene.setupAnimations = function() {
 };
 
 // Sets up level elements using data from levelData.json
-gameScene.setupLevel = function() {
+gameScene.setupLevel = function () {
   // Load JSON data
   this.levelData = this.cache.json.get('levelData');
 
@@ -271,7 +271,7 @@ gameScene.setupLevel = function() {
 };
 
 // Sets up collision and overlap checks
-gameScene.setupCollisions = function() {
+gameScene.setupCollisions = function () {
   // Collisions
   this.physics.add.collider([this.player_red, this.player_blue, this.goal_blue, this.goal_red], this.platforms);
   this.physics.add.collider([this.fires_blue, this.fires_red], this.platforms);
@@ -284,7 +284,7 @@ gameScene.setupCollisions = function() {
 };
 
 // Handles overlap for player_red
-gameScene.handleOverlapRed = function(player, target) {
+gameScene.handleOverlapRed = function (player, target) {
   if (target.texture.key === 'fire_blue') {
     this.restartGame();
   } else if (target.texture.key === 'goal_red') {
@@ -296,7 +296,7 @@ gameScene.handleOverlapRed = function(player, target) {
 };
 
 // Handles overlap for player_blue
-gameScene.handleOverlapBlue = function(player, target) {
+gameScene.handleOverlapBlue = function (player, target) {
   if (target.texture.key === 'fire_red') {
     this.restartGame();
   } else if (target.texture.key === 'goal_blue') {
@@ -308,19 +308,19 @@ gameScene.handleOverlapBlue = function(player, target) {
 };
 
 // Checks if both players have reached their goals and restarts the game if they have
-gameScene.checkGameEnd = function() {
+gameScene.checkGameEnd = function () {
   if (this.reachedGoalRed && this.reachedGoalBlue) {
     this.scene.restart();
   }
 };
 
 // Show game over screen
-gameScene.gameOver = function() {
+gameScene.gameOver = function () {
   document.getElementById('gameOverScreen').classList.remove('hidden');
 };
 
 // Restart game
-gameScene.restartGame = function() {
+gameScene.restartGame = function () {
   this.scene.restart();
 };
 
