@@ -43,7 +43,7 @@ body {
   .hidden {
     display: none;
   }
-
+/*  the code below till the other comment is for the landing page  */
   body, html {
     margin: 0;
     padding: 0;
@@ -70,7 +70,7 @@ font-family: Georgia, 'Times New Roman', Times, serif;
 .parallax {
     display: flex;
     height: 100%;
-    background-image: url('../Assets/background.jpg'); /* Path to your background image */
+    background-image: url('/assets/images/background.jpg'); 
     background-size: cover;
     background-position: center;
     justify-content: center;
@@ -83,7 +83,7 @@ font-family: Georgia, 'Times New Roman', Times, serif;
 .btns {
     margin: 20px;
     padding: 20px 120px;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for buttons */
+    background-color: rgba(0, 0, 0, 0.5); 
     border: none;
     color: rgb(255, 255, 255);
     cursor: pointer;
@@ -93,5 +93,6 @@ font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 .btns:hover {
-    background-color: rgba(0, 0, 0, 0.7); /* Darker background on hover */
+    background-color: rgba(0, 0, 0, 0.7); 
 }
+/* here ends the landing page designing */
