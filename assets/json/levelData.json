@@ -3,14 +3,13 @@
     "width": 360,
     "height": 700
   },
-  "spawner": {
-    "interval": 3000,
-    "speed": 80,
-    "lifespan": 30000
-  },
   "player_red": {
     "x": 190,
     "y": 538
+  },
+  "player_blue": {
+    "x": 190,
+    "y": 568
   },
   "goal_red": {
     "x": 30,
@@ -73,7 +72,7 @@
   "fires_blue": [
     {
       "x": 100,
-      "y": 538.4
+      "y": 568.4
     },
     {
       "x": 248,
