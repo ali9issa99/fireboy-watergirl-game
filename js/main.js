@@ -3,7 +3,6 @@ let gameScene = new Phaser.Scene('Game');
 
 // some parameters for our scene
 gameScene.init = function() {
-
   // player parameters
   this.playerSpeed = 150;
   this.jumpSpeed = -600;
@@ -11,17 +10,16 @@ gameScene.init = function() {
 
 // load asset files for our game
 gameScene.preload = function() {
-
   // load images
   this.load.image('background', 'assets/images/l1_background.png');
   this.load.image('ground', 'assets/images/ground.png');
   this.load.image('platform', 'assets/images/platform.png');
   this.load.image('platform_vertical', 'assets/images/platform_vertical.png');
-
   this.load.image('block', 'assets/images/block.png');
-  this.load.image('goal', 'assets/images/door_blue.png');
+  this.load.image('goal_blue', 'assets/images/door_blue.png');
+  this.load.image('goal_red', 'assets/images/door_red.png'); // Load door_red
   this.load.image('barrel', 'assets/images/barrel.png');
-
+  
   // load spritesheets
   this.load.spritesheet('player', 'assets/images/player_spritesheet.png', {
     frameWidth: 28,
@@ -29,14 +27,21 @@ gameScene.preload = function() {
     margin: 1,
     spacing: 1
   });
-
+  
   this.load.spritesheet('fire_red', 'assets/images/fire_red_spritesheet.png', {
     frameWidth: 20,
     frameHeight: 21,
     margin: 1,
     spacing: 1
   });
-
+  
+  this.load.spritesheet('fire_blue', 'assets/images/fire_blue_spritesheet.png', {
+    frameWidth: 20,
+    frameHeight: 21,
+    margin: 1,
+    spacing: 1
+  });
+  
   this.load.json('levelData', 'assets/json/levelData.json');
 };
 
@@ -44,7 +49,7 @@ gameScene.preload = function() {
 gameScene.create = function() {
   this.add.image(0, 0, 'background').setOrigin(0, 0).setDisplaySize(this.cameras.main.width, this.cameras.main.height);
 
-  if(!this.anims.get('walking')) {
+  if (!this.anims.get('walking')) {
     // walking animation
     this.anims.create({
       key: 'walking',
@@ -57,17 +62,29 @@ gameScene.create = function() {
     });
   }
 
-  // if(!this.anims.get('burning')) {
-  //   // fire animation
-  //   this.anims.create({
-  //     key: 'burning',
-  //     frames: this.anims.generateFrameNames('fire_red', {
-  //       frames: [0, 1]
-  //     }),
-  //     frameRate: 4,
-  //     repeat: -1
-  //   });
-  // }
+  if (!this.anims.get('burning_red')) {
+    // fire red animation
+    this.anims.create({
+      key: 'burning_red',
+      frames: this.anims.generateFrameNames('fire_red', {
+        frames: [0, 1]
+      }),
+      frameRate: 4,
+      repeat: -1
+    });
+  }
+
+  if (!this.anims.get('burning_blue')) {
+    // fire blue animation
+    this.anims.create({
+      key: 'burning_blue',
+      frames: this.anims.generateFrameNames('fire_blue', {
+        frames: [0, 1]
+      }),
+      frameRate: 4,
+      repeat: -1
+    });
+  }
 
   // add all level elements
   this.setupLevel();
@@ -76,10 +93,10 @@ gameScene.create = function() {
   // this.setupSpawner();
 
   // collision detection
-  this.physics.add.collider([this.player, this.goal, this.barrels], this.platforms);
+  this.physics.add.collider([this.player, this.goal_red, this.goal_blue, this.barrels], this.platforms);
 
   // overlap checks
-  this.physics.add.overlap(this.player, [this.fires, this.goal, this.barrels], this.restartGame, null, this);
+  this.physics.add.overlap(this.player, [this.fires_red, this.fires_blue, this.goal_red, this.goal_blue, this.barrels], this.restartGame, null, this);
 
   // enable cursor keys
   this.cursors = this.input.keyboard.createCursorKeys();
@@ -141,7 +158,6 @@ gameScene.update = function() {
 
 // sets up all the elements in the level
 gameScene.setupLevel = function() {
-
   // load json data
   this.levelData = this.cache.json.get('levelData');
 
@@ -163,8 +179,8 @@ gameScene.setupLevel = function() {
     }
     else {
       // create tilesprite
-      let width = this.textures.get(curr.key).get(0).width;
-      let height = this.textures.get(curr.key).get(0).height;
+      let width = this.textures.get(curr.key).getSourceImage().width;
+      let height = this.textures.get(curr.key).getSourceImage().height;
       newObj = this.add.tileSprite(curr.x, curr.y, curr.numTiles * width , height ,curr.key).setOrigin(0);
     }
 
@@ -175,38 +191,48 @@ gameScene.setupLevel = function() {
     this.platforms.add(newObj);
   }
 
-  // create all the fire
-  this.fires = this.physics.add.group({
+  // create all the red fire
+  this.fires_red = this.physics.add.group({
     allowGravity: false,
     immovable: true
   });
-  for (let i = 0; i < this.levelData.fires.length; i++) {
-    let curr = this.levelData.fires[i];
 
-    let newObj = this.add.sprite(curr.x, curr.y, 'fire_red').setOrigin(0);
+  if (this.levelData.fires_red) {
+    for (let i = 0; i < this.levelData.fires_red.length; i++) {
+      let curr = this.levelData.fires_red[i];
 
-    // play burning animation
-    newObj.anims.play('burning');
+      let newObj = this.add.sprite(curr.x, curr.y, 'fire_red').setOrigin(0);
 
-    // add to the group
-    this.fires.add(newObj);
+      // play burning animation
+      newObj.anims.play('burning_red');
 
-    // this is for level creation
-    newObj.setInteractive();
-    this.input.setDraggable(newObj);
+      // add to the group
+      this.fires_red.add(newObj);
+    }
   }
 
-  // for level creation
-  this.input.on('drag', function(pointer, gameObject, dragX, dragY){
-    gameObject.x = dragX;
-    gameObject.y = dragY;
-
-    console.log(dragX, dragY);
-
+  // create all the blue fire
+  this.fires_blue = this.physics.add.group({
+    allowGravity: false,
+    immovable: true
   });
 
+  if (this.levelData.fires_blue) {
+    for (let i = 0; i < this.levelData.fires_blue.length; i++) {
+      let curr = this.levelData.fires_blue[i];
+
+      let newObj = this.add.sprite(curr.x, curr.y, 'fire_blue').setOrigin(0);
+
+      // play burning animation
+      newObj.anims.play('burning_blue');
+
+      // add to the group
+      this.fires_blue.add(newObj);
+    }
+  }
+
   // player
-  this.player = this.add.sprite(this.levelData.player.x, this.levelData.player.y, 'player', 3);
+  this.player = this.add.sprite(this.levelData.player_red.x, this.levelData.player_red.y, 'player', 3);
   this.physics.add.existing(this.player);
 
   // constraint player to the game bounds
@@ -216,64 +242,28 @@ gameScene.setupLevel = function() {
   this.cameras.main.setBounds(0, 0, this.levelData.world.width, this.levelData.world.height);
   this.cameras.main.startFollow(this.player);
 
-
   // goal
-  this.goal = this.add.sprite(this.levelData.goal.x, this.levelData.goal.y, 'goal');
-  this.physics.add.existing(this.goal);
+  if (this.levelData.goal_red && this.levelData.goal_blue) {
+    // Create blue goal
+    this.goal_blue = this.add.sprite(this.levelData.goal_blue.x, this.levelData.goal_blue.y, 'goal_blue');
+    this.physics.add.existing(this.goal_blue);
+
+    // Create red goal
+    this.goal_red = this.add.sprite(this.levelData.goal_red.x, this.levelData.goal_red.y, 'goal_red');
+    this.physics.add.existing(this.goal_red);
+  }
 };
 
 // restart game (game over + you won!)
-gameScene.restartGame = function(sourceSprite, targetSprite){
+gameScene.restartGame = function(sourceSprite, targetSprite) {
   // fade out
   this.cameras.main.fade(500);
 
   // when fade out completes, restart scene
-  this.cameras.main.on('camerafadeoutcomplete', function(camera, effect){
+  this.cameras.main.on('camerafadeoutcomplete', function(camera, effect) {
     // restart the scene
     this.scene.restart();
   }, this);
-};
-
-// generation of barrels
-gameScene.setupSpawner = function(){
-  // barrel group
-  this.barrels = this.physics.add.group({
-    bounceY: 0.1,
-    bounceX: 1,
-    collideWorldBounds: false
-  });
-
-  // spawn barrels
-  let spawningEvent = this.time.addEvent({
-    delay: this.levelData.spawner.interval,
-    loop: true,
-    callbackScope: this,
-    callback: function(){
-      // create a barrel
-      let barrel = this.barrels.get(this.goal.x, this.goal.y, 'barrel');
-
-      // reactivate
-      barrel.setActive(true);
-      barrel.setVisible(true);
-      barrel.body.enable = true;
-
-      // set properties
-      barrel.setVelocityX(this.levelData.spawner.speed);
-
-      //console.log(this.barrels.getChildren().length);
-
-      // lifespan
-      this.time.addEvent({
-        delay: this.levelData.spawner.lifespan,
-        repeat: 0,
-        callbackScope: this,
-        callback: function(){
-          this.barrels.killAndHide(barrel);
-          barrel.body.enable = false;
-        }
-      });
-    }
-  });
 };
 
 // our game's configuration
@@ -297,6 +287,3 @@ let config = {
 
 // create the game, and pass it the configuration
 let game = new Phaser.Game(config);
-
-
-// REFERENCE: https://academy.zenva.com/lesson/full-source-code-mario-style-platformer-in-phaser-3/?zva_less_compl=1285286
