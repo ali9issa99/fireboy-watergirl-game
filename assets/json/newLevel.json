@@ -1,0 +1,156 @@
+{
+  "world": {
+    "width": 1000,
+    "height": 750
+  },
+  "player": {
+    "x": 100,
+    "y": 90
+  },
+  "goal": {
+    "x": 560,
+    "y": 600
+  },
+  "platforms": [
+    {
+      "x": 500,
+      "y": 420,
+      "key": "platform_vertical"
+    },
+    {
+      "x": 500,
+      "y": 150,
+      "key": "platform_vertical"
+    },
+    {
+      "x": 970,
+      "y": 420,
+      "key": "platform_vertical"
+    },
+    {
+      "x": 970,
+      "y": 200,
+      "key": "platform_vertical"
+    },
+    {
+      "x": 970,
+      "y": 0,
+      "key": "platform_vertical"
+    },
+    {
+      "x": -5,
+      "y": 0,
+      "key": "platform_vertical"
+    },
+    {
+      "x": -5,
+      "y": 200,
+      "key": "platform_vertical"
+    },
+    {
+      "x": -5,
+      "y": 420,
+      "key": "platform_vertical"
+    },
+    {
+      "x": 0,
+      "y": 0,
+      "numTiles": 30,
+      "key": "block"
+    },
+    {
+      "x": 24,
+      "y": 550,
+      "numTiles": 9,
+      "key": "block"
+    },
+    {
+      "x": 530,
+      "y": 550,
+      "numTiles": 8,
+      "key": "block"
+    },
+    {
+      "x": 682,
+      "y": 400,
+      "numTiles": 8,
+      "key": "block"
+    },
+    {
+      "x": 212,
+      "y": 400,
+      "numTiles": 8,
+      "key": "block"
+    },
+    {
+      "x": 22,
+      "y": 270,
+      "numTiles": 8,
+      "key": "block"
+    },
+    {
+      "x": 682,
+      "y": 270,
+      "numTiles": 8,
+      "key": "block"
+    },
+    {
+      "x": 200,
+      "y": 130,
+      "numTiles": 17,
+      "key": "block"
+    },
+    {
+      "x": 0,
+      "y": 690,
+      "numTiles": 5,
+      "key": "ground"
+    }
+  ],
+  "fires": [
+    {
+      "x": 300,
+      "y": 660
+    },
+    {
+      "x": 250,
+      "y": 530
+    },
+    {
+      "x": 280,
+      "y": 380
+    },
+    {
+      "x": 200,
+      "y": 250
+    },
+    {
+      "x": 700,
+      "y": 660
+    },
+    {
+      "x": 750,
+      "y": 250
+    },
+    {
+      "x": 750,
+      "y": 380
+    },
+    {
+      "x": 750,
+      "y": 530
+    },
+    {
+      "x": 700,
+      "y": 110
+    },
+    {
+      "x": 500,
+      "y": 110
+    },
+    {
+      "x": 300,
+      "y": 110
+    }
+  ]
+}
