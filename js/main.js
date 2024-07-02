@@ -6,6 +6,8 @@ gameScene.init = function() {
   // Player parameters
   this.playerSpeed = 150;
   this.jumpSpeed = -600;
+  this.reachedGoalRed = false;
+  this.reachedGoalBlue = false;
 };
 
 // Load asset files for our game
@@ -263,11 +265,42 @@ gameScene.setupLevel = function() {
 gameScene.setupCollisions = function() {
   // Collisions
   this.physics.add.collider([this.player_red, this.player_blue, this.goal_red, this.goal_blue], this.platforms);
-  this.physics.add.collider([this.fires_blue, this.fires_red], this.platforms)
+  this.physics.add.collider([this.fires_blue, this.fires_red], this.platforms);
 
   // Overlaps
-  this.physics.add.overlap(this.player_red, [this.fires_blue, this.goal_red], this.restartGame, null, this);
-  this.physics.add.overlap(this.player_blue, [this.fires_red, this.goal_blue], this.restartGame, null, this);
+  this.physics.add.overlap(this.player_red, [this.fires_blue, this.goal_red], this.handleOverlapRed, null, this);
+  this.physics.add.overlap(this.player_blue, [this.fires_red, this.goal_blue], this.handleOverlapBlue, null, this);
+};
+
+// Handles overlap for player_red
+gameScene.handleOverlapRed = function(player, target) {
+  if (target.texture.key === 'fire_blue') {
+    this.restartGame();
+  } else if (target.texture.key === 'goal_red') {
+    this.reachedGoalRed = true;
+    player.body.enable = false; // Disable player physics
+    player.setVisible(false); // Hide player
+    this.checkGameEnd();
+  }
+};
+
+// Handles overlap for player_blue
+gameScene.handleOverlapBlue = function(player, target) {
+  if (target.texture.key === 'fire_red') {
+    this.restartGame();
+  } else if (target.texture.key === 'goal_blue') {
+    this.reachedGoalBlue = true;
+    player.body.enable = false; // Disable player physics
+    player.setVisible(false); // Hide player
+    this.checkGameEnd();
+  }
+};
+
+// Checks if both players have reached their goals and restarts the game if they have
+gameScene.checkGameEnd = function() {
+  if (this.reachedGoalRed && this.reachedGoalBlue) {
+    this.restartGame();
+  }
 };
 
 // Restarts the game
