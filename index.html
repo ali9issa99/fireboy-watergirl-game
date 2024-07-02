@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+    <link rel="stylesheet" href="Styles/styles.css">
     <style>
       body, html {
         height: 100%;
@@ -10,7 +11,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: #000;
+        background-color: #000; /* Optional: Set background color */
       }
       #game-container {
         display: flex;
@@ -20,7 +21,26 @@
     </style>
 </head>
 <body>
-  <div id="game-container"></div>
-  <script src="js/main.js"></script>
+  <section class="parallax landing-page">
+    <div>
+        <h1 class="redf">Redflame</h1>
+        <h1 class="and">&</h1>
+        <h1 class="bluef"> Blueflame</h1>
+        <div class="btns">Start</div>
+        <div class="btns">Character</div>
+        <div class="btns">Exit</div>
+    </div>
+</section>
+
+  <div id="gameContainer"></div>
+    <div id="gameOverScreen" class="hidden">
+        <div class="game-over-content">
+            <h1>Game Over</h1>
+            <button id="retryButton">Retry</button>
+            <button id="exitButton">Exit</button>
+        </div>
+    </div>
+    <!-- <script src="js/main.js"></script> -->
+    <script src="js/phaser.js"></script>
 </body>
 </html>

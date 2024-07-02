@@ -84,6 +84,16 @@ gameScene.create = function() {
   this.input.on('pointerdown', function(pointer) {
     console.log(pointer.x, pointer.y);
   });
+
+  // Add event listeners for the game over screen buttons
+  document.getElementById('retryButton').addEventListener('click', () => {
+    this.scene.restart();
+    document.getElementById('gameOverScreen').classList.add('hidden');
+  });
+
+  document.getElementById('exitButton').addEventListener('click', () => {
+    // Implement exit functionality, e.g., navigate to another page or close the game
+  });
 };
 
 // Executed on every frame
@@ -266,6 +276,7 @@ gameScene.setupCollisions = function() {
   // Collisions
   this.physics.add.collider([this.player_red, this.player_blue, this.goal_red, this.goal_blue], this.platforms);
   this.physics.add.collider([this.fires_blue, this.fires_red], this.platforms);
+  this.physics.add.collider([this.fires_blue, this.fires_red], this.platforms);
 
   // Overlaps
   this.physics.add.overlap(this.player_red, [this.fires_blue, this.goal_red], this.handleOverlapRed, null, this);
@@ -303,15 +314,9 @@ gameScene.checkGameEnd = function() {
   }
 };
 
-// Restarts the game
-gameScene.restartGame = function() {
-  // Fade out
-  this.cameras.main.fade(500);
-
-  // On fade out complete, restart scene
-  this.cameras.main.on('camerafadeoutcomplete', function() {
-    this.scene.restart();
-  }, this);
+// Show game over screen
+gameScene.gameOver = function() {
+  document.getElementById('gameOverScreen').classList.remove('hidden');
 };
 
 // Game configuration

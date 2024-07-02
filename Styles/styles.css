@@ -1,0 +1,98 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  
+  #gameOverScreen {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1000px;
+    height: 750px;
+    background: rgba(0, 0, 0, 0.8);
+    text-align: center;
+    color: white;
+    border-radius:20px ;
+  }
+  
+  #gameOverScreen h1 {
+    font-size: 100px;
+    font-style: italic;
+    margin: 0;
+    color: red;
+  }
+  
+  #gameOverScreen button {
+    font-size: 40px;
+    margin: 20px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    background-color: lightblue;
+  }
+  
+  #gameOverScreen .game-over-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .hidden {
+    display: none;
+  }
+/*  the code below till the other comment is for the landing page  */
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    
+}
+.redf{
+    color: rgb(204, 31, 31);
+    size: px;  
+    font-family: Georgia, 'Times New Roman', Times, serif;  
+}
+
+.and{
+color: rgb(220, 204, 61);
+font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.bluef{
+    color: rgb(25, 25, 167);
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.parallax {
+    display: flex;
+    height: 100%;
+    background-image: url('/assets/images/background.jpg'); 
+    background-size: cover;
+    background-position: center;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    
+}
+
+.btns {
+    margin: 20px;
+    padding: 20px 120px;
+    background-color: rgba(0, 0, 0, 0.5); 
+    border: none;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+}
+
+.btns:hover {
+    background-color: rgba(0, 0, 0, 0.7); 
+}
+/* here ends the landing page designing */
