@@ -235,17 +235,18 @@ gameScene.setupLevel = function() {
     });
   }
 
-  // Red goal setup
-  if (this.levelData.goal_red) {
-    this.goal_red = this.add.sprite(this.levelData.goal_red.x, this.levelData.goal_red.y, 'goal_red');
-    this.physics.add.existing(this.goal_red);
-  }
+// Red goal setup
+if (this.levelData.goal_red) {
+  this.goal_red = this.add.sprite(this.levelData.goal_red.x, this.levelData.goal_red.y, 'goal_red');
+  this.physics.add.existing(this.goal_red, true); // Add as static body
+}
 
-  // Blue goal setup
-  if (this.levelData.goal_blue) {
-    this.goal_blue = this.add.sprite(this.levelData.goal_blue.x, this.levelData.goal_blue.y, 'goal_blue');
-    this.physics.add.existing(this.goal_blue);
-  }
+// Blue goal setup
+if (this.levelData.goal_blue) {
+  this.goal_blue = this.add.sprite(this.levelData.goal_blue.x, this.levelData.goal_blue.y, 'goal_blue');
+  this.physics.add.existing(this.goal_blue, true); // Add as static body
+}
+
 
   // Player_red setup
   this.player_red = this.add.sprite(this.levelData.player_red.x, this.levelData.player_red.y, 'player_red', 3);

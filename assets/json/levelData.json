@@ -1,7 +1,7 @@
 {
   "world": {
-    "width": 360,
-    "height": 700
+    "width": 1000,
+    "height": 750
   },
   "player_red": {
     "x": 190,
@@ -13,11 +13,11 @@
   },
   "goal_red": {
     "x": 30,
-    "y": 65
+    "y": 583
   },
   "goal_blue": {
     "x": 330,
-    "y": 65
+    "y": 530
   },
   "platforms": [
     {
