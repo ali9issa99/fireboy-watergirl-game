@@ -280,7 +280,7 @@ gameScene.setupSpawner = function(){
 let config = {
   type: Phaser.AUTO,
   width: 1000,
-  height: 1000,
+  height: 750,
   scene: gameScene,
   title: 'Monster Kong',
   pixelArt: false,

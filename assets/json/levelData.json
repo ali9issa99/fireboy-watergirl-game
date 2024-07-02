@@ -1,7 +1,7 @@
 {
   "world": {
     "width": 1000,
-    "height": 1000
+    "height": 750
   },
   "player": {
     "x": 100,
