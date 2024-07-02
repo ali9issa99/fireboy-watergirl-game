@@ -320,7 +320,7 @@ let config = {
   width: 1000,
   height: 750,
   scene: gameScene,
-  title: 'Monster Kong',
+  title: 'Red Flame Blue Flame',
   pixelArt: false,
   physics: {
     default: 'arcade',
