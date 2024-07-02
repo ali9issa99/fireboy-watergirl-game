@@ -259,7 +259,6 @@ gameScene.setupLevel = function() {
     this.physics.add.existing(this.goal_blue);
   }
 
-
   // Player_red setup
   this.player_red = this.add.sprite(this.levelData.player_red.x, this.levelData.player_red.y, 'player_red', 3);
   this.physics.add.existing(this.player_red);
@@ -274,13 +273,14 @@ gameScene.setupLevel = function() {
 // Sets up collision and overlap checks
 gameScene.setupCollisions = function() {
   // Collisions
-  this.physics.add.collider([this.player_red, this.player_blue, this.goal_red, this.goal_blue], this.platforms);
-  this.physics.add.collider([this.fires_blue, this.fires_red], this.platforms);
+  this.physics.add.collider([this.player_red, this.player_blue, this.goal_blue, this.goal_red], this.platforms);
   this.physics.add.collider([this.fires_blue, this.fires_red], this.platforms);
 
   // Overlaps
-  this.physics.add.overlap(this.player_red, [this.fires_blue, this.goal_red], this.gameOver, null, this);
-  this.physics.add.overlap(this.player_blue, [this.fires_red, this.goal_blue], this.gameOver, null, this);
+  this.physics.add.overlap(this.player_red, this.fires_blue, this.gameOver, null, this);
+  this.physics.add.overlap(this.player_blue, this.fires_red, this.gameOver, null, this);
+  this.physics.add.overlap(this.player_red, this.goal_red, this.handleOverlapRed, null, this);
+  this.physics.add.overlap(this.player_blue, this.goal_blue, this.handleOverlapBlue, null, this);
 };
 
 // Handles overlap for player_red
@@ -310,13 +310,18 @@ gameScene.handleOverlapBlue = function(player, target) {
 // Checks if both players have reached their goals and restarts the game if they have
 gameScene.checkGameEnd = function() {
   if (this.reachedGoalRed && this.reachedGoalBlue) {
-    this.restartGame();
+    this.scene.restart();
   }
 };
 
 // Show game over screen
 gameScene.gameOver = function() {
   document.getElementById('gameOverScreen').classList.remove('hidden');
+};
+
+// Restart game
+gameScene.restartGame = function() {
+  this.scene.restart();
 };
 
 // Game configuration
