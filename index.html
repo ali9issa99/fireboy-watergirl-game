@@ -4,12 +4,23 @@
     <meta charset="UTF-8" />
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
     <style>
-      body {
+      body, html {
+        height: 100%;
         margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #000; /* Optional: Set background color */
+      }
+      #game-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     </style>
 </head>
 <body>
+  <div id="game-container"></div>
   <script src="js/main.js"></script>
 </body>
 </html>
