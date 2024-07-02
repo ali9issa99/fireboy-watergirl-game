@@ -82,6 +82,16 @@ gameScene.create = function() {
   this.input.on('pointerdown', function(pointer) {
     console.log(pointer.x, pointer.y);
   });
+
+  // Add event listeners for the game over screen buttons
+  document.getElementById('retryButton').addEventListener('click', () => {
+    this.scene.restart();
+    document.getElementById('gameOverScreen').classList.add('hidden');
+  });
+
+  document.getElementById('exitButton').addEventListener('click', () => {
+    // Implement exit functionality, e.g., navigate to another page or close the game
+  });
 };
 
 // Executed on every frame
@@ -235,18 +245,17 @@ gameScene.setupLevel = function() {
     });
   }
 
-// Red goal setup
-if (this.levelData.goal_red) {
-  this.goal_red = this.add.sprite(this.levelData.goal_red.x, this.levelData.goal_red.y, 'goal_red');
-  this.physics.add.existing(this.goal_red, true); // Add as static body
-}
+  // Red goal setup
+  if (this.levelData.goal_red) {
+    this.goal_red = this.add.sprite(this.levelData.goal_red.x, this.levelData.goal_red.y, 'goal_red');
+    this.physics.add.existing(this.goal_red, true); // Add as static body
+  }
 
-// Blue goal setup
-if (this.levelData.goal_blue) {
-  this.goal_blue = this.add.sprite(this.levelData.goal_blue.x, this.levelData.goal_blue.y, 'goal_blue');
-  this.physics.add.existing(this.goal_blue, true); // Add as static body
-}
-
+  // Blue goal setup
+  if (this.levelData.goal_blue) {
+    this.goal_blue = this.add.sprite(this.levelData.goal_blue.x, this.levelData.goal_blue.y, 'goal_blue');
+    this.physics.add.existing(this.goal_blue, true); // Add as static body
+  }
 
   // Player_red setup
   this.player_red = this.add.sprite(this.levelData.player_red.x, this.levelData.player_red.y, 'player_red', 3);
@@ -263,22 +272,16 @@ if (this.levelData.goal_blue) {
 gameScene.setupCollisions = function() {
   // Collisions
   this.physics.add.collider([this.player_red, this.player_blue, this.goal_red, this.goal_blue], this.platforms);
-  this.physics.add.collider([this.fires_blue, this.fires_red], this.platforms)
+  this.physics.add.collider([this.fires_blue, this.fires_red], this.platforms);
 
   // Overlaps
-  this.physics.add.overlap(this.player_red, [this.fires_blue, this.goal_red], this.restartGame, null, this);
-  this.physics.add.overlap(this.player_blue, [this.fires_red, this.goal_blue], this.restartGame, null, this);
+  this.physics.add.overlap(this.player_red, this.fires_blue, this.gameOver, null, this);
+  this.physics.add.overlap(this.player_blue, this.fires_red, this.gameOver, null, this);
 };
 
-// Restarts the game
-gameScene.restartGame = function() {
-  // Fade out
-  this.cameras.main.fade(500);
-
-  // On fade out complete, restart scene
-  this.cameras.main.on('camerafadeoutcomplete', function() {
-    this.scene.restart();
-  }, this);
+// Show game over screen
+gameScene.gameOver = function() {
+  document.getElementById('gameOverScreen').classList.remove('hidden');
 };
 
 // Game configuration

@@ -1,0 +1,45 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  
+  #gameOverScreen {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1000px;
+    height: 750px;
+    background: rgba(0, 0, 0, 0.8);
+    text-align: center;
+    color: white;
+    border-radius:20px ;
+  }
+  
+  #gameOverScreen h1 {
+    font-size: 100px;
+    font-style: italic;
+    margin: 0;
+    color: red;
+  }
+  
+  #gameOverScreen button {
+    font-size: 40px;
+    margin: 20px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    background-color: lightblue;
+  }
+  
+  #gameOverScreen .game-over-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .hidden {
+    display: none;
+  }
