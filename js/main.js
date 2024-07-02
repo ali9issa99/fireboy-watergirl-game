@@ -262,6 +262,7 @@ gameScene.setupLevel = function() {
 gameScene.setupCollisions = function() {
   // Collisions
   this.physics.add.collider([this.player_red, this.player_blue, this.goal_red, this.goal_blue], this.platforms);
+  this.physics.add.collider([this.fires_blue, this.fires_red], this.platforms)
 
   // Overlaps
   this.physics.add.overlap(this.player_red, [this.fires_red, this.fires_blue, this.goal_red, this.goal_blue], this.restartGame, null, this);
