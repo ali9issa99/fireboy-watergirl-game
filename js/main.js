@@ -1,7 +1,5 @@
-import newLevelScene from './newLevelScene.js';
-import Gameover from './GameOver.js';
-  // Create a new scene
-  let gameScene = new Phaser.Scene('Game');
+// Create a new scene
+let gameScene = new Phaser.Scene('Game');
 
 // Parameters for our scene
 gameScene.init = function(data) {
@@ -14,46 +12,46 @@ gameScene.init = function(data) {
   console.log('Initializing level:', this.currentLevel);
 };
 
-  // Load asset files for our game
-  gameScene.preload = function () {
-    // Load images
-    this.load.image('background', 'assets/images/l1_background.png');
-    this.load.image('ground', 'assets/images/ground.png');
-    this.load.image('platform', 'assets/images/platform.png');
-    this.load.image('platform_vertical', 'assets/images/platform_vertical.png');
-    this.load.image('block', 'assets/images/block.png');
-    this.load.image('goal_red', 'assets/images/door_red.png');
-    this.load.image('goal_blue', 'assets/images/door_blue.png');
-    this.load.image('barrel', 'assets/images/barrel.png');
+// Load asset files for our game
+gameScene.preload = function () {
+  // Load images
+  this.load.image('background', 'assets/images/l1_background.png');
+  this.load.image('ground', 'assets/images/ground.png');
+  this.load.image('platform', 'assets/images/platform.png');
+  this.load.image('platform_vertical', 'assets/images/platform_vertical.png');
+  this.load.image('block', 'assets/images/block.png');
+  this.load.image('goal_red', 'assets/images/door_red.png');
+  this.load.image('goal_blue', 'assets/images/door_blue.png');
+  this.load.image('barrel', 'assets/images/barrel.png');
 
-    // Load spritesheets
-    this.load.spritesheet('player_red', 'assets/images/player_red_spritesheet.png', {
-      frameWidth: 28,
-      frameHeight: 30,
-      margin: 1,
-      spacing: 1
-    });
+  // Load spritesheets
+  this.load.spritesheet('player_red', 'assets/images/player_red_spritesheet.png', {
+    frameWidth: 28,
+    frameHeight: 30,
+    margin: 1,
+    spacing: 1
+  });
 
-    this.load.spritesheet('player_blue', 'assets/images/player_blue_spritesheet.png', {
-      frameWidth: 28,
-      frameHeight: 30,
-      margin: 1,
-      spacing: 1
-    });
+  this.load.spritesheet('player_blue', 'assets/images/player_blue_spritesheet.png', {
+    frameWidth: 28,
+    frameHeight: 30,
+    margin: 1,
+    spacing: 1
+  });
 
-    this.load.spritesheet('fire_red', 'assets/images/fire_red_spritesheet.png', {
-      frameWidth: 20,
-      frameHeight: 21,
-      margin: 1,
-      spacing: 1
-    });
+  this.load.spritesheet('fire_red', 'assets/images/fire_red_spritesheet.png', {
+    frameWidth: 20,
+    frameHeight: 21,
+    margin: 1,
+    spacing: 1
+  });
 
-    this.load.spritesheet('fire_blue', 'assets/images/fire_blue_spritesheet.png', {
-      frameWidth: 20,
-      frameHeight: 21,
-      margin: 1,
-      spacing: 1
-    });
+  this.load.spritesheet('fire_blue', 'assets/images/fire_blue_spritesheet.png', {
+    frameWidth: 20,
+    frameHeight: 21,
+    margin: 1,
+    spacing: 1
+  });
 
   // Load level data JSON
   this.load.json('level1', 'assets/json/level1.json');
@@ -63,35 +61,35 @@ gameScene.init = function(data) {
   
 };
 
-  // Executed once, after assets were loaded
-  gameScene.create = function () {
-    // Background image
-    this.add.image(0, 0, 'background').setOrigin(0, 0).setDisplaySize(this.cameras.main.width, this.cameras.main.height);
+// Executed once, after assets were loaded
+gameScene.create = function () {
+  // Background image
+  this.add.image(0, 0, 'background').setOrigin(0, 0).setDisplaySize(this.cameras.main.width, this.cameras.main.height);
 
-    // Setup animations
-    this.setupAnimations();
+  // Setup animations
+  this.setupAnimations();
 
   // Setup level elements
   this.setupLevel(this.currentLevel);
 
-    // Collision detection
-    this.setupCollisions();
+  // Collision detection
+  this.setupCollisions();
 
-    // Cursor keys for player_red
-    this.cursors = this.input.keyboard.createCursorKeys();
+  // Cursor keys for player_red
+  this.cursors = this.input.keyboard.createCursorKeys();
 
-    // Cursor keys for player_blue
-    this.wasd = this.input.keyboard.addKeys({
-      up: Phaser.Input.Keyboard.KeyCodes.W,
-      down: Phaser.Input.Keyboard.KeyCodes.S,
-      left: Phaser.Input.Keyboard.KeyCodes.A,
-      right: Phaser.Input.Keyboard.KeyCodes.D
-    });
+  // Cursor keys for player_blue
+  this.wasd = this.input.keyboard.addKeys({
+    up: Phaser.Input.Keyboard.KeyCodes.W,
+    down: Phaser.Input.Keyboard.KeyCodes.S,
+    left: Phaser.Input.Keyboard.KeyCodes.A,
+    right: Phaser.Input.Keyboard.KeyCodes.D
+  });
 
-    // Input event listener
-    this.input.on('pointerdown', function (pointer) {
-      console.log(pointer.x, pointer.y);
-    });
+  // Input event listener
+  this.input.on('pointerdown', function (pointer) {
+    console.log(pointer.x, pointer.y);
+  });
 
   // Add event listeners for the game over screen buttons
   document.getElementById('retryButton').addEventListener('click', () => {
@@ -108,7 +106,6 @@ gameScene.init = function(data) {
 };
 
 // Executed on every frame
-<<<<<<< HEAD
 gameScene.update = function() {
   // Check if game over screen is visible
   if (this.gameOverScreenVisible) {
@@ -116,119 +113,107 @@ gameScene.update = function() {
     return;
   }
 
-=======
-gameScene.update = function () {
->>>>>>> 93a746ec0097cab44f425d390549ba53b05757dc
   // Check if player_red is on the ground
   let onGroundRed = this.player_red.body.blocked.down || this.player_red.body.touching.down;
 
-      // Movement for player_red
-      if (this.cursors.left.isDown) {
-        this.player_red.body.setVelocityX(-this.playerSpeed);
-        this.player_red.flipX = false;
-        if (onGroundRed && !this.player_red.anims.isPlaying) {
-          this.player_red.anims.play('walking_red');
-        }
-      } else if (this.cursors.right.isDown) {
-        this.player_red.body.setVelocityX(this.playerSpeed);
-        this.player_red.flipX = true;
-        if (onGroundRed && !this.player_red.anims.isPlaying) {
-          this.player_red.anims.play('walking_red');
-        }
-      } else {
-        this.player_red.body.setVelocityX(0);
-        this.player_red.anims.stop('walking_red');
-        if (onGroundRed) {
-          this.player_red.setFrame(3);
-        }
-      }
+  // Movement for player_red
+  if (this.cursors.left.isDown) {
+    this.player_red.body.setVelocityX(-this.playerSpeed);
+    this.player_red.flipX = false;
+    if (onGroundRed && !this.player_red.anims.isPlaying)
+      this.player_red.anims.play('walking_red');
+  } else if (this.cursors.right.isDown) {
+    this.player_red.body.setVelocityX(this.playerSpeed);
+    this.player_red.flipX = true;
+    if (onGroundRed && !this.player_red.anims.isPlaying)
+      this.player_red.anims.play('walking_red');
+  } else {
+    this.player_red.body.setVelocityX(0);
+    this.player_red.anims.stop('walking_red');
+    if (onGroundRed)
+      this.player_red.setFrame(3);
+  }
 
-      // Jumping for player_red
-      if (onGroundRed && this.cursors.up.isDown) {
-        this.player_red.body.setVelocityY(this.jumpSpeed);
-        this.player_red.anims.stop('walking_red');
-        this.player_red.setFrame(2);
-      }
-    }
+  // Jumping for player_red
+  if (onGroundRed && this.cursors.up.isDown) {
+    this.player_red.body.setVelocityY(this.jumpSpeed);
+    this.player_red.anims.stop('walking_red');
+    this.player_red.setFrame(2);
+  }
 
-    // Ensure player_blue is defined and has a body
-    if (this.player_blue && this.player_blue.body) {
-      let onGroundBlue = this.player_blue.body.blocked.down || this.player_blue.body.touching.down;
+  // Check if player_blue is on the ground
+  let onGroundBlue = this.player_blue.body.blocked.down || this.player_blue.body.touching.down;
 
-      // Movement for player_blue
-      if (this.wasd.left.isDown) {
-        this.player_blue.body.setVelocityX(-this.playerSpeed);
-        this.player_blue.flipX = false;
-        if (onGroundBlue && !this.player_blue.anims.isPlaying) {
-          this.player_blue.anims.play('walking_blue');
-        }
-      } else if (this.wasd.right.isDown) {
-        this.player_blue.body.setVelocityX(this.playerSpeed);
-        this.player_blue.flipX = true;
-        if (onGroundBlue && !this.player_blue.anims.isPlaying) {
-          this.player_blue.anims.play('walking_blue');
-        }
-      } else {
-        this.player_blue.body.setVelocityX(0);
-        this.player_blue.anims.stop('walking_blue');
-        if (onGroundBlue) {
-          this.player_blue.setFrame(3);
-        }
-      }
+  // Movement for player_blue
+  if (this.wasd.left.isDown) {
+    this.player_blue.body.setVelocityX(-this.playerSpeed);
+    this.player_blue.flipX = false;
+    if (onGroundBlue && !this.player_blue.anims.isPlaying)
+      this.player_blue.anims.play('walking_blue');
+  } else if (this.wasd.right.isDown) {
+    this.player_blue.body.setVelocityX(this.playerSpeed);
+    this.player_blue.flipX = true;
+    if (onGroundBlue && !this.player_blue.anims.isPlaying)
+      this.player_blue.anims.play('walking_blue');
+  } else {
+    this.player_blue.body.setVelocityX(0);
+    this.player_blue.anims.stop('walking_blue');
+    if (onGroundBlue)
+      this.player_blue.setFrame(3);
+  }
 
-      // Jumping for player_blue
-      if (onGroundBlue && this.wasd.up.isDown) {
-        this.player_blue.body.setVelocityY(this.jumpSpeed);
-        this.player_blue.anims.stop('walking_blue');
-        this.player_blue.setFrame(2);
-      }
-    }
-  };
+  // Jumping for player_blue
+  if (onGroundBlue && this.wasd.up.isDown) {
+    this.player_blue.body.setVelocityY(this.jumpSpeed);
+    this.player_blue.anims.stop('walking_blue');
+    this.player_blue.setFrame(2);
+  }
+};
 
-  // Sets up animations for players and fire
-  gameScene.setupAnimations = function () {
-    // Animation for player_red
-    if (!this.anims.get('walking_red')) {
-      this.anims.create({
-        key: 'walking_red',
-        frames: this.anims.generateFrameNames('player_red', { frames: [0, 1, 2] }),
-        frameRate: 12,
-        yoyo: true,
-        repeat: -1
-      });
-    }
+// Sets up animations for players and fire
+gameScene.setupAnimations = function () {
+  // Animation for player_red
+  if (!this.anims.get('walking_red')) {
+    this.anims.create({
+      key: 'walking_red',
+      frames: this.anims.generateFrameNames('player_red', { frames: [0, 1, 2] }),
+      frameRate: 12,
+      yoyo: true,
+      repeat: -1
+    });
+  }
 
-    // Animation for player_blue
-    if (!this.anims.get('walking_blue')) {
-      this.anims.create({
-        key: 'walking_blue',
-        frames: this.anims.generateFrameNames('player_blue', { frames: [0, 1, 2] }),
-        frameRate: 12,
-        yoyo: true,
-        repeat: -1
-      });
-    }
+  // Animation for player_blue
+  if (!this.anims.get('walking_blue')) {
+    this.anims.create({
+      key: 'walking_blue',
+      frames: this.anims.generateFrameNames('player_blue', { frames: [0, 1, 2] }),
+      frameRate: 12,
+      yoyo: true,
+      repeat: -1
+    });
+  }
 
-    // Animation for fire_red
-    if (!this.anims.get('burning_red')) {
-      this.anims.create({
-        key: 'burning_red',
-        frames: this.anims.generateFrameNames('fire_red', { frames: [0, 1] }),
-        frameRate: 4,
-        repeat: -1
-      });
-    }
+  // Animation for fire_red
+  if (!this.anims.get('burning_red')) {
+    this.anims.create({
+      key: 'burning_red',
+      frames: this.anims.generateFrameNames('fire_red', { frames: [0, 1] }),
+      frameRate: 4,
+      repeat: -1
+    });
+  }
 
-    // Animation for fire_blue
-    if (!this.anims.get('burning_blue')) {
-      this.anims.create({
-        key: 'burning_blue',
-        frames: this.anims.generateFrameNames('fire_blue', { frames: [0, 1] }),
-        frameRate: 4,
-        repeat: -1
-      });
-    }
-  };
+  // Animation for fire_blue
+  if (!this.anims.get('burning_blue')) {
+    this.anims.create({
+      key: 'burning_blue',
+      frames: this.anims.generateFrameNames('fire_blue', { frames: [0, 1] }),
+      frameRate: 4,
+      repeat: -1
+    });
+  }
+};
 
 // Sets up level elements using data from the specified level JSON
 gameScene.setupLevel = function(levelKey) {
@@ -300,26 +285,20 @@ gameScene.setupLevel = function(levelKey) {
   this.player_blue = this.add.sprite(this.level1.player_blue.x, this.level1.player_blue.y, 'player_blue', 3);
   this.physics.add.existing(this.player_blue);
   this.player_blue.body.setCollideWorldBounds(true);
+};
 
-  };
-
-  // Sets up collision and overlap checks
+// Sets up collision and overlap checks
 gameScene.setupCollisions = function () {
   // Collisions
   this.physics.add.collider([this.player_red, this.player_blue, this.goal_blue, this.goal_red], this.platforms);
   this.physics.add.collider([this.fires_blue, this.fires_red], this.platforms);
 
-  console.log("before overlap");
-
-  // Overlaps for goal
+  // Overlaps
+  this.physics.add.overlap(this.player_red, this.fires_blue, this.gameOver, null, this);
+  this.physics.add.overlap(this.player_blue, this.fires_red, this.gameOver, null, this);
   this.physics.add.overlap(this.player_red, this.goal_red, this.handleOverlapRed, null, this);
   this.physics.add.overlap(this.player_blue, this.goal_blue, this.handleOverlapBlue, null, this);
-
-  // Overlaps for fires
-  this.physics.add.overlap(this.player_red, this.fires_blue, this.handleOverlapRed, null, this);
-  this.physics.add.overlap(this.player_blue, this.fires_red, this.handleOverlapBlue, null, this);
 };
-
 
 // Handles overlap for player_red
 gameScene.handleOverlapRed = function (player, target) {
@@ -368,7 +347,6 @@ gameScene.checkGameEnd = function() {
 
 // Show game over screen
 // Show game over screen
-<<<<<<< HEAD
 gameScene.gameOver = function() {
   // Pause the game scene
   this.physics.pause(); // Pause physics simulation
@@ -379,9 +357,6 @@ gameScene.gameOver = function() {
   this.player_blue.anims.stop();
 
   // Show game over screen UI
-=======
-gameScene.gameOver = function () {
->>>>>>> 93a746ec0097cab44f425d390549ba53b05757dc
   document.getElementById('gameOverScreen').classList.remove('hidden');
   this.input.keyboard.enabled = true; // Disable keyboard input
 
@@ -396,22 +371,22 @@ gameScene.restartGame = function() {
   this.gameOverScreenVisible = false; // Reset flag to allow input
 };
 
-  // Game configuration
-  let config = {
-    type: Phaser.AUTO,
-    width: 1000,
-    height: 750,
-    scene: [gameScene, newLevelScene,Gameover],
-    title: 'Red Flame Blue Flame',
-    pixelArt: false,
-    physics: {
-      default: 'arcade',
-      arcade: {
-        gravity: { y: 1000 },
-        debug: false
-      }
+// Game configuration
+let config = {
+  type: Phaser.AUTO,
+  width: 1000,
+  height: 750,
+  scene: gameScene,
+  title: 'Red Flame Blue Flame',
+  pixelArt: false,
+  physics: {
+    default: 'arcade',
+    arcade: {
+      gravity: { y: 1000 },
+      debug: false
     }
-  };
+  }
+};
 
-  // Create the game
-  let game = new Phaser.Game(config);
+// Create the game
+let game = new Phaser.Game(config);
