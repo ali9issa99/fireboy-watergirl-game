@@ -28,6 +28,8 @@ gameScene.preload = function () {
   this.load.image('background_level2', 'assets/images/background_level2.png');
   this.load.image('background_level3', 'assets/images/background_level3.png');
   this.load.image('background_level4', 'assets/images/background_level4.png');
+  this.load.image('background_level5', 'assets/images/background_level5.png');
+
 
   this.load.image('ground', 'assets/images/ground.png');
   this.load.image('platform', 'assets/images/platform.png');
@@ -69,6 +71,8 @@ gameScene.preload = function () {
   this.load.json('level2', 'assets/json/level2.json');
   this.load.json('level3', 'assets/json/level3.json');
   this.load.json('level4', 'assets/json/level4.json');
+  this.load.json('level5', 'assets/json/level5.json');
+
 };
 
 gameScene.create = function () {
@@ -332,6 +336,8 @@ gameScene.checkGameEnd = function () {
       this.currentLevel = 'level3';
     } else if (this.currentLevel === 'level3') {
       this.currentLevel = 'level4';
+    } else if (this.currentLevel === 'level4') {
+      this.currentLevel = 'level5';
     } // Add more levels as needed
 
     // Restart scene with the new level
