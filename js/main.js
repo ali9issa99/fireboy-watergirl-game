@@ -15,9 +15,9 @@ gameScene.init = function(data) {
 // Load asset files for our game
 gameScene.preload = function () {
   this.load.image('background_level1', 'assets/images/background_level1.png');
-  this.load.image('background_level2', 'assets/images/bg2.png');
-  this.load.image('background_level3', 'assets/images/bg3.jpg');
-  this.load.image('background_level4', 'assets/images/bg4.png');
+  this.load.image('background_level2', 'assets/images/background_level2.png');
+  this.load.image('background_level3', 'assets/images/background_level3.png');
+  this.load.image('background_level4', 'assets/images/background_level4.png');
 
   // Load other assets as you already do
   this.load.image('ground', 'assets/images/ground.png');
