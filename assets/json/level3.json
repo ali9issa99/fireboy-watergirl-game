@@ -1,5 +1,6 @@
 {
   "world": {
+    "background": "background_level2",
     "width": 1000,
     "height": 750
   },

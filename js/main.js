@@ -14,8 +14,12 @@ gameScene.init = function(data) {
 
 // Load asset files for our game
 gameScene.preload = function () {
-  // Load images
-  this.load.image('background', 'assets/images/l1_background.png');
+  this.load.image('background_level1', 'assets/images/background_level1.png');
+  this.load.image('background_level2', 'assets/images/bg2.png');
+  this.load.image('background_level3', 'assets/images/bg3.jpg');
+  this.load.image('background_level4', 'assets/images/bg4.png');
+
+  // Load other assets as you already do
   this.load.image('ground', 'assets/images/ground.png');
   this.load.image('platform', 'assets/images/platform.png');
   this.load.image('platform_vertical', 'assets/images/platform_vertical.png');
@@ -58,12 +62,17 @@ gameScene.preload = function () {
   this.load.json('level2', 'assets/json/level2.json');
   this.load.json('level3', 'assets/json/level3.json'); // Load level3
   this.load.json('level4', 'assets/json/level4.json');
-  
 };
 
+
 gameScene.create = function () {
+  console.log(this.currentLevel);
+  this.levelData = this.cache.json.get(this.currentLevel);
+  console.log(this.levelData.world.background);
+  console.log(this.levelData.background);
+  
   // Background image
-  this.add.image(0, 0, 'background').setOrigin(0, 0).setDisplaySize(this.cameras.main.width, this.cameras.main.height);
+  this.add.image(0, 0,this.levelData.world.background ).setOrigin(0, 0).setDisplaySize(this.cameras.main.width, this.cameras.main.height);
 
   // Setup animations
   this.setupAnimations();
@@ -227,15 +236,15 @@ gameScene.setupLevel = function(levelKey) {
   console.log('Setting up level:', levelKey);
   
   // Load JSON data
-  this.level1 = this.cache.json.get(levelKey);
+  this.levelData = this.cache.json.get(levelKey);
 
-  // Background and camera setup
-  this.add.image(0, 0, 'background').setOrigin(0, 0).setDisplaySize(this.cameras.main.width, this.cameras.main.height);
-  this.cameras.main.setBounds(0, 0, this.level1.world.width, this.level1.world.height);
+  // Set background image using the background property from the level data
+  this.add.image(0, 0, this.levelData.background).setOrigin(0, 0).setDisplaySize(this.cameras.main.width, this.cameras.main.height);
+  this.cameras.main.setBounds(0, 0, this.levelData.world.width, this.levelData.world.height);
 
   // Platforms setup
   this.platforms = this.physics.add.staticGroup();
-  this.level1.platforms.forEach(platform => {
+  this.levelData.platforms.forEach(platform => {
     if (platform.numTiles === 1) {
       // Single sprite platform
       let obj = this.add.sprite(platform.x, platform.y, platform.key).setOrigin(0);
@@ -253,8 +262,8 @@ gameScene.setupLevel = function(levelKey) {
 
   // Red fires setup
   this.fires_red = this.physics.add.group();
-  if (this.level1.fires_red) {
-    this.level1.fires_red.forEach(fire => {
+  if (this.levelData.fires_red) {
+    this.levelData.fires_red.forEach(fire => {
       let obj = this.add.sprite(fire.x, fire.y, 'fire_red').setOrigin(0);
       obj.anims.play('burning_red');
       this.fires_red.add(obj);
@@ -263,8 +272,8 @@ gameScene.setupLevel = function(levelKey) {
 
   // Blue fires setup
   this.fires_blue = this.physics.add.group();
-  if (this.level1.fires_blue) {
-    this.level1.fires_blue.forEach(fire => {
+  if (this.levelData.fires_blue) {
+    this.levelData.fires_blue.forEach(fire => {
       let obj = this.add.sprite(fire.x, fire.y, 'fire_blue').setOrigin(0);
       obj.anims.play('burning_blue');
       this.fires_blue.add(obj);
@@ -272,24 +281,24 @@ gameScene.setupLevel = function(levelKey) {
   }
 
   // Red goal setup
-  if (this.level1.goal_red) {
-    this.goal_red = this.add.sprite(this.level1.goal_red.x, this.level1.goal_red.y, 'goal_red');
+  if (this.levelData.goal_red) {
+    this.goal_red = this.add.sprite(this.levelData.goal_red.x, this.levelData.goal_red.y, 'goal_red');
     this.physics.add.existing(this.goal_red);
   }
 
   // Blue goal setup
-  if (this.level1.goal_blue) {
-    this.goal_blue = this.add.sprite(this.level1.goal_blue.x, this.level1.goal_blue.y, 'goal_blue');
+  if (this.levelData.goal_blue) {
+    this.goal_blue = this.add.sprite(this.levelData.goal_blue.x, this.levelData.goal_blue.y, 'goal_blue');
     this.physics.add.existing(this.goal_blue);
   }
 
   // Player_red setup
-  this.player_red = this.add.sprite(this.level1.player_red.x, this.level1.player_red.y, 'player_red', 3);
+  this.player_red = this.add.sprite(this.levelData.player_red.x, this.levelData.player_red.y, 'player_red', 3);
   this.physics.add.existing(this.player_red);
   this.player_red.body.setCollideWorldBounds(true);
 
   // Player_blue setup
-  this.player_blue = this.add.sprite(this.level1.player_blue.x, this.level1.player_blue.y, 'player_blue', 3);
+  this.player_blue = this.add.sprite(this.levelData.player_blue.x, this.levelData.player_blue.y, 'player_blue', 3);
   this.physics.add.existing(this.player_blue);
   this.player_blue.body.setCollideWorldBounds(true);
 };
