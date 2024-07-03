@@ -60,7 +60,7 @@ gameScene.preload = function () {
   // Load level data JSON
   this.load.json('level1', 'assets/json/level1.json');
   this.load.json('level2', 'assets/json/level2.json');
-  this.load.json('level3', 'assets/json/level3.json'); // Load level3
+  this.load.json('level3', 'assets/json/level3.json');
   this.load.json('level4', 'assets/json/level4.json');
 };
 
