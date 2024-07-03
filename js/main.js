@@ -1,25 +1,34 @@
-// Create a new scene
+document.addEventListener('DOMContentLoaded', function () {
+  document.getElementById('gameContainer').style.display = 'none';
+  document.getElementById('gameOverScreen').classList.add('hidden');
+});
+
+document.getElementById('startButton').addEventListener('click', function () {
+  document.getElementById('landingPage').style.display = 'none';
+  document.getElementById('gameContainer').style.display = 'block';
+
+  // Start the Phaser game with level 1
+  game.scene.start('Game', { level: 'level1' });
+});
+
 let gameScene = new Phaser.Scene('Game');
 
 // Parameters for our scene
-gameScene.init = function(data) {
-  // Player parameters
+gameScene.init = function (data) {
   this.playerSpeed = 150;
   this.jumpSpeed = -600;
   this.reachedGoalRed = false;
   this.reachedGoalBlue = false;
-  this.currentLevel = data.level || 'level1'; // Start with level1 or use provided level
+  this.currentLevel = data.level || 'level1';
   console.log('Initializing level:', this.currentLevel);
 };
 
-// Load asset files for our game
 gameScene.preload = function () {
   this.load.image('background_level1', 'assets/images/background_level1.png');
   this.load.image('background_level2', 'assets/images/background_level2.png');
   this.load.image('background_level3', 'assets/images/background_level3.png');
   this.load.image('background_level4', 'assets/images/background_level4.png');
 
-  // Load other assets as you already do
   this.load.image('ground', 'assets/images/ground.png');
   this.load.image('platform', 'assets/images/platform.png');
   this.load.image('platform_vertical', 'assets/images/platform_vertical.png');
@@ -28,7 +37,6 @@ gameScene.preload = function () {
   this.load.image('goal_blue', 'assets/images/door_blue.png');
   this.load.image('barrel', 'assets/images/barrel.png');
 
-  // Load spritesheets
   this.load.spritesheet('player_red', 'assets/images/player_red_spritesheet.png', {
     frameWidth: 28,
     frameHeight: 30,
@@ -57,36 +65,22 @@ gameScene.preload = function () {
     spacing: 1
   });
 
-  // Load level data JSON
   this.load.json('level1', 'assets/json/level1.json');
   this.load.json('level2', 'assets/json/level2.json');
-  this.load.json('level3', 'assets/json/level3.json'); // Load level3
+  this.load.json('level3', 'assets/json/level3.json');
   this.load.json('level4', 'assets/json/level4.json');
 };
 
-
 gameScene.create = function () {
-  console.log(this.currentLevel);
   this.levelData = this.cache.json.get(this.currentLevel);
-  console.log(this.levelData.world.background);
-  console.log(this.levelData.background);
-  
-  // Background image
-  this.add.image(0, 0,this.levelData.world.background ).setOrigin(0, 0).setDisplaySize(this.cameras.main.width, this.cameras.main.height);
 
-  // Setup animations
+  this.add.image(0, 0, this.levelData.world.background).setOrigin(0, 0).setDisplaySize(this.cameras.main.width, this.cameras.main.height);
+
   this.setupAnimations();
-
-  // Setup level elements
   this.setupLevel(this.currentLevel);
-
-  // Collision detection
   this.setupCollisions();
 
-  // Cursor keys for player_red
   this.cursors = this.input.keyboard.createCursorKeys();
-
-  // Cursor keys for player_blue
   this.wasd = this.input.keyboard.addKeys({
     up: Phaser.Input.Keyboard.KeyCodes.W,
     down: Phaser.Input.Keyboard.KeyCodes.S,
@@ -94,91 +88,81 @@ gameScene.create = function () {
     right: Phaser.Input.Keyboard.KeyCodes.D
   });
 
-  // Input event listener
   this.input.on('pointerdown', function (pointer) {
     console.log(pointer.x, pointer.y);
   });
 
-  // Ensure no duplicate listeners
   document.getElementById('retryButton').removeEventListener('click', this.retryListener);
-  document.getElementById('exitButton').removeEventListener('click', this.exitListener);
+  document.getElementById('gameOverExitButton').removeEventListener('click', this.exitListener);
 
-  // Define retry listener
   this.retryListener = () => {
-    console.log("pressed retry button");
     this.scene.restart({ level: this.currentLevel });
     document.getElementById('gameOverScreen').classList.add('hidden');
   };
 
-  // Define exit listener
   this.exitListener = () => {
     // Implement exit functionality, e.g., navigate to another page or close the game
   };
 
-  // Add event listeners for the game over screen buttons
   document.getElementById('retryButton').addEventListener('click', this.retryListener);
-  document.getElementById('exitButton').addEventListener('click', this.exitListener);
+  document.getElementById('gameOverExitButton').addEventListener('click', this.exitListener);
 };
 
-
-// Executed on every frame
-gameScene.update = function() {
-  // Check if game over screen is visible
+gameScene.update = function () {
   if (this.gameOverScreenVisible) {
-    // Disable player input if game over screen is visible
     return;
   }
 
-  // Check if player_red is on the ground
   let onGroundRed = this.player_red.body.blocked.down || this.player_red.body.touching.down;
 
-  // Movement for player_red
   if (this.cursors.left.isDown) {
     this.player_red.body.setVelocityX(-this.playerSpeed);
     this.player_red.flipX = false;
-    if (onGroundRed && !this.player_red.anims.isPlaying)
+    if (onGroundRed && !this.player_red.anims.isPlaying) {
       this.player_red.anims.play('walking_red');
+    }
   } else if (this.cursors.right.isDown) {
     this.player_red.body.setVelocityX(this.playerSpeed);
     this.player_red.flipX = true;
-    if (onGroundRed && !this.player_red.anims.isPlaying)
+    if (onGroundRed && !this.player_red.anims.isPlaying) {
       this.player_red.anims.play('walking_red');
+    }
   } else {
     this.player_red.body.setVelocityX(0);
     this.player_red.anims.stop('walking_red');
-    if (onGroundRed)
+    if (onGroundRed) {
       this.player_red.setFrame(3);
+    }
   }
 
-  // Jumping for player_red
   if (onGroundRed && this.cursors.up.isDown) {
     this.player_red.body.setVelocityY(this.jumpSpeed);
     this.player_red.anims.stop('walking_red');
     this.player_red.setFrame(2);
   }
 
-  // Check if player_blue is on the ground
   let onGroundBlue = this.player_blue.body.blocked.down || this.player_blue.body.touching.down;
 
-  // Movement for player_blue
   if (this.wasd.left.isDown) {
     this.player_blue.body.setVelocityX(-this.playerSpeed);
     this.player_blue.flipX = false;
-    if (onGroundBlue && !this.player_blue.anims.isPlaying)
+    if (onGroundBlue && !this.player_blue.anims.isPlaying) {
       this.player_blue.anims.play('walking_blue');
+    }
   } else if (this.wasd.right.isDown) {
     this.player_blue.body.setVelocityX(this.playerSpeed);
     this.player_blue.flipX = true;
-    if (onGroundBlue && !this.player_blue.anims.isPlaying)
+    if (onGroundBlue && !this.player_blue.anims.isPlaying) {
       this.player_blue.anims.play('walking_blue');
+    }
   } else {
     this.player_blue.body.setVelocityX(0);
     this.player_blue.anims.stop('walking_blue');
-    if (onGroundBlue)
+    if (onGroundBlue) {
       this.player_blue.setFrame(3);
+    }
   }
 
-  // Jumping for player_blue
   if (onGroundBlue && this.wasd.up.isDown) {
     this.player_blue.body.setVelocityY(this.jumpSpeed);
     this.player_blue.anims.stop('walking_blue');
@@ -186,9 +170,7 @@ gameScene.update = function() {
   }
 };
 
-// Sets up animations for players and fire
 gameScene.setupAnimations = function () {
-  // Animation for player_red
   if (!this.anims.get('walking_red')) {
     this.anims.create({
       key: 'walking_red',
@@ -199,7 +181,6 @@ gameScene.setupAnimations = function () {
     });
   }
 
-  // Animation for player_blue
   if (!this.anims.get('walking_blue')) {
     this.anims.create({
       key: 'walking_blue',
@@ -210,7 +191,6 @@ gameScene.setupAnimations = function () {
     });
   }
 
-  // Animation for fire_red
   if (!this.anims.get('burning_red')) {
     this.anims.create({
       key: 'burning_red',
@@ -220,7 +200,6 @@ gameScene.setupAnimations = function () {
     });
   }
 
-  // Animation for fire_blue
   if (!this.anims.get('burning_blue')) {
     this.anims.create({
       key: 'burning_blue',
@@ -232,9 +211,9 @@ gameScene.setupAnimations = function () {
 };
 
 // Sets up level elements using data from the specified level JSON
-gameScene.setupLevel = function(levelKey) {
+gameScene.setupLevel = function (levelKey) {
   console.log('Setting up level:', levelKey);
-  
+
   // Load JSON data
   this.levelData = this.cache.json.get(levelKey);
 
@@ -329,7 +308,6 @@ gameScene.handleOverlapRed = function (player, target) {
   }
 };
 
-
 // Handles overlap for player_blue
 gameScene.handleOverlapBlue = function (player, target) {
   if (target.texture.key === 'fire_red') {
@@ -343,11 +321,10 @@ gameScene.handleOverlapBlue = function (player, target) {
   }
 };
 
-// Checks if both players have reached their goals and loads the new level if they have
-gameScene.checkGameEnd = function() {
+gameScene.checkGameEnd = function () {
   if (this.reachedGoalRed && this.reachedGoalBlue) {
     console.log('Both players reached goals. Switching to new level.');
-    
+
     // Determine next level
     if (this.currentLevel === 'level1') {
       this.currentLevel = 'level2';
@@ -362,13 +339,14 @@ gameScene.checkGameEnd = function() {
   }
 };
 
+
 // Show game over screen
 // Show game over screen
-gameScene.gameOver = function() {
+gameScene.gameOver = function () {
   // Pause the game scene
   this.physics.pause(); // Pause physics simulation
   this.input.keyboard.enabled = false; // Disable keyboard input
-  
+
   // Stop player animations
   this.player_red.anims.stop();
   this.player_blue.anims.stop();
@@ -379,33 +357,57 @@ gameScene.gameOver = function() {
 
 };
 
-
 // Restart game
-gameScene.restartGame = function() {
+gameScene.restartGame = function () {
   console.log('Restarting game at level:', this.currentLevel);
   this.scene.restart({ level: this.currentLevel });
   document.getElementById('gameOverScreen').classList.add('hidden');
   this.gameOverScreenVisible = false; // Reset flag to allow input
 };
 
-// Game configuration
+
+gameScene.playerHit = function (player, fire) {
+  console.log('Game Over');
+  this.scene.pause();
+  this.gameOverScreenVisible = true;
+  document.getElementById('gameOverScreen').classList.remove('hidden');
+};
+
+gameScene.playerGoal = function (player, goal) {
+  if (player.texture.key === 'player_red' && goal.texture.key === 'goal_red') {
+    this.reachedGoalRed = true;
+  } else if (player.texture.key === 'player_blue' && goal.texture.key === 'goal_blue') {
+    this.reachedGoalBlue = true;
+  }
+
+  if (this.reachedGoalRed && this.reachedGoalBlue) {
+    console.log('Level Complete');
+    let nextLevel = this.levelData.nextLevel;
+    if (nextLevel) {
+      this.scene.restart({ level: nextLevel });
+    } else {
+      console.log('You have completed all levels!');
+    }
+  }
+};
+
+
 let config = {
   type: Phaser.AUTO,
   width: 1000,
   height: 750,
-  scene: gameScene,
-  title: 'Red Flame Blue Flame',
-  pixelArt: false,
   physics: {
     default: 'arcade',
     arcade: {
       gravity: { y: 1000 },
       debug: false
     }
-  }
+  },
+  scene: gameScene,
+  parent: 'gameContainer',
+  title: 'Red Flame Blue Flame',
+  pixelArt: false,
+  backgroundColor: '000000'
 };
 
-// Create the game
 let game = new Phaser.Game(config);
-
-// Reassuring
