@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById('gameContainer').style.display = 'block';
       // Start the Phaser game with level 1
       game.scene.start('Game', { level: 'level1' });
+      document.getElementById('gameContainer').scrollIntoView({ behavior: 'smooth' });
   });
 
   // Your Phaser game configuration and scenes setup
