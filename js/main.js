@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   document.getElementById('gameContainer').style.display = 'none';
   document.getElementById('gameOverScreen').classList.add('hidden');
+  document.getElementById('levelsMenu').classList.add('hidden');
 
   document.getElementById('startButton').addEventListener('click', function () {
       document.getElementById('landingPage').style.display = 'none';
@@ -31,9 +32,27 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById('gameContainer').scrollIntoView({ behavior: 'smooth' });
   });
 
-  // Your Phaser game configuration and scenes setup
-});
+  document.getElementById('levelsButton').addEventListener('click', function () {
+      document.getElementById('levelsMenu').classList.toggle('hidden');
+  });
 
+  document.getElementById('closeLevelsButton').addEventListener('click', function () {
+      document.getElementById('levelsMenu').classList.add('hidden');
+  });
+
+  document.querySelectorAll('.levelButton').forEach(button => {
+    button.addEventListener('click', function () {
+        let level = this.getAttribute('data-level');
+        document.getElementById('landingPage').style.display = 'none';
+        document.getElementById('gameContainer').style.display = 'block';
+        game.scene.start('Game', { level: level });
+        document.getElementById('gameContainer').scrollIntoView({ behavior: 'smooth' });
+
+        // Hide the levels menu after selecting a level
+        document.getElementById('levelsMenu').classList.add('hidden');
+    });
+});
+});
 document.addEventListener('DOMContentLoaded', function () {
 
 document.getElementById('gameContainer').style.display = 'none';
