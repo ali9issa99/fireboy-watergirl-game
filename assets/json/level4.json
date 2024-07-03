@@ -1,5 +1,6 @@
 {
   "world": {
+    "background": "background_level4",
     "width": 1000,
     "height": 750
   }, "player_red": {
