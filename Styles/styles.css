@@ -1,99 +1,225 @@
+/* Global styles */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800;900&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
 body {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-  }
-  
-  #gameOverScreen {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 1000px;
-    height: 750px;
-    background: rgba(0, 0, 0, 0.8);
-    text-align: center;
-    color: white;
-    border-radius:20px ;
-  }
-  
-  #gameOverScreen h1 {
-    font-size: 100px;
-    font-style: italic;
-    margin: 0;
-    color: red;
-  }
-  
-  #gameOverScreen button {
-    font-size: 40px;
-    margin: 20px;
-    padding: 10px 20px;
-    border-radius: 20px;
-    cursor: pointer;
-    background-color: lightblue;
-  }
-  
-  #gameOverScreen .game-over-content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  
-  .hidden {
-    display: none;
-  }
-/*  the code below till the other comment is for the landing page  */
-  body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    font-family: Arial, sans-serif;
-    
-    
-}
-.redf{
-    color: rgb(204, 31, 31);
-    size: px;  
-    font-family: Georgia, 'Times New Roman', Times, serif;  
+  background: #f9f9f9;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-.and{
-color: rgb(220, 204, 61);
-font-family: Georgia, 'Times New Roman', Times, serif;
+/* Header styles */
+header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 30px 100px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  z-index: 100;
 }
 
-.bluef{
-    color: rgb(25, 25, 167);
-    font-family: Georgia, 'Times New Roman', Times, serif;
+.logo {
+  font-size: 2em;
+  color: #359381;
+  pointer-events: none;
+  margin-right: 270px;
 }
 
+.navigation a {
+  text-decoration: none;
+  color: #359381;
+  padding: 6px 15px;
+  border-radius: 20px;
+  margin: 0 10px;
+  font-weight: 600;
+}
+
+.navigation a:hover, 
+.navigation a.active {
+  background: #359381;
+  color: #fff;
+}
+
+/* Game over screen styles */
+#gameOverScreen {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1000px;
+  height: 750px;
+  background: rgba(0, 0, 0, 0.8);
+  text-align: center;
+  color: white;
+  border-radius: 20px;
+}
+
+#gameOverScreen h1 {
+  font-size: 100px;
+  font-style: italic;
+  margin: 0;
+  color: red;
+}
+
+#gameOverScreen button {
+  font-size: 40px;
+  margin: 20px;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  background-color: lightblue;
+}
+
+#gameOverScreen .game-over-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.hidden {
+  display: none;
+}
+
+/* Landing page styles */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
+
+.redf {
+  color: rgb(204, 31, 31);
+  size: px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.and {
+  color: rgb(220, 204, 61);
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.bluef {
+  color: rgb(25, 25, 167);
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+/* Parallax specific styles */
 .parallax {
-    display: flex;
-    height: 100%;
-    background-image: url('/assets/images/background.jpg'); 
-    background-size: cover;
-    background-position: center;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    color: white;
-    
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
+#text {
+  position: absolute;
+  font-size: 5em;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.parallax img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+}
+
+.sec {
+  position: relative;
+  background: #003329;
+  padding: 100px;
+}
+
+.sec h2 {
+  font-size: 3em;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.sec p {
+  font-size: 1em;
+  color: #fff;
+  font-weight: 300;
+}
+
+/* Additional landing page buttons styling */
 .btns {
-    margin: 20px;
-    padding: 20px 120px;
-    background-color: rgba(0, 0, 0, 0.5); 
-    border: none;
-    color: rgb(255, 255, 255);
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 18px;
-    transition: background-color 0.3s ease;
+  margin: 20px;
+  padding: 20px 120px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 18px;
+  transition: background-color 0.3s ease;
 }
 
-.btns:hover {
-    background-color: rgba(0, 0, 0, 0.7); 
+
+
+#btns{
+display: flex;
+flex-direction: row;
+gap:10px;
+align-items: center;
+justify-content: center;
 }
-/* here ends the landing page designing */
+
+
+#startButton {  
+  height: 40px;
+  width: 70px;
+  border-radius: 10px;
+  background-color: turquoise;
+} 
+
+/* Additional Landing Page Styles */
+#landingExitButton {
+  height: 40px;
+  width: 70px;
+  border-radius: 10px;
+  background-color: turquoise;
+}
+
+#landingPage h1 {
+  font-size: 50px;
+  color: turquoise; /* Changed text color to turquoise */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Added text shadow */
+  text-align: center; /* Centered the text */
+}
+
+#btns {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px; /* Added margin for spacing */
+}
+
+#startButton:hover,
+#landingExitButton:hover {
+  background-color: lightseagreen; /* Hover effect for buttons */
+}
+
+.blue{
+  color: #17BEBB;
+}
+
+.red{
+  color: #C5283D;
+}
