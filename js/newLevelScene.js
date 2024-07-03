@@ -1,10 +1,7 @@
-import newLevelScene from './newLevelScene.js';
-import Gameover from './GameOver.js';
-  // Create a new scene
-  let gameScene = new Phaser.Scene('Game');
+let newLevelScene = new Phaser.Scene('NewLevelScene');
 
   // Parameters for our scene
-  gameScene.init = function () {
+  newLevelScene.init = function () {
     // Player parameters
     this.playerSpeed = 150;
     this.jumpSpeed = -600;
@@ -13,7 +10,7 @@ import Gameover from './GameOver.js';
   };
 
   // Load asset files for our game
-  gameScene.preload = function () {
+  newLevelScene.preload = function () {
     // Load images
     this.load.image('background', 'assets/images/l1_background.png');
     this.load.image('ground', 'assets/images/ground.png');
@@ -54,11 +51,11 @@ import Gameover from './GameOver.js';
     });
 
     // Load level data JSON
-    this.load.json('levelData', 'assets/json/levelData.json');
+    this.load.json('newLevel', 'assets/json/newLevel.json');
   };
 
   // Executed once, after assets were loaded
-  gameScene.create = function () {
+  newLevelScene.create = function () {
     // Background image
     this.add.image(0, 0, 'background').setOrigin(0, 0).setDisplaySize(this.cameras.main.width, this.cameras.main.height);
 
@@ -87,19 +84,21 @@ import Gameover from './GameOver.js';
       console.log(pointer.x, pointer.y);
     });
 
-    // Add event listeners for the game over screen buttons
-    // document.getElementById('retryButton').addEventListener('click', () => {
-    //   this.scene.restart();
-    //   document.getElementById('gameOverScreen').classList.add('hidden');
-    // });
+    
 
-    // document.getElementById('exitButton').addEventListener('click', () => {
-    //   // Implement exit functionality, e.g., navigate to another page or close the game
-    // });
+    // Add event listeners for the game over screen buttons
+    document.getElementById('retryButton').addEventListener('click', () => {
+      this.scene.restart();
+      document.getElementById('gameOverScreen').classList.add('hidden');
+    });
+
+    document.getElementById('exitButton').addEventListener('click', () => {
+      // Implement exit functionality, e.g., navigate to another page or close the game
+    });
   };
 
   // Executed on every frame
-  gameScene.update = function () {
+  newLevelScene.update = function () {
     // Ensure player_red is defined and has a body
     if (this.player_red && this.player_red.body) {
       let onGroundRed = this.player_red.body.blocked.down || this.player_red.body.touching.down;
@@ -168,7 +167,7 @@ import Gameover from './GameOver.js';
   };
 
   // Sets up animations for players and fire
-  gameScene.setupAnimations = function () {
+  newLevelScene.setupAnimations = function () {
     // Animation for player_red
     if (!this.anims.get('walking_red')) {
       this.anims.create({
@@ -213,77 +212,81 @@ import Gameover from './GameOver.js';
   };
 
   // Sets up level elements using data from levelData.json
-  gameScene.setupLevel = function () {
+  newLevelScene.setupLevel = function () {
     // Load JSON data
-    this.levelData = this.cache.json.get('levelData');
-
+    this.newLevel = this.cache.json.get('newLevel');
+  
     // Background and camera setup
     this.add.image(0, 0, 'background').setOrigin(0, 0).setDisplaySize(this.cameras.main.width, this.cameras.main.height);
-    this.cameras.main.setBounds(0, 0, this.levelData.world.width, this.levelData.world.height);
-
+    this.cameras.main.setBounds(0, 0, this.newLevel.world.width, this.newLevel.world.height);
+  
     // Platforms setup
     this.platforms = this.physics.add.staticGroup();
-    this.levelData.platforms.forEach(platform => {
+    this.newLevel.platforms.forEach(platform => {
       if (platform.numTiles === 1) {
         // Single sprite platform
         let obj = this.add.sprite(platform.x, platform.y, platform.key).setOrigin(0);
         this.physics.add.existing(obj, true);
         this.platforms.add(obj);
-      } else {
+      } else if (platform.numTiles) {
         // Tile sprite platform
         let width = this.textures.get(platform.key).get(0).width;
         let height = this.textures.get(platform.key).get(0).height;
         let obj = this.add.tileSprite(platform.x, platform.y, platform.numTiles * width, height, platform.key).setOrigin(0);
         this.physics.add.existing(obj, true);
         this.platforms.add(obj);
+      } else if (platform.key === 'platform_vertical') {
+        // Vertical platform
+        let obj = this.add.sprite(platform.x, platform.y, platform.key).setOrigin(0);
+        this.physics.add.existing(obj, true);
+        this.platforms.add(obj);
       }
     });
-
+  
     // Red fires setup
     this.fires_red = this.physics.add.group();
-    if (this.levelData.fires_red) {
-      this.levelData.fires_red.forEach(fire => {
+    if (this.newLevel.fires_red) {
+      this.newLevel.fires_red.forEach(fire => {
         let obj = this.add.sprite(fire.x, fire.y, 'fire_red').setOrigin(0);
         obj.anims.play('burning_red');
         this.fires_red.add(obj);
       });
     }
-
+  
     // Blue fires setup
     this.fires_blue = this.physics.add.group();
-    if (this.levelData.fires_blue) {
-      this.levelData.fires_blue.forEach(fire => {
+    if (this.newLevel.fires_blue) {
+      this.newLevel.fires_blue.forEach(fire => {
         let obj = this.add.sprite(fire.x, fire.y, 'fire_blue').setOrigin(0);
         obj.anims.play('burning_blue');
         this.fires_blue.add(obj);
       });
     }
-
+  
     // Red goal setup
-    if (this.levelData.goal_red) {
-      this.goal_red = this.add.sprite(this.levelData.goal_red.x, this.levelData.goal_red.y, 'goal_red');
+    if (this.newLevel.goal_red) {
+      this.goal_red = this.add.sprite(this.newLevel.goal_red.x, this.newLevel.goal_red.y, 'goal_red');
       this.physics.add.existing(this.goal_red);
     }
-
+  
     // Blue goal setup
-    if (this.levelData.goal_blue) {
-      this.goal_blue = this.add.sprite(this.levelData.goal_blue.x, this.levelData.goal_blue.y, 'goal_blue');
+    if (this.newLevel.goal_blue) {
+      this.goal_blue = this.add.sprite(this.newLevel.goal_blue.x, this.newLevel.goal_blue.y, 'goal_blue');
       this.physics.add.existing(this.goal_blue);
     }
-
+  
     // Player_red setup
-  // Player_red setup
-  this.player_red = this.physics.add.sprite(this.levelData.player_red.x, this.levelData.player_red.y, 'player_red', 3);
-  this.player_red.body.setCollideWorldBounds(true);
-
-  // Player_blue setup
-  this.player_blue = this.physics.add.sprite(this.levelData.player_blue.x, this.levelData.player_blue.y, 'player_blue', 3);
-  this.player_blue.body.setCollideWorldBounds(true);
-
+    this.player_red = this.physics.add.sprite(this.newLevel.player_red.x, this.newLevel.player_red.y, 'player_red', 3);
+    this.player_red.body.setCollideWorldBounds(true);
+  
+    // Player_blue setup
+    this.player_blue = this.physics.add.sprite(this.newLevel.player_blue.x, this.newLevel.player_blue.y, 'player_blue', 3);
+    this.player_blue.body.setCollideWorldBounds(true);
   };
+  
 
   // Sets up collision and overlap checks
-gameScene.setupCollisions = function () {
+newLevelScene.setupCollisions = function () {
   // Collisions
   this.physics.add.collider([this.player_red, this.player_blue, this.goal_blue, this.goal_red], this.platforms);
   this.physics.add.collider([this.fires_blue, this.fires_red], this.platforms);
@@ -301,11 +304,10 @@ gameScene.setupCollisions = function () {
 
 
   // Handles overlap for player_red
-  gameScene.handleOverlapRed = function (player, target) {
+  newLevelScene.handleOverlapRed = function (player, target) {
     if (target.texture.key === 'fire_blue') {
-      console.log("overlapped with fire blue from main.js")
-      this.scene.pause();
-      this.scene.launch('game-over');
+      console.log("overlapped with fire blue")
+      this.scene.restart();
       // document.getElementById('gameOverScreen').classList.remove('hidden');
     } else if (target.texture.key === 'goal_red') {
       this.reachedGoalRed = true;
@@ -316,49 +318,28 @@ gameScene.setupCollisions = function () {
   };
 
   // Handles overlap for player_blue
-  gameScene.handleOverlapBlue = function (player, target) {
+  newLevelScene.handleOverlapBlue = function (player, target) {
     if (target.texture.key === 'fire_red') {
-      console.log("overlapped with fire red from main.js")
-      // document.getElementById('gameOverScreen').classList.remove('hidden')
-      this.scene.pause();
-      this.scene.launch('game-over');;
+      console.log("overlapped with fire blue")
+      document.getElementById('gameOverScreen').classList.remove('hidden');
     } else if (target.texture.key === 'goal_blue') {
       this.reachedGoalBlue = true;
-      player.body.enable = false; 
+      player.body.enable = false;
       player.setVisible(false); 
       this.checkGameEnd();
     }
   };
 
   // Checks if both players have reached their goals and restarts the game if they have
-  gameScene.checkGameEnd = function () {
+  newLevelScene.checkGameEnd = function () {
     if (this.reachedGoalRed && this.reachedGoalBlue) {
       this.scene.start('NewLevelScene');
     }
   };
-  
 
   // Restart game
-  gameScene.restartGame = function () {
+  newLevelScene.restartGame = function () {
     this.scene.restart();
   };
 
-  // Game configuration
-  let config = {
-    type: Phaser.AUTO,
-    width: 1000,
-    height: 750,
-    scene: [gameScene, newLevelScene,Gameover],
-    title: 'Red Flame Blue Flame',
-    pixelArt: false,
-    physics: {
-      default: 'arcade',
-      arcade: {
-        gravity: { y: 1000 },
-        debug: false
-      }
-    }
-  };
-
-  // Create the game
-  let game = new Phaser.Game(config);
+export default newLevelScene;
