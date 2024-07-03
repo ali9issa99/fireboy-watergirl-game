@@ -13,7 +13,7 @@ gameScene.init = function(data) {
 };
 
 // Load asset files for our game
-gameScene.preload = function() {
+gameScene.preload = function () {
   // Load images
   this.load.image('background', 'assets/images/l1_background.png');
   this.load.image('ground', 'assets/images/ground.png');
@@ -62,7 +62,7 @@ gameScene.preload = function() {
 };
 
 // Executed once, after assets were loaded
-gameScene.create = function() {
+gameScene.create = function () {
   // Background image
   this.add.image(0, 0, 'background').setOrigin(0, 0).setDisplaySize(this.cameras.main.width, this.cameras.main.height);
 
@@ -87,7 +87,7 @@ gameScene.create = function() {
   });
 
   // Input event listener
-  this.input.on('pointerdown', function(pointer) {
+  this.input.on('pointerdown', function (pointer) {
     console.log(pointer.x, pointer.y);
   });
 
@@ -106,6 +106,7 @@ gameScene.create = function() {
 };
 
 // Executed on every frame
+<<<<<<< HEAD
 gameScene.update = function() {
   // Check if game over screen is visible
   if (this.gameOverScreenVisible) {
@@ -113,6 +114,9 @@ gameScene.update = function() {
     return;
   }
 
+=======
+gameScene.update = function () {
+>>>>>>> 93a746ec0097cab44f425d390549ba53b05757dc
   // Check if player_red is on the ground
   let onGroundRed = this.player_red.body.blocked.down || this.player_red.body.touching.down;
 
@@ -171,7 +175,7 @@ gameScene.update = function() {
 };
 
 // Sets up animations for players and fire
-gameScene.setupAnimations = function() {
+gameScene.setupAnimations = function () {
   // Animation for player_red
   if (!this.anims.get('walking_red')) {
     this.anims.create({
@@ -288,7 +292,7 @@ gameScene.setupLevel = function(levelKey) {
 };
 
 // Sets up collision and overlap checks
-gameScene.setupCollisions = function() {
+gameScene.setupCollisions = function () {
   // Collisions
   this.physics.add.collider([this.player_red, this.player_blue, this.goal_blue, this.goal_red], this.platforms);
   this.physics.add.collider([this.fires_blue, this.fires_red], this.platforms);
@@ -301,7 +305,7 @@ gameScene.setupCollisions = function() {
 };
 
 // Handles overlap for player_red
-gameScene.handleOverlapRed = function(player, target) {
+gameScene.handleOverlapRed = function (player, target) {
   if (target.texture.key === 'fire_blue') {
     this.gameOver();
   } else if (target.texture.key === 'goal_red') {
@@ -314,7 +318,7 @@ gameScene.handleOverlapRed = function(player, target) {
 };
 
 // Handles overlap for player_blue
-gameScene.handleOverlapBlue = function(player, target) {
+gameScene.handleOverlapBlue = function (player, target) {
   if (target.texture.key === 'fire_red') {
     this.gameOver();
   } else if (target.texture.key === 'goal_blue') {
@@ -347,6 +351,7 @@ gameScene.checkGameEnd = function() {
 
 // Show game over screen
 // Show game over screen
+<<<<<<< HEAD
 gameScene.gameOver = function() {
   // Pause the game scene
   this.physics.pause(); // Pause physics simulation
@@ -357,6 +362,9 @@ gameScene.gameOver = function() {
   this.player_blue.anims.stop();
 
   // Show game over screen UI
+=======
+gameScene.gameOver = function () {
+>>>>>>> 93a746ec0097cab44f425d390549ba53b05757dc
   document.getElementById('gameOverScreen').classList.remove('hidden');
   this.input.keyboard.enabled = true; // Disable keyboard input
 
