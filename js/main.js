@@ -106,7 +106,6 @@ gameScene.create = function () {
 };
 
 // Executed on every frame
-<<<<<<< HEAD
 gameScene.update = function() {
   // Check if game over screen is visible
   if (this.gameOverScreenVisible) {
@@ -114,9 +113,6 @@ gameScene.update = function() {
     return;
   }
 
-=======
-gameScene.update = function () {
->>>>>>> 93a746ec0097cab44f425d390549ba53b05757dc
   // Check if player_red is on the ground
   let onGroundRed = this.player_red.body.blocked.down || this.player_red.body.touching.down;
 
@@ -317,6 +313,7 @@ gameScene.handleOverlapRed = function (player, target) {
   }
 };
 
+
 // Handles overlap for player_blue
 gameScene.handleOverlapBlue = function (player, target) {
   if (target.texture.key === 'fire_red') {
@@ -351,7 +348,6 @@ gameScene.checkGameEnd = function() {
 
 // Show game over screen
 // Show game over screen
-<<<<<<< HEAD
 gameScene.gameOver = function() {
   // Pause the game scene
   this.physics.pause(); // Pause physics simulation
@@ -362,9 +358,6 @@ gameScene.gameOver = function() {
   this.player_blue.anims.stop();
 
   // Show game over screen UI
-=======
-gameScene.gameOver = function () {
->>>>>>> 93a746ec0097cab44f425d390549ba53b05757dc
   document.getElementById('gameOverScreen').classList.remove('hidden');
   this.input.keyboard.enabled = true; // Disable keyboard input
 
@@ -398,3 +391,5 @@ let config = {
 
 // Create the game
 let game = new Phaser.Game(config);
+
+// Reassuring
