@@ -52,7 +52,7 @@ gameScene.preload = function() {
   });
 
   // Load level data JSON
-  this.load.json('levelData', 'assets/json/levelData.json');
+  this.load.json('levelData', 'assets/json/Level3.json');
 };
 
 // Executed once, after assets were loaded
