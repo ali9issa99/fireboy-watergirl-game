@@ -13,34 +13,40 @@
         align-items: center;
         background-color: #000;
       }
-      #game-container {
+      #landingPage {
         display: flex;
         justify-content: center;
         align-items: center;
+        flex-direction: column;
+        text-align: center;
+        color: white;
+      }
+      #gameContainer {
+        display: none;
+        justify-content: center;
+        align-items: center;
+      }
+      .hidden {
+        display: none !important; /* Add !important to ensure no other rules override this */
       }
     </style>
 </head>
 <body>
-  <!-- <section class="parallax landing-page">
-    <div>
-        <h1 class="redf">Redflame</h1>
-        <h1 class="and">&</h1>
-        <h1 class="bluef"> Blueflame</h1>
-        <div class="btns">Start</div>
-        <div class="btns">Character</div>
-        <div class="btns">Exit</div>
-    </div>
-</section> -->
+  <div id="landingPage">
+    <h1>Red Flame Blue Flame</h1>
+    <button id="startButton">Start</button>
+    <button id="landingExitButton">Exit</button>
+  </div>
 
   <div id="gameContainer"></div>
     <div id="gameOverScreen" class="hidden">
         <div class="game-over-content">
             <h1>Game Over</h1>
             <button id="retryButton">Retry</button>
-            <button id="exitButton">Exit</button>
+            <button id="gameOverExitButton">Exit</button>
         </div>
     </div>
-    <script  src="js/main.js"></script>
-    <script  src="js/phaser.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/phaser.js"></script>
 </body>
 </html>
