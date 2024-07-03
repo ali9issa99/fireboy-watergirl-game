@@ -100,10 +100,19 @@ gameScene.create = function() {
   document.getElementById('exitButton').addEventListener('click', () => {
     // Implement exit functionality, e.g., navigate to another page or close the game
   });
+
+  // Set flag for game over screen visibility
+  this.gameOverScreenVisible = false;
 };
 
 // Executed on every frame
 gameScene.update = function() {
+  // Check if game over screen is visible
+  if (this.gameOverScreenVisible) {
+    // Disable player input if game over screen is visible
+    return;
+  }
+
   // Check if player_red is on the ground
   let onGroundRed = this.player_red.body.blocked.down || this.player_red.body.touching.down;
 
@@ -294,7 +303,7 @@ gameScene.setupCollisions = function() {
 // Handles overlap for player_red
 gameScene.handleOverlapRed = function(player, target) {
   if (target.texture.key === 'fire_blue') {
-    this.restartGame();
+    this.gameOver();
   } else if (target.texture.key === 'goal_red') {
     this.reachedGoalRed = true;
     player.body.enable = false; // Disable player physics
@@ -307,7 +316,7 @@ gameScene.handleOverlapRed = function(player, target) {
 // Handles overlap for player_blue
 gameScene.handleOverlapBlue = function(player, target) {
   if (target.texture.key === 'fire_red') {
-    this.restartGame();
+    this.gameOver();
   } else if (target.texture.key === 'goal_blue') {
     this.reachedGoalBlue = true;
     player.body.enable = false; // Disable player physics
@@ -336,16 +345,30 @@ gameScene.checkGameEnd = function() {
   }
 };
 
-
+// Show game over screen
 // Show game over screen
 gameScene.gameOver = function() {
+  // Pause the game scene
+  this.physics.pause(); // Pause physics simulation
+  this.input.keyboard.enabled = false; // Disable keyboard input
+  
+  // Stop player animations
+  this.player_red.anims.stop();
+  this.player_blue.anims.stop();
+
+  // Show game over screen UI
   document.getElementById('gameOverScreen').classList.remove('hidden');
+  this.input.keyboard.enabled = true; // Disable keyboard input
+
 };
+
 
 // Restart game
 gameScene.restartGame = function() {
   console.log('Restarting game at level:', this.currentLevel);
   this.scene.restart({ level: this.currentLevel });
+  document.getElementById('gameOverScreen').classList.add('hidden');
+  this.gameOverScreenVisible = false; // Reset flag to allow input
 };
 
 // Game configuration
