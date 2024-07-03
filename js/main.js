@@ -313,6 +313,7 @@ gameScene.handleOverlapRed = function(player, target) {
   }
 };
 
+
 // Handles overlap for player_blue
 gameScene.handleOverlapBlue = function(player, target) {
   if (target.texture.key === 'fire_red') {
@@ -390,3 +391,5 @@ let config = {
 
 // Create the game
 let game = new Phaser.Game(config);
+
+// Reassuring
