@@ -2,8 +2,7 @@
   "world": {
     "width": 1000,
     "height": 750
-  },
-   "player_red": {
+  }, "player_red": {
     "x": 60,
     "y": 600
   },
@@ -11,11 +10,11 @@
     "x": 100,
     "y": 600
   },"goal_red": {
-    "x": 300,
+    "x": 620,
     "y": 600
   },
   "goal_blue": {
-    "x": 400,
+    "x": 560,
     "y": 600
   },
   "platforms": [

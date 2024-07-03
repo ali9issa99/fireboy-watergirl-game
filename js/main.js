@@ -56,6 +56,9 @@ gameScene.preload = function() {
   // Load level data JSON
   this.load.json('level1', 'assets/json/level1.json');
   this.load.json('level2', 'assets/json/level2.json');
+  this.load.json('level3', 'assets/json/level3.json'); // Load level3
+  this.load.json('level4', 'assets/json/level4.json');
+  
 };
 
 // Executed once, after assets were loaded
@@ -318,11 +321,21 @@ gameScene.handleOverlapBlue = function(player, target) {
 gameScene.checkGameEnd = function() {
   if (this.reachedGoalRed && this.reachedGoalBlue) {
     console.log('Both players reached goals. Switching to new level.');
-    // Switch to new level
-    this.currentLevel = 'level2';
+    
+    // Determine next level
+    if (this.currentLevel === 'level1') {
+      this.currentLevel = 'level2';
+    } else if (this.currentLevel === 'level2') {
+      this.currentLevel = 'level3';
+    } else if (this.currentLevel === 'level3') {
+      this.currentLevel = 'level4';
+    } // Add more levels as needed
+
+    // Restart scene with the new level
     this.scene.restart({ level: this.currentLevel });
   }
 };
+
 
 // Show game over screen
 gameScene.gameOver = function() {
