@@ -61,7 +61,6 @@ gameScene.preload = function () {
   
 };
 
-// Executed once, after assets were loaded
 gameScene.create = function () {
   // Background image
   this.add.image(0, 0, 'background').setOrigin(0, 0).setDisplaySize(this.cameras.main.width, this.cameras.main.height);
@@ -91,19 +90,27 @@ gameScene.create = function () {
     console.log(pointer.x, pointer.y);
   });
 
-  // Add event listeners for the game over screen buttons
-  document.getElementById('retryButton').addEventListener('click', () => {
+  // Ensure no duplicate listeners
+  document.getElementById('retryButton').removeEventListener('click', this.retryListener);
+  document.getElementById('exitButton').removeEventListener('click', this.exitListener);
+
+  // Define retry listener
+  this.retryListener = () => {
+    console.log("pressed retry button");
     this.scene.restart({ level: this.currentLevel });
     document.getElementById('gameOverScreen').classList.add('hidden');
-  });
+  };
 
-  document.getElementById('exitButton').addEventListener('click', () => {
+  // Define exit listener
+  this.exitListener = () => {
     // Implement exit functionality, e.g., navigate to another page or close the game
-  });
+  };
 
-  // Set flag for game over screen visibility
-  this.gameOverScreenVisible = false;
+  // Add event listeners for the game over screen buttons
+  document.getElementById('retryButton').addEventListener('click', this.retryListener);
+  document.getElementById('exitButton').addEventListener('click', this.exitListener);
 };
+
 
 // Executed on every frame
 gameScene.update = function() {
