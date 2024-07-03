@@ -55,9 +55,9 @@ header {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 1000px;
-  height: 750px;
-  background: rgba(0, 0, 0, 0.8);
+  width: 800px;
+  height: 550px;
+  background:#2E2C2A;
   text-align: center;
   color: white;
   border-radius: 20px;
@@ -67,7 +67,7 @@ header {
   font-size: 100px;
   font-style: italic;
   margin: 0;
-  color: red;
+  color: #C5283D;
 }
 
 #gameOverScreen button {
@@ -76,7 +76,7 @@ header {
   padding: 10px 20px;
   border-radius: 20px;
   cursor: pointer;
-  background-color: lightblue;
+  background-color: #17BEBB;
 }
 
 #gameOverScreen .game-over-content {
@@ -181,18 +181,20 @@ justify-content: center;
 
 
 #startButton {  
+  color: white;
   height: 40px;
   width: 70px;
   border-radius: 10px;
-  background-color: turquoise;
+  background-color: #2E2C2A;
 } 
 
 /* Additional Landing Page Styles */
 #landingExitButton {
+  color: white;
   height: 40px;
   width: 70px;
   border-radius: 10px;
-  background-color: turquoise;
+  background-color: #2E2C2A;
 }
 
 #landingPage h1 {
