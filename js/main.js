@@ -160,6 +160,7 @@ this.retryListener = () => {
 
 this.exitListener = () => {
   // Implement exit functionality, e.g., navigate to another page or close the game
+  location.reload();
 };
 
 document.getElementById('retryButton').addEventListener('click', this.retryListener);
@@ -383,14 +384,16 @@ gameScene.checkGameEnd = function () {
 if (this.reachedGoalRed && this.reachedGoalBlue) {
   console.log('Both players reached goals. Switching to new level.');
 
-  // Determine next level
-  if (this.currentLevel === 'level1') {
-    this.currentLevel = 'level2';
-  } else if (this.currentLevel === 'level2') {
-    this.currentLevel = 'level3';
-  } else if (this.currentLevel === 'level3') {
-    this.currentLevel = 'level4';
-  } // Add more levels as needed
+    // Determine next level
+    if (this.currentLevel === 'level1') {
+      this.currentLevel = 'level2';
+    } else if (this.currentLevel === 'level2') {
+      this.currentLevel = 'level3';
+    } else if (this.currentLevel === 'level3') {
+      this.currentLevel = 'level4';
+    } else if (this.currentLevel === 'level4') {
+      this.currentLevel = 'level5';
+    } // Add more levels as needed
 
   // Restart scene with the new level
   this.scene.restart({ level: this.currentLevel });
