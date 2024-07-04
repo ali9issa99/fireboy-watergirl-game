@@ -84,8 +84,7 @@ this.load.image('background_level1', 'assets/images/background_level1.png');
 this.load.image('background_level2', 'assets/images/background_level2.png');
 this.load.image('background_level3', 'assets/images/background_level3.png');
 this.load.image('background_level4', 'assets/images/background_level4.png');
-  this.load.image('background_level5', 'assets/images/background_level5.png');
-
+this.load.image('background_level5', 'assets/images/background_level5.png');
 
 this.load.image('ground', 'assets/images/ground.png');
 this.load.image('platform', 'assets/images/platform.png');
@@ -123,12 +122,11 @@ this.load.spritesheet('fire_blue', 'assets/images/fire_blue_spritesheet.png', {
   spacing: 1
 });
 
-  this.load.json('level1', 'assets/json/level1.json');
-  this.load.json('level2', 'assets/json/level2.json');
-  this.load.json('level3', 'assets/json/level3.json');
-  this.load.json('level4', 'assets/json/level4.json');
-  this.load.json('level5', 'assets/json/level5.json');
-
+this.load.json('level1', 'assets/json/level1.json');
+this.load.json('level2', 'assets/json/level2.json');
+this.load.json('level3', 'assets/json/level3.json');
+this.load.json('level4', 'assets/json/level4.json');
+this.load.json('level5', 'assets/json/level5.json');
 };
 
 gameScene.create = function () {
