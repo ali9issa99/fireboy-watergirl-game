@@ -1,5 +1,6 @@
 {
   "world": {
+    "background": "background_level5",
     "width": 1000,
     "height": 750
   },
@@ -266,7 +267,7 @@
   ],
   "fires_blue": [
     {
-      "x": 5,
+      "x": 0,
       "y": 150
     },
     {
