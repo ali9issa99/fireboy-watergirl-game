@@ -1,10 +1,6 @@
 {
   "world": {
-<<<<<<< HEAD
-    "background": "background_level1",
-=======
     "background": "background_level3",
->>>>>>> development
     "width": 1000,
     "height": 750
   },
