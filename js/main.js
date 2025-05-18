@@ -37,12 +37,57 @@ document.addEventListener('DOMContentLoaded', function () {
   };
   const game = new Phaser.Game(config);
 
-  // Set up menu event listeners
+  // Landing page keyboard navigation
+  const landingButtons = ['startButton', 'levelsButton', 'howToPlayButton'];
+  let currentButtonIndex = 0;
+
+  const handleLandingKeydown = (event) => {
+    if (document.getElementById('landingPage').style.display !== 'none') {
+      switch (event.key) {
+        case 'ArrowLeft':
+          event.preventDefault();
+          currentButtonIndex = (currentButtonIndex - 1 + landingButtons.length) % landingButtons.length;
+          document.getElementById(landingButtons[currentButtonIndex]).focus();
+          break;
+        case 'ArrowRight':
+          event.preventDefault();
+          currentButtonIndex = (currentButtonIndex + 1) % landingButtons.length;
+          document.getElementById(landingButtons[currentButtonIndex]).focus();
+          break;
+        case 'Enter':
+          event.preventDefault();
+          document.getElementById(landingButtons[currentButtonIndex]).click();
+          break;
+      }
+    }
+  };
+
+  const setupLandingNavigation = () => {
+    document.addEventListener('keydown', handleLandingKeydown);
+    document.getElementById(landingButtons[currentButtonIndex]).focus();
+  };
+
+  // Initial setup
+  setupLandingNavigation();
+
+  // Update button click handlers to free keyboard controls
   document.getElementById('startButton').addEventListener('click', function () {
       document.getElementById('landingPage').style.display = 'none';
       document.getElementById('gameContainer').style.display = 'block';
+      document.removeEventListener('keydown', handleLandingKeydown);
       game.scene.start('Game', { level: 'level1' });
       document.getElementById('gameContainer').scrollIntoView({ behavior: 'smooth' });
+  });
+
+  document.getElementById('levelsButton').addEventListener('click', function () {
+      document.getElementById('levelsMenu').classList.toggle('hidden');
+      if (!document.getElementById('levelsMenu').classList.contains('hidden')) {
+          menuControls.setActiveMenu('levelsMenu');
+          document.removeEventListener('keydown', handleLandingKeydown);
+      } else {
+          menuControls.setActiveMenu(null);
+          setupLandingNavigation();
+      }
   });
 
   // Dynamically generate level buttons
@@ -62,18 +107,10 @@ document.addEventListener('DOMContentLoaded', function () {
   // Add close button at the end
   levelsContainer.appendChild(closeButton);
 
-  document.getElementById('levelsButton').addEventListener('click', function () {
-      document.getElementById('levelsMenu').classList.toggle('hidden');
-      if (!document.getElementById('levelsMenu').classList.contains('hidden')) {
-          menuControls.setActiveMenu('levelsMenu');
-      } else {
-          menuControls.setActiveMenu(null);
-      }
-  });
-
   document.getElementById('closeLevelsButton').addEventListener('click', function () {
       document.getElementById('levelsMenu').classList.add('hidden');
       menuControls.setActiveMenu(null);
+      setupLandingNavigation();
   });
 
   document.querySelectorAll('.levelButton').forEach(button => {
@@ -81,12 +118,45 @@ document.addEventListener('DOMContentLoaded', function () {
         let level = this.getAttribute('data-level');
         document.getElementById('landingPage').style.display = 'none';
         document.getElementById('gameContainer').style.display = 'block';
-        game.scene.start('Game', { level: level });
-        document.getElementById('gameContainer').scrollIntoView({ behavior: 'smooth' });
         document.getElementById('levelsMenu').classList.add('hidden');
         menuControls.setActiveMenu(null);
+        document.removeEventListener('keydown', handleLandingKeydown);
+        game.scene.start('Game', { level: level });
+        document.getElementById('gameContainer').scrollIntoView({ behavior: 'smooth' });
     });
   });
+
+  // How to Play Menu
+  const howToPlayButton = document.getElementById('howToPlayButton');
+  const howToPlayMenu = document.getElementById('howToPlayMenu');
+  const closeHowToPlayButton = document.getElementById('closeHowToPlayButton');
+
+  const closeHowToPlay = () => {
+      howToPlayMenu.classList.add('hidden');
+      window.menuControls.setActiveMenu(null);
+      setupLandingNavigation();
+  };
+
+  howToPlayButton.addEventListener('click', () => {
+      howToPlayMenu.classList.remove('hidden');
+      window.menuControls.setActiveMenu('howToPlayMenu');
+      document.removeEventListener('keydown', handleLandingKeydown);
+      closeHowToPlayButton.focus();
+  });
+
+  closeHowToPlayButton.addEventListener('click', closeHowToPlay);
+
+  // Add keyboard controls for How to Play menu
+  const handleHowToPlayKeydown = (event) => {
+      if (!howToPlayMenu.classList.contains('hidden')) {
+          if (event.key === 'Escape' || event.key === 'Enter') {
+              event.preventDefault();
+              closeHowToPlay();
+          }
+      }
+  };
+
+  document.addEventListener('keydown', handleHowToPlayKeydown);
 
   // Expose menuControls to the game scene
   window.menuControls = menuControls;
