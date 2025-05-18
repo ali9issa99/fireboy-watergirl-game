@@ -1,7 +1,11 @@
-import { GAME_CONFIG } from './config/gameConfig.js';
+import { GAME_CONFIG, LEVELS } from './config/gameConfig.js';
 import { GameScene } from './scenes/GameScene.js';
+import MenuControls from './controls/MenuControls.js';
 
 document.addEventListener('DOMContentLoaded', function () {
+  // Initialize menu controls
+  const menuControls = new MenuControls();
+
   let text = document.getElementById('text');
   let leaf = document.getElementById('leaf');
   let hill1 = document.getElementById('hill1');
@@ -33,6 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
   };
   const game = new Phaser.Game(config);
 
+  // Set up menu event listeners
   document.getElementById('startButton').addEventListener('click', function () {
       document.getElementById('landingPage').style.display = 'none';
       document.getElementById('gameContainer').style.display = 'block';
@@ -40,12 +45,35 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById('gameContainer').scrollIntoView({ behavior: 'smooth' });
   });
 
+  // Dynamically generate level buttons
+  const levelsContainer = document.querySelector('.levels-container');
+  const closeButton = document.getElementById('closeLevelsButton');
+  levelsContainer.innerHTML = ''; // Clear existing buttons
+
+  // Add level buttons
+  Object.entries(LEVELS).forEach(([levelKey, levelValue]) => {
+    const button = document.createElement('button');
+    button.className = 'levelButton';
+    button.setAttribute('data-level', levelValue);
+    button.textContent = `Level ${levelKey.replace('level', '')}`;
+    levelsContainer.appendChild(button);
+  });
+
+  // Add close button at the end
+  levelsContainer.appendChild(closeButton);
+
   document.getElementById('levelsButton').addEventListener('click', function () {
       document.getElementById('levelsMenu').classList.toggle('hidden');
+      if (!document.getElementById('levelsMenu').classList.contains('hidden')) {
+          menuControls.setActiveMenu('levelsMenu');
+      } else {
+          menuControls.setActiveMenu(null);
+      }
   });
 
   document.getElementById('closeLevelsButton').addEventListener('click', function () {
       document.getElementById('levelsMenu').classList.add('hidden');
+      menuControls.setActiveMenu(null);
   });
 
   document.querySelectorAll('.levelButton').forEach(button => {
@@ -56,6 +84,10 @@ document.addEventListener('DOMContentLoaded', function () {
         game.scene.start('Game', { level: level });
         document.getElementById('gameContainer').scrollIntoView({ behavior: 'smooth' });
         document.getElementById('levelsMenu').classList.add('hidden');
+        menuControls.setActiveMenu(null);
     });
   });
+
+  // Expose menuControls to the game scene
+  window.menuControls = menuControls;
 });

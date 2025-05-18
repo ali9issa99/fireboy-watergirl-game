@@ -7,7 +7,7 @@ export class Fire {
         
         // Create the fire sprite
         this.sprite = scene.add.sprite(x, y, `fire_${type}`).setOrigin(0);
-        scene.physics.add.existing(this.sprite);
+        scene.physics.add.existing(this.sprite, true); // Set as static
         
         // Setup animations
         this.setupAnimations();

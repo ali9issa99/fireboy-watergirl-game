@@ -1,0 +1,213 @@
+{
+  "world": {
+    "background": "background_level3",
+    "width": 1000,
+    "height": 750
+  },
+  "player_red": {
+    "x": 100,
+    "y": 650
+  },
+  "player_blue": {
+    "x": 900,
+    "y": 650
+  },
+  "goal_red": {
+    "x": 900,
+    "y": 100
+  },
+  "goal_blue": {
+    "x": 100,
+    "y": 100
+  },
+  "platforms": [
+    {
+      "x": 0,
+      "y": 680,
+      "numTiles": 3,
+      "key": "ground"
+    },
+    {
+      "x": 400,
+      "y": 680,
+      "numTiles": 3,
+      "key": "ground"
+    },
+    {
+      "x": 800,
+      "y": 680,
+      "numTiles": 3,
+      "key": "ground"
+    },
+    {
+      "x": 100,
+      "y": 580,
+      "numTiles": 2,
+      "key": "block"
+    },
+    {
+      "x": 300,
+      "y": 580,
+      "numTiles": 2,
+      "key": "block"
+    },
+    {
+      "x": 500,
+      "y": 580,
+      "numTiles": 2,
+      "key": "block"
+    },
+    {
+      "x": 700,
+      "y": 580,
+      "numTiles": 2,
+      "key": "block"
+    },
+    {
+      "x": 200,
+      "y": 480,
+      "numTiles": 2,
+      "key": "block"
+    },
+    {
+      "x": 400,
+      "y": 480,
+      "numTiles": 2,
+      "key": "block"
+    },
+    {
+      "x": 600,
+      "y": 480,
+      "numTiles": 2,
+      "key": "block"
+    },
+    {
+      "x": 100,
+      "y": 380,
+      "numTiles": 2,
+      "key": "block"
+    },
+    {
+      "x": 300,
+      "y": 380,
+      "numTiles": 2,
+      "key": "block"
+    },
+    {
+      "x": 500,
+      "y": 380,
+      "numTiles": 2,
+      "key": "block"
+    },
+    {
+      "x": 700,
+      "y": 380,
+      "numTiles": 2,
+      "key": "block"
+    },
+    {
+      "x": 200,
+      "y": 280,
+      "numTiles": 2,
+      "key": "block"
+    },
+    {
+      "x": 400,
+      "y": 280,
+      "numTiles": 2,
+      "key": "block"
+    },
+    {
+      "x": 600,
+      "y": 280,
+      "numTiles": 2,
+      "key": "block"
+    },
+    {
+      "x": 100,
+      "y": 180,
+      "numTiles": 2,
+      "key": "block"
+    },
+    {
+      "x": 300,
+      "y": 180,
+      "numTiles": 2,
+      "key": "block"
+    },
+    {
+      "x": 500,
+      "y": 180,
+      "numTiles": 2,
+      "key": "block"
+    },
+    {
+      "x": 700,
+      "y": 180,
+      "numTiles": 2,
+      "key": "block"
+    },
+    {
+      "x": 200,
+      "y": 80,
+      "numTiles": 2,
+      "key": "block"
+    },
+    {
+      "x": 400,
+      "y": 80,
+      "numTiles": 2,
+      "key": "block"
+    },
+    {
+      "x": 600,
+      "y": 80,
+      "numTiles": 2,
+      "key": "block"
+    }
+  ],
+  "fires_red": [
+    {
+      "x": 200,
+      "y": 620
+    },
+    {
+      "x": 400,
+      "y": 520
+    },
+    {
+      "x": 600,
+      "y": 420
+    },
+    {
+      "x": 400,
+      "y": 320
+    },
+    {
+      "x": 200,
+      "y": 220
+    }
+  ],
+  "fires_blue": [
+    {
+      "x": 600,
+      "y": 620
+    },
+    {
+      "x": 400,
+      "y": 520
+    },
+    {
+      "x": 200,
+      "y": 420
+    },
+    {
+      "x": 400,
+      "y": 320
+    },
+    {
+      "x": 600,
+      "y": 220
+    }
+  ]
+} 

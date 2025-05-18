@@ -25,7 +25,12 @@ export const LEVELS = {
     level2: 'level2',
     level3: 'level3',
     level4: 'level4',
-    level5: 'level5'
+    level5: 'level5',
+    // level6: 'level6',
+    // level7: 'level7',
+    // level8: 'level8',
+    // level9: 'level9',
+    // level10: 'level10'
 };
 
 export const ASSETS = {
@@ -34,7 +39,12 @@ export const ASSETS = {
         level2: 'background_level2',
         level3: 'background_level3',
         level4: 'background_level4',
-        level5: 'background_level5'
+        level5: 'background_level5',
+        level6: 'background_level1',
+        level7: 'background_level2',
+        level8: 'background_level3',
+        level9: 'background_level4',
+        level10: 'background_level5'
     },
     sprites: {
         ground: 'ground',

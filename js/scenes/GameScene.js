@@ -145,8 +145,8 @@ export class GameScene extends Phaser.Scene {
 
     setupFires() {
         this.fires = {
-            red: this.physics.add.group(),
-            blue: this.physics.add.group()
+            red: this.physics.add.staticGroup(),
+            blue: this.physics.add.staticGroup()
         };
 
         // Set up red fires
@@ -170,20 +170,19 @@ export class GameScene extends Phaser.Scene {
         // Set up red goal
         if (this.levelData.goal_red) {
             this.goal_red = this.add.sprite(this.levelData.goal_red.x, this.levelData.goal_red.y, ASSETS.sprites.goalRed);
-            this.physics.add.existing(this.goal_red);
+            this.physics.add.existing(this.goal_red, true);
         }
 
         // Set up blue goal
         if (this.levelData.goal_blue) {
             this.goal_blue = this.add.sprite(this.levelData.goal_blue.x, this.levelData.goal_blue.y, ASSETS.sprites.goalBlue);
-            this.physics.add.existing(this.goal_blue);
+            this.physics.add.existing(this.goal_blue, true);
         }
     }
 
     setupCollisions() {
-        // Platform collisions
-        this.physics.add.collider([this.player_red.sprite, this.player_blue.sprite, this.goal_blue, this.goal_red], this.platforms);
-        this.physics.add.collider([...this.fires.red.getChildren(), ...this.fires.blue.getChildren()], this.platforms);
+        // Platform collisions for players
+        this.physics.add.collider([this.player_red.sprite, this.player_blue.sprite], this.platforms);
 
         // Fire overlaps (game over conditions)
         this.physics.add.overlap(this.player_red.sprite, this.fires.blue, this.gameOver, null, this);
@@ -195,8 +194,35 @@ export class GameScene extends Phaser.Scene {
     }
 
     setupInput() {
+        // Debug pointer position
         this.input.on('pointerdown', function (pointer) {
             console.log(pointer.x, pointer.y);
+        });
+
+        // Add keyboard shortcuts
+        this.keys = this.input.keyboard.addKeys({
+            esc: Phaser.Input.Keyboard.KeyCodes.ESC,
+            r: Phaser.Input.Keyboard.KeyCodes.R
+        });
+
+        // ESC key to toggle pause menu
+        this.input.keyboard.on('keydown-ESC', () => {
+            if (this.gameOverScreenVisible) return;
+            
+            if (this.isPaused) {
+                this.resumeGame();
+            } else {
+                this.pauseGame();
+            }
+        });
+
+        // R key to restart level
+        this.input.keyboard.on('keydown-R', () => {
+            if (this.gameOverScreenVisible) {
+                this.retryListener();
+            } else if (this.isPaused) {
+                this.restartLevel();
+            }
         });
     }
 
@@ -207,10 +233,11 @@ export class GameScene extends Phaser.Scene {
 
         this.retryListener = () => {
             this.gameOverScreenVisible = false;
-            this.input.keyboard.enabled = true;
+            this.input.keyboard.enabled = true; // Keep keyboard enabled
             this.physics.resume();
             this.scene.restart({ level: this.currentLevel });
             document.getElementById('gameOverScreen').classList.add('hidden');
+            window.menuControls.setActiveMenu(null); // Clear active menu
         };
 
         this.exitListener = () => {
@@ -226,10 +253,13 @@ export class GameScene extends Phaser.Scene {
 
         this.playAgainListener = () => {
             document.getElementById('victoryScreen').classList.add('hidden');
+            window.menuControls.setActiveMenu(null); // Clear active menu
             location.reload();
         };
 
         this.victoryExitListener = () => {
+            document.getElementById('victoryScreen').classList.add('hidden');
+            window.menuControls.setActiveMenu(null); // Clear active menu
             location.reload();
         };
 
@@ -266,11 +296,29 @@ export class GameScene extends Phaser.Scene {
 
     gameOver() {
         this.physics.pause();
-        this.input.keyboard.enabled = false;
+        this.input.keyboard.enabled = true; // Keep keyboard enabled for menu navigation
         this.player_red.sprite.anims.stop();
         this.player_blue.sprite.anims.stop();
         document.getElementById('gameOverScreen').classList.remove('hidden');
         this.gameOverScreenVisible = true;
+
+        // Set up menu controls for game over screen
+        window.menuControls.setActiveMenu('gameOverScreen');
+
+        // Focus the retry button
+        const retryButton = document.getElementById('retryButton');
+        if (retryButton) {
+            retryButton.focus();
+        }
+
+        // Add keyboard navigation for game over screen
+        this.input.keyboard.on('keydown-R', () => {
+            this.retryListener();
+        });
+
+        this.input.keyboard.on('keydown-ESC', () => {
+            this.exitListener();
+        });
     }
 
     handleGoalRed(player, goal) {
@@ -315,7 +363,7 @@ export class GameScene extends Phaser.Scene {
 
     showVictoryScreen() {
         this.physics.pause();
-        this.input.keyboard.enabled = false;
+        this.input.keyboard.enabled = true; // Keep keyboard enabled for menu navigation
         this.player_red.sprite.anims.stop();
         this.player_blue.sprite.anims.stop();
 
@@ -331,22 +379,31 @@ export class GameScene extends Phaser.Scene {
 
         // Show victory screen
         document.getElementById('victoryScreen').classList.remove('hidden');
-    }
 
-    pauseGame() {
-        if (this.gameOverScreenVisible) return;
-        
-        this.isPaused = true;
-        this.physics.pause();
-        this.input.keyboard.enabled = false;
-        document.getElementById('pauseMenu').classList.remove('hidden');
+        // Set up menu controls for victory screen
+        window.menuControls.setActiveMenu('victoryScreen');
+
+        // Focus the play again button
+        const playAgainButton = document.getElementById('playAgainButton');
+        if (playAgainButton) {
+            playAgainButton.focus();
+        }
     }
 
     resumeGame() {
         this.isPaused = false;
         this.physics.resume();
-        this.input.keyboard.enabled = true;
+        this.input.keyboard.enabled = true; // Keep keyboard enabled
         document.getElementById('pauseMenu').classList.add('hidden');
+        window.menuControls.setActiveMenu(null); // Clear active menu
+    }
+
+    pauseGame() {
+        this.isPaused = true;
+        this.physics.pause();
+        this.input.keyboard.enabled = true; // Keep keyboard enabled for menu navigation
+        document.getElementById('pauseMenu').classList.remove('hidden');
+        window.menuControls.setActiveMenu('pauseMenu');
     }
 
     restartLevel() {

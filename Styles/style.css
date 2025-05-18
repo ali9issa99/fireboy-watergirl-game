@@ -1,5 +1,6 @@
 /* Global styles */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
 
 * {
     margin: 0;
@@ -46,7 +47,12 @@ body {
 .sec {
     position: relative;
     background: #003329;
-    padding: 100px;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Landing page styles */
@@ -77,76 +83,199 @@ body {
     display: flex;
     justify-content: center;
     gap: 20px;
+    margin-top: 30px;
 }
 
 #btns button {
     padding: 15px 30px;
     font-size: 1.2em;
-    border: none;
-    border-radius: 10px;
+    background: linear-gradient(135deg, #2c3a3a, #3c4a4a);
+    border: 4px solid #4c5a5a;
+    color: #c4e8e8;
     cursor: pointer;
     transition: all 0.3s ease;
-    background-color: #2E2C2A;
-    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    font-family: 'Cinzel', serif;
+    min-width: 150px;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    clip-path: polygon(
+        0% 10%, 10% 0%, 90% 0%, 100% 10%,
+        100% 90%, 90% 100%, 10% 100%, 0% 90%
+    );
 }
 
 #btns button:hover {
-    background-color: #17BEBB;
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    background: linear-gradient(135deg, #3c4a4a, #4c5a5a);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    border-color: #5c6a6a;
+}
+
+#btns button:focus,
+#btns button:focus-visible {
+    transform: translateY(-3px);
+    background: linear-gradient(135deg, #b34d00, #993300);
+    border-color: #994400;
+    color: #fff;
+    box-shadow: 0 0 0 4px #994400,
+                0 8px 25px rgba(153, 68, 0, 0.3);
+    outline: none;
 }
 
 /* Levels menu styles */
 #levelsMenu {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #2E2C2A;
-    padding: 30px;
-    border-radius: 20px;
-    text-align: center;
-    color: white;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
     z-index: 1000;
-    min-width: 300px;
+    backdrop-filter: blur(5px);
+    overflow-y: auto;
+    padding: 20px;
 }
 
 .levels-container {
-    display: flex;
-    flex-direction: column;
+    background: linear-gradient(135deg, #2c2c2c, #1f2a2a);
+    padding: 30px;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 15px;
+    max-width: 600px;
+    width: 90%;
+    border: 6px solid #3c4a4a;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.6),
+                inset 0 0 20px rgba(0, 0, 0, 0.4);
+    position: relative;
+    clip-path: polygon(
+        0% 5%, 5% 0%, 95% 0%, 100% 5%,
+        100% 95%, 95% 100%, 5% 100%, 0% 95%
+    );
 }
 
 .levelButton {
-    padding: 12px 24px;
+    padding: 12px 20px;
     font-size: 1.1em;
-    border: none;
-    border-radius: 8px;
+    background: linear-gradient(135deg, #2c3a3a, #3c4a4a);
+    border: 4px solid #4c5a5a;
+    color: #c4e8e8;
     cursor: pointer;
-    background-color: #17BEBB;
-    color: white;
     transition: all 0.3s ease;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    font-family: 'Cinzel', serif;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    clip-path: polygon(
+        0% 10%, 10% 0%, 90% 0%, 100% 10%,
+        100% 90%, 90% 100%, 10% 100%, 0% 90%
+    );
 }
 
 .levelButton:hover {
-    background-color: #14a8a6;
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    background: linear-gradient(135deg, #3c4a4a, #4c5a5a);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    border-color: #5c6a6a;
+}
+
+.levelButton:focus,
+.levelButton:focus-visible {
+    transform: translateY(-3px);
+    background: linear-gradient(135deg, #00a573, #0071e2);
+    border-color: #0088ff;
+    color: #fff;
+    box-shadow: 0 0 0 4px #0088ff,
+                0 8px 25px rgba(0, 136, 255, 0.3);
+    outline: none;
+}
+
+/* Add keyboard navigation indicator for level buttons */
+.levelButton::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease;
+    pointer-events: none;
+}
+
+.levelButton:focus-visible::after {
+    border-color: #c4e8e8;
 }
 
 #closeLevelsButton {
-    margin-top: 20px;
-    padding: 12px 24px;
+    grid-column: 1 / -1;
+    padding: 12px 20px;
     font-size: 1.1em;
-    border: none;
-    border-radius: 8px;
+    background: linear-gradient(135deg, #2c3a3a, #b34d00);
+    border: 4px solid #994400;
+    color: #fff;
     cursor: pointer;
-    background-color: #C5283D;
-    color: white;
     transition: all 0.3s ease;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    font-family: 'Cinzel', serif;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    clip-path: polygon(
+        0% 10%, 10% 0%, 90% 0%, 100% 10%,
+        100% 90%, 90% 100%, 10% 100%, 0% 90%
+    );
 }
 
 #closeLevelsButton:hover {
-    background-color: #a32033;
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    background: linear-gradient(135deg, #3c4a4a, #993300);
+    color: #fff;
+    border-color: #994400;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+}
+
+#closeLevelsButton:focus,
+#closeLevelsButton:focus-visible {
+    transform: translateY(-3px);
+    background: linear-gradient(135deg, #993300, #b34d00);
+    border-color: #994400;
+    color: #fff;
+    box-shadow: 0 0 0 4px #994400,
+                0 8px 25px rgba(153, 68, 0, 0.3);
+    outline: none;
+}
+
+/* Add keyboard navigation indicator for close button */
+#closeLevelsButton::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease;
+    pointer-events: none;
+}
+
+#closeLevelsButton:focus-visible::after {
+    border-color: #c4e8e8;
 }
 
 /* Game over screen styles */
@@ -164,43 +293,94 @@ body {
 }
 
 .game-over-content {
-    background: #2E2C2A;
+    background: linear-gradient(135deg, #2c2c2c, #1f2a2a);
     padding: 40px;
     border-radius: 20px;
     text-align: center;
     color: white;
+    min-width: 400px;
+    border: 6px solid #3c4a4a;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.6),
+                inset 0 0 30px rgba(0, 0, 0, 0.4);
+    clip-path: polygon(
+        0% 5%, 5% 0%, 95% 0%, 100% 5%,
+        100% 95%, 95% 100%, 5% 100%, 0% 95%
+    );
 }
 
 .game-over-content h2 {
-    font-size: 3em;
+    color: #c4e8e8;
+    font-size: 2.8em;
     margin-bottom: 30px;
-    color: #C5283D;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.6);
+    font-family: 'Cinzel', serif;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    position: relative;
 }
 
 .game-over-content button {
     padding: 15px 30px;
     margin: 10px;
     font-size: 1.2em;
-    border: none;
-    border-radius: 10px;
+    background: linear-gradient(135deg, #2c3a3a, #3c4a4a);
+    border: 4px solid #4c5a5a;
+    color: #c4e8e8;
     cursor: pointer;
     transition: all 0.3s ease;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    font-family: 'Cinzel', serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    clip-path: polygon(
+        0% 10%, 10% 0%, 90% 0%, 100% 10%,
+        100% 90%, 90% 100%, 10% 100%, 0% 90%
+    );
+}
+
+.game-over-content button:hover {
+    transform: translateY(-3px);
+    background: linear-gradient(135deg, #3c4a4a, #4c5a5a);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    border-color: #5c6a6a;
+}
+
+.game-over-content button:focus,
+.game-over-content button:focus-visible {
+    transform: translateY(-3px);
+    background: linear-gradient(135deg, #b34d00, #993300);
+    border-color: #994400;
+    color: #fff;
+    box-shadow: 0 0 0 4px #994400,
+                0 8px 25px rgba(153, 68, 0, 0.3);
+    outline: none;
 }
 
 #retryButton {
-    background-color: #17BEBB;
-    color: white;
+    /* Use base menu-button styles only */
 }
 
 #gameOverExitButton {
-    background-color: #C5283D;
-    color: white;
+    background: linear-gradient(135deg, #2c3a3a, #006699);
+    border-color: #004d73;
+    color: #fff;
 }
 
-#retryButton:hover,
 #gameOverExitButton:hover {
-    transform: translateY(-2px);
-    opacity: 0.9;
+    background: linear-gradient(135deg, #3c4a4a, #005580);
+    color: #fff;
+    border-color: #006699;
+}
+
+#gameOverExitButton:focus,
+#gameOverExitButton:focus-visible {
+    background: linear-gradient(135deg, #005580, #006699);
+    border-color: #004d73;
+    color: #fff;
+    box-shadow: 0 0 0 4px #004d73,
+                0 8px 25px rgba(0, 77, 115, 0.3);
 }
 
 /* Utility classes */
@@ -210,12 +390,21 @@ body {
 
 /* Game container styles */
 #gameContainer {
+    position: relative;
     width: 1000px;
     height: 750px;
-    margin: 0 auto;
-    background: #000;
-    position: relative;
+    margin: 0;
     overflow: hidden;
+    border: 12px solid #3a2c2c;
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.6),
+                inset 0 0 20px rgba(0, 0, 0, 0.4);
+    background: linear-gradient(135deg, #1a1a1a, #1f2a2a);
+    max-height: 100vh;
+    aspect-ratio: 4/3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #gameContainer canvas {
@@ -224,6 +413,8 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
+    object-fit: fill;
+    display: block;
 }
 
 /* Pause button styles */
@@ -233,19 +424,32 @@ body {
     right: 20px;
     width: 40px;
     height: 40px;
-    border-radius: 50%;
-    background: rgba(46, 44, 42, 0.8);
-    color: white;
-    border: none;
-    font-size: 1.5em;
+    background: linear-gradient(135deg, #2c3a3a, #3c4a4a);
+    border: 4px solid #4c5a5a;
     cursor: pointer;
-    z-index: 100;
+    z-index: 1000;
     transition: all 0.3s ease;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    clip-path: polygon(
+        0% 10%, 10% 0%, 90% 0%, 100% 10%,
+        100% 90%, 90% 100%, 10% 100%, 0% 90%
+    );
 }
 
 #pauseButton:hover {
-    background: rgba(46, 44, 42, 1);
     transform: scale(1.1);
+    background: linear-gradient(135deg, #3c4a4a, #4c5a5a);
+    border-color: #5c6a6a;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+}
+
+#pauseButton:focus,
+#pauseButton:focus-visible {
+    background: linear-gradient(135deg, #b34d00, #993300);
+    border-color: #994400;
+    box-shadow: 0 0 0 4px #994400,
+                0 8px 25px rgba(153, 68, 0, 0.3);
+    outline: none;
 }
 
 /* Pause menu styles */
@@ -255,53 +459,233 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(26, 26, 26, 0.95);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    backdrop-filter: blur(5px);
+    overflow-y: auto;
+    padding: 10px;
 }
 
-.pause-content {
-    background: #2E2C2A;
+.menu-content {
+    background: linear-gradient(135deg, #2c2c2c, #1f2a2a);
     padding: 40px;
     border-radius: 20px;
     text-align: center;
-    color: white;
     min-width: 300px;
+    max-width: 90%;
+    border: 6px solid #3c4a4a;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.6),
+                inset 0 0 30px rgba(0, 0, 0, 0.4);
+    margin: auto;
+    position: relative;
+    clip-path: polygon(
+        0% 5%, 5% 0%, 95% 0%, 100% 5%,
+        100% 95%, 95% 100%, 5% 100%, 0% 95%
+    );
 }
 
-.pause-content h2 {
-    font-size: 2.5em;
+.menu-content::before {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    right: -15px;
+    bottom: -15px;
+    border: 6px solid #3c4a4a;
+    border-radius: 25px;
+    pointer-events: none;
+    background: linear-gradient(45deg, 
+        rgba(60, 74, 74, 0.2),
+        rgba(44, 58, 58, 0.2));
+    z-index: -1;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+    clip-path: polygon(
+        0% 5%, 5% 0%, 95% 0%, 100% 5%,
+        100% 95%, 95% 100%, 5% 100%, 0% 95%
+    );
+}
+
+.menu-content h2 {
+    color: #c4e8e8;
+    font-size: 2.8em;
     margin-bottom: 30px;
-    color: #17BEBB;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.6);
+    font-family: 'Cinzel', serif;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    position: relative;
 }
 
-.pause-content button {
+.menu-content h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 2px;
+    background: linear-gradient(90deg, 
+        transparent, 
+        #6a8a8a, 
+        transparent);
+}
+
+/* Menu button base styles */
+.menu-button {
     display: block;
     width: 100%;
-    padding: 15px 30px;
-    margin: 10px 0;
-    font-size: 1.2em;
-    border: none;
-    border-radius: 10px;
+    padding: 15px 25px;
+    margin: 15px 0;
+    background: linear-gradient(135deg, #2c3a3a, #3c4a4a);
+    border: 4px solid #4c5a5a;
+    color: #c4e8e8;
+    font-size: 1.3em;
     cursor: pointer;
     transition: all 0.3s ease;
-    background-color: #17BEBB;
-    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    font-family: 'Cinzel', serif;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    clip-path: polygon(
+        0% 10%, 10% 0%, 90% 0%, 100% 10%,
+        100% 90%, 90% 100%, 10% 100%, 0% 90%
+    );
 }
 
-.pause-content button:hover {
-    transform: translateY(-2px);
-    opacity: 0.9;
+.menu-button:hover {
+    transform: translateY(-3px);
+    background: linear-gradient(135deg, #3c4a4a, #4c5a5a);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    border-color: #5c6a6a;
 }
 
-#restartButton {
-    background-color: #FFD700;
+.menu-button:focus,
+.menu-button:focus-visible {
+    transform: translateY(-3px);
+    background: linear-gradient(135deg, #00a573, #0071e2);
+    border-color: #0088ff;
+    color: #fff;
+    box-shadow: 0 0 0 4px #0088ff,
+                0 8px 25px rgba(0, 136, 255, 0.3);
+    outline: none;
 }
 
+/* Exit/Close buttons (Always Red) */
+#exitButton,
+#gameOverExitButton,
+#victoryExitButton,
+#closeLevelsButton,
 #exitToMenuButton {
-    background-color: #C5283D;
+    background: linear-gradient(135deg, #2c3a3a, #b34d00);
+    border-color: #994400;
+    color: #fff;
+}
+
+#exitButton:hover,
+#gameOverExitButton:hover,
+#victoryExitButton:hover,
+#closeLevelsButton:hover,
+#exitToMenuButton:hover {
+    background: linear-gradient(135deg, #3c4a4a, #993300);
+    color: #fff;
+    border-color: #994400;
+}
+
+#exitButton:focus,
+#exitButton:focus-visible,
+#gameOverExitButton:focus,
+#gameOverExitButton:focus-visible,
+#victoryExitButton:focus,
+#victoryExitButton:focus-visible,
+#closeLevelsButton:focus,
+#closeLevelsButton:focus-visible,
+#exitToMenuButton:focus,
+#exitToMenuButton:focus-visible {
+    background: linear-gradient(135deg, #993300, #b34d00);
+    border-color: #994400;
+    color: #fff;
+    box-shadow: 0 0 0 4px #994400,
+                0 8px 25px rgba(153, 68, 0, 0.3);
+}
+
+/* Add keyboard navigation indicator for all menu buttons */
+.menu-button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease;
+    pointer-events: none;
+}
+
+.menu-button:focus-visible::after {
+    border-color: #c4e8e8;
+}
+
+/* Stats display */
+.stats {
+    background: rgba(44, 58, 58, 0.9);
+    padding: 20px;
+    border-radius: 15px;
+    margin: 20px 0;
+    border: 4px solid #3c4a4a;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.4);
+    clip-path: polygon(
+        0% 10%, 10% 0%, 90% 0%, 100% 10%,
+        100% 90%, 90% 100%, 10% 100%, 0% 90%
+    );
+}
+
+.stats p {
+    color: #c4e8e8;
+    margin: 8px 0;
+    font-size: 1.2em;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    letter-spacing: 1px;
+}
+
+/* Add stone texture to menu backgrounds */
+#pauseMenu::before, #gameOverScreen::before, #victoryScreen::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('../assets/images/stone_texture.png') repeat;
+    opacity: 0.1;
+    pointer-events: none;
+}
+
+/* Add glowing effect to focused buttons */
+.menu-button:focus {
+    box-shadow: 0 0 15px rgba(230, 213, 184, 0.3);
+}
+
+/* Add stone frame to menu content */
+.menu-content::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border: 4px solid #4a3c2c;
+    border-radius: 15px;
+    pointer-events: none;
+    background: url('../assets/images/stone_frame.png') repeat;
+    opacity: 0.1;
+    z-index: -1;
 }
 
 /* Victory screen styles */
@@ -319,32 +703,35 @@ body {
 }
 
 .victory-content {
-    background: #2E2C2A;
+    background: linear-gradient(135deg, #2c2c2c, #1f2a2a);
     padding: 40px;
     border-radius: 20px;
     text-align: center;
     color: white;
     min-width: 400px;
+    border: 6px solid #3c4a4a;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.6),
+                inset 0 0 30px rgba(0, 0, 0, 0.4);
+    clip-path: polygon(
+        0% 5%, 5% 0%, 95% 0%, 100% 5%,
+        100% 95%, 95% 100%, 5% 100%, 0% 95%
+    );
 }
 
 .victory-content h2 {
-    font-size: 3em;
+    color: #c4e8e8;
+    font-size: 2.8em;
     margin-bottom: 20px;
-    color: #FFD700;
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.6);
+    font-family: 'Cinzel', serif;
+    text-transform: uppercase;
+    letter-spacing: 3px;
 }
 
 .victory-content p {
     font-size: 1.5em;
     margin-bottom: 30px;
-    color: #17BEBB;
-}
-
-.stats {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 20px;
-    border-radius: 15px;
-    margin-bottom: 30px;
+    color: #c4e8e8;
 }
 
 .stat {
@@ -356,11 +743,11 @@ body {
 }
 
 .stat-label {
-    color: #FFD700;
+    color: #c4e8e8;
 }
 
 .stat-value {
-    color: #17BEBB;
+    color: #c4e8e8;
     font-weight: bold;
 }
 
@@ -373,25 +760,67 @@ body {
 .victory-buttons button {
     padding: 15px 30px;
     font-size: 1.2em;
-    border: none;
-    border-radius: 10px;
+    background: linear-gradient(135deg, #2c3a3a, #3c4a4a);
+    border: 4px solid #4c5a5a;
+    color: #c4e8e8;
     cursor: pointer;
     transition: all 0.3s ease;
-    min-width: 150px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    font-family: 'Cinzel', serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    clip-path: polygon(
+        0% 10%, 10% 0%, 90% 0%, 100% 10%,
+        100% 90%, 90% 100%, 10% 100%, 0% 90%
+    );
+}
+
+.victory-buttons button:hover {
+    transform: translateY(-3px);
+    background: linear-gradient(135deg, #3c4a4a, #4c5a5a);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    border-color: #5c6a6a;
+}
+
+.victory-buttons button:focus,
+.victory-buttons button:focus-visible {
+    transform: translateY(-3px);
+    background: linear-gradient(135deg, #b34d00, #993300);
+    border-color: #994400;
+    color: #fff;
+    box-shadow: 0 0 0 4px #994400,
+                0 8px 25px rgba(153, 68, 0, 0.3);
+    outline: none;
 }
 
 #playAgainButton {
-    background-color: #17BEBB;
-    color: white;
+    /* Use base menu-button styles only */
 }
 
-#victoryExitButton {
-    background-color: #C5283D;
-    color: white;
+/* Pause menu specific buttons */
+#resumeButton {
+    /* Use base menu-button styles only */
 }
 
-#playAgainButton:hover,
-#victoryExitButton:hover {
-    transform: translateY(-2px);
-    opacity: 0.9;
+#exitButton {
+    background: linear-gradient(135deg, #2c3a3a, #b34d00);
+    border-color: #994400;
+    color: #fff;
+}
+
+#exitButton:hover {
+    background: linear-gradient(135deg, #3c4a4a, #993300);
+    color: #fff;
+    border-color: #994400;
+}
+
+#exitButton:focus,
+#exitButton:focus-visible {
+    background: linear-gradient(135deg, #993300, #b34d00);
+    border-color: #994400;
+    color: #fff;
+    box-shadow: 0 0 0 4px #994400,
+                0 8px 25px rgba(153, 68, 0, 0.3);
 } 

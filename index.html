@@ -31,11 +31,6 @@
 
     <div id="levelsMenu" class="hidden">
       <div class="levels-container">
-        <button class="levelButton" data-level="level1">Level 1</button>
-        <button class="levelButton" data-level="level2">Level 2</button>
-        <button class="levelButton" data-level="level3">Level 3</button>
-        <button class="levelButton" data-level="level4">Level 4</button>
-        <button class="levelButton" data-level="level5">Level 5</button>
         <button id="closeLevelsButton">Close</button>
       </div>
     </div>
@@ -45,40 +40,31 @@
     </div>
 
     <div id="pauseMenu" class="hidden">
-      <div class="pause-content">
+      <div class="menu-content">
         <h2>Game Paused</h2>
-        <button id="resumeButton">Resume</button>
-        <button id="restartButton">Restart Level</button>
-        <button id="exitToMenuButton">Exit to Menu</button>
+        <button id="resumeButton" class="menu-button">Resume</button>
+        <button id="restartButton" class="menu-button">Restart Level</button>
+        <button id="exitToMenuButton" class="menu-button">Exit to Menu</button>
       </div>
     </div>
 
     <div id="gameOverScreen" class="hidden">
-      <div class="game-over-content">
-        <h2>Game Over!</h2>
-        <button id="retryButton">Retry</button>
-        <button id="gameOverExitButton">Exit</button>
+      <div class="menu-content">
+        <h2>Game Over</h2>
+        <button id="retryButton" class="menu-button">Retry</button>
+        <button id="gameOverExitButton" class="menu-button">Exit to Menu</button>
       </div>
     </div>
 
     <div id="victoryScreen" class="hidden">
-      <div class="victory-content">
-        <h2>Congratulations!</h2>
-        <p>You've completed all levels!</p>
+      <div class="menu-content">
+        <h2>Victory!</h2>
         <div class="stats">
-          <div class="stat">
-            <span class="stat-label">Levels Completed:</span>
-            <span class="stat-value" id="levelsCompleted">0</span>
-          </div>
-          <div class="stat">
-            <span class="stat-label">Total Time:</span>
-            <span class="stat-value" id="totalTime">0:00</span>
-          </div>
+          <p>Levels Completed: <span id="levelsCompleted">0</span></p>
+          <p>Total Time: <span id="totalTime">0:00</span></p>
         </div>
-        <div class="victory-buttons">
-          <button id="playAgainButton">Play Again</button>
-          <button id="victoryExitButton">Exit to Menu</button>
-        </div>
+        <button id="playAgainButton" class="menu-button">Play Again</button>
+        <button id="victoryExitButton" class="menu-button">Exit to Menu</button>
       </div>
     </div>
   </section>

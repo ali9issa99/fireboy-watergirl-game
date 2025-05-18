@@ -1,0 +1,151 @@
+{
+  "world": {
+    "background": "background_level1",
+    "width": 1000,
+    "height": 750
+  },
+  "player_red": {
+    "x": 100,
+    "y": 650
+  },
+  "player_blue": {
+    "x": 900,
+    "y": 650
+  },
+  "goal_red": {
+    "x": 900,
+    "y": 100
+  },
+  "goal_blue": {
+    "x": 100,
+    "y": 100
+  },
+  "platforms": [
+    {
+      "x": 0,
+      "y": 680,
+      "numTiles": 5,
+      "key": "ground"
+    },
+    {
+      "x": 200,
+      "y": 680,
+      "numTiles": 5,
+      "key": "ground"
+    },
+    {
+      "x": 400,
+      "y": 680,
+      "numTiles": 5,
+      "key": "ground"
+    },
+    {
+      "x": 600,
+      "y": 680,
+      "numTiles": 5,
+      "key": "ground"
+    },
+    {
+      "x": 800,
+      "y": 680,
+      "numTiles": 5,
+      "key": "ground"
+    },
+    {
+      "x": 100,
+      "y": 550,
+      "numTiles": 3,
+      "key": "block"
+    },
+    {
+      "x": 700,
+      "y": 550,
+      "numTiles": 3,
+      "key": "block"
+    },
+    {
+      "x": 300,
+      "y": 450,
+      "numTiles": 3,
+      "key": "block"
+    },
+    {
+      "x": 500,
+      "y": 450,
+      "numTiles": 3,
+      "key": "block"
+    },
+    {
+      "x": 100,
+      "y": 350,
+      "numTiles": 3,
+      "key": "block"
+    },
+    {
+      "x": 700,
+      "y": 350,
+      "numTiles": 3,
+      "key": "block"
+    },
+    {
+      "x": 300,
+      "y": 250,
+      "numTiles": 3,
+      "key": "block"
+    },
+    {
+      "x": 500,
+      "y": 250,
+      "numTiles": 3,
+      "key": "block"
+    },
+    {
+      "x": 100,
+      "y": 150,
+      "numTiles": 3,
+      "key": "block"
+    },
+    {
+      "x": 700,
+      "y": 150,
+      "numTiles": 3,
+      "key": "block"
+    }
+  ],
+  "fires_red": [
+    {
+      "x": 400,
+      "y": 620
+    },
+    {
+      "x": 600,
+      "y": 520
+    },
+    {
+      "x": 200,
+      "y": 420
+    },
+    {
+      "x": 800,
+      "y": 320
+    }
+  ],
+  "fires_blue": [
+    {
+      "x": 200,
+      "y": 620
+    },
+    {
+      "x": 800,
+      "y": 520
+    },
+    {
+      "x": 400,
+      "y": 420
+    },
+    {
+      "x": 600,
+      "y": 320
+    }
+  ]
+} 
