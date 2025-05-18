@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
-  <link rel="stylesheet" href="Styles/styles.css">
-  <link rel="stylesheet" href="Styles/parallax.css">
-  <title>Parallax Scrolling Website</title>
+  <link rel="stylesheet" href="Styles/style.css">
+  <title>Fireboy and Watergirl</title>
 </head>
 <body>
   <section class="parallax">
@@ -15,39 +15,74 @@
     <img src="assets/parallax/hill4.png" id="hill4">
     <img src="assets/parallax/hill5.png" id="hill5">
     <img src="assets/parallax/tree.png" id="tree">
-    <h2 id="text">Red Flame Blue Flame</h2>
+    <h2 id="text">Red Flame & Blue Flame</h2>
     <img src="assets/parallax/leaf.png" id="leaf">
     <img src="assets/parallax/plant.png" id="plant">
   </section>
+
   <section class="sec">
     <div id="landingPage">
-      <h1><span class="red">Red Flame </span>  <span class="blue">Blue Flame</span></h1>
+      <h1><span class="red">Red Flame </span><span class="and">&</span> <span class="blue">Blue Flame</span></h1>
       <div id="btns">
         <button id="startButton">Start</button>
         <button id="levelsButton">Levels</button>
-        <button id="landingExitButton">Exit</button>
       </div>
     </div>
-    <div id="gameContainer"></div>
+
+    <div id="levelsMenu" class="hidden">
+      <div class="levels-container">
+        <button class="levelButton" data-level="level1">Level 1</button>
+        <button class="levelButton" data-level="level2">Level 2</button>
+        <button class="levelButton" data-level="level3">Level 3</button>
+        <button class="levelButton" data-level="level4">Level 4</button>
+        <button class="levelButton" data-level="level5">Level 5</button>
+        <button id="closeLevelsButton">Close</button>
+      </div>
+    </div>
+
+    <div id="gameContainer">
+      <button id="pauseButton" class="hidden">⏸</button>
+    </div>
+
+    <div id="pauseMenu" class="hidden">
+      <div class="pause-content">
+        <h2>Game Paused</h2>
+        <button id="resumeButton">Resume</button>
+        <button id="restartButton">Restart Level</button>
+        <button id="exitToMenuButton">Exit to Menu</button>
+      </div>
+    </div>
+
     <div id="gameOverScreen" class="hidden">
       <div class="game-over-content">
-        <h1>Game Over</h1>
+        <h2>Game Over!</h2>
         <button id="retryButton">Retry</button>
         <button id="gameOverExitButton">Exit</button>
       </div>
     </div>
-    <div id="levelsMenu">
-      <h2>Select Level</h2>
-      <button class="levelButton" data-level="level1">Level 1</button>
-      <button class="levelButton" data-level="level2">Level 2</button>
-      <button class="levelButton" data-level="level3">Level 3</button>
-      <button class="levelButton" data-level="level4">Level 4</button>
-      <button class="levelButton" data-level="level5">Level 5</button> <!-- Added level5 button -->
-      <button id="closeLevelsButton">Close</button>
-  </div>
-  
+
+    <div id="victoryScreen" class="hidden">
+      <div class="victory-content">
+        <h2>Congratulations!</h2>
+        <p>You've completed all levels!</p>
+        <div class="stats">
+          <div class="stat">
+            <span class="stat-label">Levels Completed:</span>
+            <span class="stat-value" id="levelsCompleted">0</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Total Time:</span>
+            <span class="stat-value" id="totalTime">0:00</span>
+          </div>
+        </div>
+        <div class="victory-buttons">
+          <button id="playAgainButton">Play Again</button>
+          <button id="victoryExitButton">Exit to Menu</button>
+        </div>
+      </div>
+    </div>
   </section>
-  <script src="js/main.js"></script>
-  <script src="js/phaser.js"></script>
+
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>
