@@ -2,7 +2,7 @@
 
 A modern web-based implementation of a cooperative platformer game, built with Phaser and JavaScript.
 
-### [▶️ Play Now!](https://fireboy-watergirl-game.vercel.app/)
+### [▶️ Play Now!](https://redflameblueflame.vercel.app/)
 
 ## Game Description
 
@@ -28,18 +28,21 @@ Red Flame & Blue Flame is a cooperative platformer where players control two cha
 ## Controls
 
 ### Player 1 (Red Character)
+
 - **Arrow Keys** for movement
   - ↑: Jump
   - ←: Move left
   - →: Move right
 
 ### Player 2 (Blue Character)
+
 - **WASD** keys for movement
   - W: Jump
   - A: Move left
   - D: Move right
 
 ### Menu Navigation
+
 - **Arrow Keys**: Navigate between menu options
 - **Enter**: Select option
 - **Escape**: Close menu/Return to previous menu
@@ -47,11 +50,13 @@ Red Flame & Blue Flame is a cooperative platformer where players control two cha
 ## Setup and Installation
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/ali9issa99/fireboy-watergirl-game.git
    ```
 
 2. Navigate to the project directory:
+
    ```bash
    cd fireboy-watergirl-game
    ```
@@ -69,4 +74,4 @@ Red Flame & Blue Flame is a cooperative platformer where players control two cha
 
 ---
 
-*Built as a programming exercise and learning project*
+_Built as a programming exercise and learning project_
