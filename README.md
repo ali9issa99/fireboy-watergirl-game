@@ -2,17 +2,16 @@
 
 A modern web-based implementation of a cooperative platformer game, built with Phaser and JavaScript.
 
-## 🎮 Live Demo
-
-Play the game online: [https://fireboy-watergirl-game.vercel.app/](https://fireboy-watergirl-game.vercel.app/)
+## 🎮 Play Now! Red Flame & Blue Flame is hosted on [Vercel](https://fireboy-watergirl-game.vercel.app/).
 
 ## Game Description
 
-Red Flame & Blue Flame is a cooperative platformer where two players control characters trying to reach their respective goals. Each character must avoid the opposite-colored flame while navigating through the level. The goal is to guide both characters to their matching colored goals while avoiding the hazardous flames.
+Red Flame & Blue Flame is a cooperative platformer where players control two characters trying to reach their respective goals. Each character must avoid the opposite-colored flame while navigating through the level. The goal is to guide both characters to their matching colored goals while avoiding the hazardous flames. The game can be played solo by controlling both characters, or with a friend for a true cooperative experience.
 
 ### Features
 
-- **Cooperative Gameplay**: Two players work together to complete each level
+- **Flexible Gameplay**: Play solo or with a friend
+- **Cooperative Mechanics**: Two players work together to complete each level
 - **Multiple Levels**: Progress through increasingly challenging levels
 - **Unique Hazards**:
   - Red Flame: Hazardous to the blue character

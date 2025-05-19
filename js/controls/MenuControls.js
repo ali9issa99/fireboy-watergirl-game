@@ -84,7 +84,6 @@ class MenuControls {
     handleEscape() {
         const menuActions = {
             'pauseMenu': 'resumeButton',
-            'gameOverScreen': 'gameOverExitButton',
             'victoryScreen': 'victoryExitButton',
             'levelsMenu': 'closeLevelsButton',
             'howToPlayMenu': 'closeHowToPlayButton'

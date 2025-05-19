@@ -19,7 +19,7 @@ export class GameScene extends Phaser.Scene {
         this.totalPauseTime = data.totalPauseTime || 0;
         this.playedLevels = new Set(data.playedLevels || []);
         if (!this.playedLevels.has(this.currentLevel)) {
-            this.playedLevels.add(this.currentLevel);
+        this.playedLevels.add(this.currentLevel);
         }
         console.log('Initializing level:', this.currentLevel);
         console.log('Played levels:', Array.from(this.playedLevels));
@@ -342,13 +342,13 @@ export class GameScene extends Phaser.Scene {
 
         this.pauseListener = () => {
             if (!this.isPaused && !this.gameOverScreenVisible) {
-                this.pauseGame();
+            this.pauseGame();
             }
         };
 
         this.resumeListener = () => {
             if (this.isPaused) {
-                this.resumeGame();
+            this.resumeGame();
             }
         };
 
@@ -360,7 +360,7 @@ export class GameScene extends Phaser.Scene {
 
         this.exitToMenuListener = () => {
             if (this.isPaused) {
-                this.exitToMenu();
+            this.exitToMenu();
             }
         };
 
@@ -396,19 +396,15 @@ export class GameScene extends Phaser.Scene {
         this.input.keyboard.on('keydown-R', () => {
             this.retryListener();
         });
-
-        this.input.keyboard.on('keydown-ESC', () => {
-            this.exitListener();
-        });
     }
 
     handleGoalRed(player, goal) {
         if (goal.texture.key === ASSETS.sprites.goalRed) {
             if (!this.reachedGoalRed) {
-                this.reachedGoalRed = true;
-                player.body.enable = false;
-                player.setVisible(false);
-                this.checkGameEnd();
+            this.reachedGoalRed = true;
+            player.body.enable = false;
+            player.setVisible(false);
+            this.checkGameEnd();
             }
         }
     }
@@ -416,10 +412,10 @@ export class GameScene extends Phaser.Scene {
     handleGoalBlue(player, goal) {
         if (goal.texture.key === ASSETS.sprites.goalBlue) {
             if (!this.reachedGoalBlue) {
-                this.reachedGoalBlue = true;
-                player.body.enable = false;
-                player.setVisible(false);
-                this.checkGameEnd();
+            this.reachedGoalBlue = true;
+            player.body.enable = false;
+            player.setVisible(false);
+            this.checkGameEnd();
             }
         }
     }
@@ -548,7 +544,7 @@ export class GameScene extends Phaser.Scene {
         const levelKeys = Object.keys(LEVELS);
         const startingLevelIndex = levelKeys.findIndex(key => LEVELS[key] === this.playedLevels.values().next().value);
         const totalLevels = levelKeys.length - startingLevelIndex;
-        
+
         // Update stats
         document.getElementById('levelsCompleted').textContent = totalLevels;
         document.getElementById('totalTime').textContent = timeString;
