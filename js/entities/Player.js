@@ -58,6 +58,8 @@ export class Player {
             this.sprite.body.setVelocityY(this.jumpSpeed);
             this.sprite.anims.stop(`walking_${this.type}`);
             this.sprite.setFrame(2);
+            // Play jump sound
+            this.scene.sounds.jump.play();
         }
     }
 

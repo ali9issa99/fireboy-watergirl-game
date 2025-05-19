@@ -39,12 +39,19 @@ document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('levelsMenu').classList.add('hidden');
   document.getElementById('howToPlayMenu').classList.add('hidden');
 
-  // Initialize game
+  // Initialize game but don't start it yet
   const config = {
     ...GAME_CONFIG,
-    scene: [GameScene]
+    scene: [GameScene],
+    autoStart: false,  // Don't start the scene automatically
+    type: Phaser.AUTO,
+    parent: 'gameContainer',
+    dom: {
+      createContainer: true
+    }
   };
   const game = new Phaser.Game(config);
+  window.game = game; // Make game instance globally accessible
 
   // Landing page keyboard navigation
   const landingButtons = ['startButton', 'levelsButton', 'howToPlayButton'];
@@ -80,12 +87,15 @@ document.addEventListener('DOMContentLoaded', function () {
   // Initial setup
   setupLandingNavigation();
 
-  // Update button click handlers
-  document.getElementById('startButton').addEventListener('click', function() {
+  // Start button click handler
+  document.getElementById('startButton').addEventListener('click', () => {
     document.getElementById('landingPage').style.display = 'none';
     document.getElementById('gameContainer').style.display = 'block';
+    document.getElementById('levelsMenu').classList.add('hidden');
+    menuControls.setActiveMenu(null);
     document.removeEventListener('keydown', handleLandingKeydown);
     game.scene.start('Game', { level: LEVELS.level1 });
+    document.getElementById('gameContainer').scrollIntoView({ behavior: 'smooth' });
   });
 
   document.getElementById('levelsButton').addEventListener('click', function() {
@@ -117,6 +127,7 @@ document.addEventListener('DOMContentLoaded', function () {
       setupLandingNavigation();
   });
 
+  // Level button click handlers
   document.querySelectorAll('.levelButton').forEach(button => {
     button.addEventListener('click', function () {
         let level = this.getAttribute('data-level');

@@ -1,6 +1,7 @@
 import { Player } from '../entities/Player.js';
 import { Fire } from '../entities/Fire.js';
 import { ASSETS, LEVELS } from '../config/gameConfig.js';
+import { AUDIO } from '../config/audioConfig.js';
 
 export class GameScene extends Phaser.Scene {
     constructor() {
@@ -17,9 +18,12 @@ export class GameScene extends Phaser.Scene {
         this.pauseStartTime = null;
         this.totalPauseTime = data.totalPauseTime || 0;
         this.playedLevels = new Set(data.playedLevels || []);
-        this.playedLevels.add(this.currentLevel);
+        if (!this.playedLevels.has(this.currentLevel)) {
+            this.playedLevels.add(this.currentLevel);
+        }
         console.log('Initializing level:', this.currentLevel);
         console.log('Played levels:', Array.from(this.playedLevels));
+        this.sounds = {};
     }
 
     preload() {
@@ -54,6 +58,13 @@ export class GameScene extends Phaser.Scene {
             console.log('Loading level data:', level);
             this.load.json(level, `assets/json/${level}.json`);
         });
+
+        // Load audio files
+        this.load.audio(AUDIO.background.key, AUDIO.background.path);
+        this.load.audio(AUDIO.effects.jump.key, AUDIO.effects.jump.path);
+        this.load.audio(AUDIO.effects.gameOver.key, AUDIO.effects.gameOver.path);
+        this.load.audio(AUDIO.effects.victory.key, AUDIO.effects.victory.path);
+        this.load.audio(AUDIO.effects.menu.key, AUDIO.effects.menu.path);
     }
 
     create() {
@@ -96,6 +107,46 @@ export class GameScene extends Phaser.Scene {
 
         // Show pause button
         document.getElementById('pauseButton').classList.remove('hidden');
+
+        // Initialize sounds only if they exist in the cache
+        this.sounds = {};
+        
+        if (this.cache.audio.exists(AUDIO.background.key)) {
+            this.sounds.background = this.sound.add(AUDIO.background.key, {
+                volume: AUDIO.background.volume,
+                loop: AUDIO.background.loop
+            });
+        }
+        
+        if (this.cache.audio.exists(AUDIO.effects.jump.key)) {
+            this.sounds.jump = this.sound.add(AUDIO.effects.jump.key, {
+                volume: AUDIO.effects.jump.volume
+            });
+        }
+        
+        if (this.cache.audio.exists(AUDIO.effects.gameOver.key)) {
+            this.sounds.gameOver = this.sound.add(AUDIO.effects.gameOver.key, {
+                volume: AUDIO.effects.gameOver.volume
+            });
+        }
+        
+        if (this.cache.audio.exists(AUDIO.effects.victory.key)) {
+            this.sounds.victory = this.sound.add(AUDIO.effects.victory.key, {
+                volume: AUDIO.effects.victory.volume
+            });
+        }
+        
+        if (this.cache.audio.exists(AUDIO.effects.menu.key)) {
+            this.sounds.menu = this.sound.add(AUDIO.effects.menu.key, {
+                volume: AUDIO.effects.menu.volume
+            });
+        }
+
+        // Start background music if we're actually starting a game
+        const isStartingGame = document.getElementById('gameContainer').style.display === 'block';
+        if (isStartingGame && this.sounds.background) {
+            this.sounds.background.play();
+        }
     }
 
     update() {
@@ -212,14 +263,11 @@ export class GameScene extends Phaser.Scene {
 
         // ESC key to toggle pause menu
         this.input.keyboard.on('keydown-ESC', () => {
-            console.log('ESC pressed, gameOverScreenVisible:', this.gameOverScreenVisible);
             if (this.gameOverScreenVisible) return;
             
             if (this.isPaused) {
-                console.log('Resuming game from keyboard');
                 this.resumeGame();
             } else {
-                console.log('Pausing game from keyboard');
                 this.pauseGame();
             }
         });
@@ -243,22 +291,24 @@ export class GameScene extends Phaser.Scene {
             this.gameOverScreenVisible = false;
             this.input.keyboard.enabled = true;
             this.physics.resume();
-            this.scene.restart({ 
-                level: this.currentLevel,
-                playedLevels: Array.from(this.playedLevels),
-                startTime: this.startTime,
-                totalPauseTime: this.totalPauseTime
-            });
+            this.restartLevel();
             document.getElementById('gameOverScreen').classList.add('hidden');
             window.menuControls.setActiveMenu(null);
         };
 
         this.exitListener = () => {
+            this.sounds.background?.stop();
             location.reload();
         };
 
         document.getElementById('retryButton').addEventListener('click', this.retryListener);
         document.getElementById('gameOverExitButton').addEventListener('click', this.exitListener);
+
+        // Update game over text
+        const gameOverTitle = document.querySelector('#gameOverScreen h2');
+        if (gameOverTitle) {
+            gameOverTitle.textContent = 'You Died!';
+        }
 
         // Victory UI
         document.getElementById('playAgainButton').removeEventListener('click', this.playAgainListener);
@@ -267,12 +317,7 @@ export class GameScene extends Phaser.Scene {
         this.playAgainListener = () => {
             document.getElementById('victoryScreen').classList.add('hidden');
             window.menuControls.setActiveMenu(null);
-            this.scene.restart({ 
-                level: this.currentLevel,
-                playedLevels: Array.from(this.playedLevels),
-                startTime: this.startTime,
-                totalPauseTime: this.totalPauseTime
-            });
+            this.startFromBeginning();
         };
 
         this.victoryExitListener = () => {
@@ -287,41 +332,31 @@ export class GameScene extends Phaser.Scene {
         // Pause UI
         document.getElementById('pauseButton').removeEventListener('click', this.pauseListener);
         document.getElementById('resumeButton').removeEventListener('click', this.resumeListener);
-        this.restartListener = () => {
-            console.log('Restart button clicked');
-            this.isPaused = false;
-            this.physics.resume();
-            this.input.keyboard.enabled = true;
-            
-            // Hide the pause menu
-            const pauseMenu = document.getElementById('pauseMenu');
-            pauseMenu.classList.add('hidden');
-            pauseMenu.style.display = 'none';
-            window.menuControls.setActiveMenu(null);
-            
-            // Restart the scene
-            this.scene.restart({ 
-                level: this.currentLevel,
-                playedLevels: Array.from(this.playedLevels),
-                startTime: this.startTime,
-                totalPauseTime: this.totalPauseTime
-            });
-        };
+        document.getElementById('restartButton').removeEventListener('click', this.restartListener);
         document.getElementById('exitToMenuButton').removeEventListener('click', this.exitToMenuListener);
 
         this.pauseListener = () => {
-            console.log('Pause button clicked');
-            this.pauseGame();
+            if (!this.isPaused && !this.gameOverScreenVisible) {
+                this.pauseGame();
+            }
         };
 
         this.resumeListener = () => {
-            console.log('Resume button clicked');
-            this.resumeGame();
+            if (this.isPaused) {
+                this.resumeGame();
+            }
+        };
+
+        this.restartListener = () => {
+            if (this.isPaused) {
+                this.restartLevel();
+            }
         };
 
         this.exitToMenuListener = () => {
-            console.log('Exit to menu button clicked');
-            this.exitToMenu();
+            if (this.isPaused) {
+                this.exitToMenu();
+            }
         };
 
         document.getElementById('pauseButton').addEventListener('click', this.pauseListener);
@@ -331,12 +366,17 @@ export class GameScene extends Phaser.Scene {
     }
 
     gameOver() {
+        if (this.gameOverScreenVisible) return;
+        
+        this.gameOverScreenVisible = true;
+        this.sounds.background?.stop();
+        this.sounds.gameOver?.play();
+        
         this.physics.pause();
         this.input.keyboard.enabled = true; // Keep keyboard enabled for menu navigation
         this.player_red.sprite.anims.stop();
         this.player_blue.sprite.anims.stop();
         document.getElementById('gameOverScreen').classList.remove('hidden');
-        this.gameOverScreenVisible = true;
 
         // Set up menu controls for game over screen
         window.menuControls.setActiveMenu('gameOverScreen');
@@ -359,19 +399,23 @@ export class GameScene extends Phaser.Scene {
 
     handleGoalRed(player, goal) {
         if (goal.texture.key === ASSETS.sprites.goalRed) {
-            this.reachedGoalRed = true;
-            player.body.enable = false;
-            player.setVisible(false);
-            this.checkGameEnd();
+            if (!this.reachedGoalRed) {
+                this.reachedGoalRed = true;
+                player.body.enable = false;
+                player.setVisible(false);
+                this.checkGameEnd();
+            }
         }
     }
 
     handleGoalBlue(player, goal) {
         if (goal.texture.key === ASSETS.sprites.goalBlue) {
-            this.reachedGoalBlue = true;
-            player.body.enable = false;
-            player.setVisible(false);
-            this.checkGameEnd();
+            if (!this.reachedGoalBlue) {
+                this.reachedGoalBlue = true;
+                player.body.enable = false;
+                player.setVisible(false);
+                this.checkGameEnd();
+            }
         }
     }
 
@@ -388,11 +432,10 @@ export class GameScene extends Phaser.Scene {
                 const nextLevelKey = levelKeys[currentLevelIndex + 1];
                 const nextLevel = LEVELS[nextLevelKey];
                 console.log('Switching to next level:', nextLevel);
-                this.scene.restart({ 
-                    level: nextLevel,
-                    playedLevels: Array.from(this.playedLevels),
-                    startTime: this.startTime,
-                    totalPauseTime: this.totalPauseTime
+                
+                // Small delay to ensure all cleanup is complete
+                this.time.delayedCall(100, () => {
+                    this.loadNextLevel(nextLevel);
                 });
             } else {
                 // This is the last level, show victory screen
@@ -402,11 +445,87 @@ export class GameScene extends Phaser.Scene {
         }
     }
 
+    loadNextLevel(nextLevel) {
+        // Update current level
+        this.currentLevel = nextLevel;
+        this.reachedGoalRed = false;
+        this.reachedGoalBlue = false;
+        
+        // Load new level data
+        this.levelData = this.cache.json.get(this.currentLevel);
+        
+        // Clear existing game objects
+        if (this.player_red) {
+            this.player_red.sprite.destroy();
+            this.player_red = null;
+        }
+        if (this.player_blue) {
+            this.player_blue.sprite.destroy();
+            this.player_blue = null;
+        }
+        if (this.fires) {
+            Object.values(this.fires).forEach(group => {
+                group.getChildren().forEach(fire => fire.destroy());
+                group.clear(true, true);
+            });
+            this.fires = null;
+        }
+        if (this.platforms) {
+            this.platforms.getChildren().forEach(platform => platform.destroy());
+            this.platforms.clear(true, true);
+            this.platforms = null;
+        }
+        if (this.goal_red) {
+            this.goal_red.destroy();
+            this.goal_red = null;
+        }
+        if (this.goal_blue) {
+            this.goal_blue.destroy();
+            this.goal_blue = null;
+        }
+        
+        // Clear any existing background
+        this.children.list.forEach(child => {
+            if (child.type === 'Image') {
+                child.destroy();
+            }
+        });
+        
+        // Update background
+        const backgroundKey = this.levelData.world.background;
+        this.add.image(0, 0, backgroundKey)
+            .setOrigin(0, 0)
+            .setDisplaySize(this.cameras.main.width, this.cameras.main.height);
+        
+        // Set up camera bounds
+        this.cameras.main.setBounds(0, 0, this.levelData.world.width, this.levelData.world.height);
+        
+        // Set up new level elements
+        this.setupPlatforms();
+        this.setupPlayers();
+        this.setupFires();
+        this.setupGoals();
+        this.setupCollisions();
+        
+        // Reset physics
+        this.physics.resume();
+        
+        // Reset game state
+        this.gameOverScreenVisible = false;
+        this.isPaused = false;
+        
+        // Ensure input is enabled
+        this.input.keyboard.enabled = true;
+    }
+
     showVictoryScreen() {
         this.physics.pause();
         this.input.keyboard.enabled = true;
         this.player_red.sprite.anims.stop();
         this.player_blue.sprite.anims.stop();
+
+        // Stop background music
+        this.sounds.background?.stop();
 
         // Add any remaining pause time if the game was paused
         if (this.pauseStartTime) {
@@ -420,8 +539,13 @@ export class GameScene extends Phaser.Scene {
         const seconds = totalTime % 60;
         const timeString = `${minutes}:${seconds.toString().padStart(2, '0')}`;
 
+        // Calculate levels completed based on starting level
+        const levelKeys = Object.keys(LEVELS);
+        const startingLevelIndex = levelKeys.findIndex(key => LEVELS[key] === this.playedLevels.values().next().value);
+        const totalLevels = levelKeys.length - startingLevelIndex;
+        
         // Update stats
-        document.getElementById('levelsCompleted').textContent = this.playedLevels.size;
+        document.getElementById('levelsCompleted').textContent = totalLevels;
         document.getElementById('totalTime').textContent = timeString;
 
         // Show victory screen
@@ -435,17 +559,23 @@ export class GameScene extends Phaser.Scene {
         if (playAgainButton) {
             playAgainButton.focus();
         }
+        
+        // Play victory sound if it exists
+        this.sounds.victory?.play();
     }
 
     pauseGame() {
+        if (this.isPaused || this.gameOverScreenVisible) return;
+        
         console.log('Pausing game...');
         this.isPaused = true;
+        
+        // Pause game systems
         this.physics.pause();
-        this.input.keyboard.enabled = true; // Keep keyboard enabled for menu navigation
+        this.sounds.background?.pause();
+        this.sounds.menu.play();
         
-        // Start tracking pause time
-        this.pauseStartTime = Date.now();
-        
+        // Show pause menu
         const pauseMenu = document.getElementById('pauseMenu');
         pauseMenu.classList.remove('hidden');
         pauseMenu.style.display = 'flex';
@@ -456,41 +586,332 @@ export class GameScene extends Phaser.Scene {
         if (resumeButton) {
             resumeButton.focus();
         }
+        
+        // Start tracking pause time
+        this.pauseStartTime = Date.now();
+        
         console.log('Game paused, menu should be visible');
     }
 
     resumeGame() {
+        if (!this.isPaused) return;
+        
         console.log('Resuming game...');
         this.isPaused = false;
-        this.physics.resume();
-        this.input.keyboard.enabled = true; // Keep keyboard enabled
         
-        // Add the current pause duration to total pause time
+        // Resume game systems
+        this.physics.resume();
+        this.sounds.background?.resume();
+        this.sounds.menu.play();
+        
+        // Hide pause menu
+        const pauseMenu = document.getElementById('pauseMenu');
+        pauseMenu.classList.add('hidden');
+        pauseMenu.style.display = 'none';
+        window.menuControls.setActiveMenu(null);
+        
+        // Update pause time tracking
         if (this.pauseStartTime) {
             this.totalPauseTime += Date.now() - this.pauseStartTime;
             this.pauseStartTime = null;
         }
         
-        const pauseMenu = document.getElementById('pauseMenu');
-        pauseMenu.classList.add('hidden');
-        pauseMenu.style.display = 'none';
-        window.menuControls.setActiveMenu(null); // Clear active menu
         console.log('Game resumed');
     }
 
     restartLevel() {
+        console.log('Restarting level...');
+        
+        // Reset game state
         this.isPaused = false;
+        this.gameOverScreenVisible = false;
+        
+        // Hide any visible menus
+        const pauseMenu = document.getElementById('pauseMenu');
+        const victoryScreen = document.getElementById('victoryScreen');
+        if (pauseMenu) {
+            pauseMenu.classList.add('hidden');
+            pauseMenu.style.display = 'none';
+        }
+        if (victoryScreen) {
+            victoryScreen.classList.add('hidden');
+        }
+        window.menuControls.setActiveMenu(null);
+        
+        // Stop and restart background music
+        if (this.sounds.background) {
+            this.sounds.background.stop();
+            this.sounds.background.play();
+        }
+        
+        // Reset level state
+        this.reachedGoalRed = false;
+        this.reachedGoalBlue = false;
+        
+        // Clear existing game objects
+        if (this.player_red) {
+            this.player_red.sprite.destroy();
+            this.player_red = null;
+        }
+        if (this.player_blue) {
+            this.player_blue.sprite.destroy();
+            this.player_blue = null;
+        }
+        if (this.fires) {
+            Object.values(this.fires).forEach(group => {
+                group.getChildren().forEach(fire => fire.destroy());
+                group.clear(true, true);
+            });
+            this.fires = null;
+        }
+        if (this.platforms) {
+            this.platforms.getChildren().forEach(platform => platform.destroy());
+            this.platforms.clear(true, true);
+            this.platforms = null;
+        }
+        if (this.goal_red) {
+            this.goal_red.destroy();
+            this.goal_red = null;
+        }
+        if (this.goal_blue) {
+            this.goal_blue.destroy();
+            this.goal_blue = null;
+        }
+        
+        // Clear any existing background
+        this.children.list.forEach(child => {
+            if (child.type === 'Image') {
+                child.destroy();
+            }
+        });
+        
+        // Load level data
+        this.levelData = this.cache.json.get(this.currentLevel);
+        
+        // Update background
+        const backgroundKey = this.levelData.world.background;
+        this.add.image(0, 0, backgroundKey)
+            .setOrigin(0, 0)
+            .setDisplaySize(this.cameras.main.width, this.cameras.main.height);
+        
+        // Set up camera bounds
+        this.cameras.main.setBounds(0, 0, this.levelData.world.width, this.levelData.world.height);
+        
+        // Set up new level elements
+        this.setupPlatforms();
+        this.setupPlayers();
+        this.setupFires();
+        this.setupGoals();
+        this.setupCollisions();
+        
+        // Reset physics and input
         this.physics.resume();
         this.input.keyboard.enabled = true;
-        document.getElementById('pauseMenu').classList.add('hidden');
-        this.scene.restart({ level: this.currentLevel });
+        
+        console.log('Level restarted successfully');
+        console.log('Current played levels:', Array.from(this.playedLevels));
     }
 
     exitToMenu() {
-        document.getElementById('pauseMenu').classList.add('hidden');
+        if (!this.isPaused) return;
+        
+        console.log('Exiting to menu...');
+        
+        // Stop all sounds
+        if (this.sounds) {
+            Object.values(this.sounds).forEach(sound => {
+                if (sound && sound.stop) {
+                    sound.stop();
+                }
+            });
+        }
+        
+        // Hide pause menu
+        const pauseMenu = document.getElementById('pauseMenu');
+        pauseMenu.classList.add('hidden');
+        pauseMenu.style.display = 'none';
+        
+        // Hide game container and show landing page
         document.getElementById('gameContainer').style.display = 'none';
         document.getElementById('landingPage').style.display = 'block';
         document.getElementById('pauseButton').classList.add('hidden');
-        location.reload();
+        
+        // Clean up event listeners
+        this.cleanupEventListeners();
+        
+        // Destroy all game objects
+        if (this.player_red) this.player_red.destroy();
+        if (this.player_blue) this.player_blue.destroy();
+        if (this.fires) {
+            Object.values(this.fires).forEach(group => group.clear(true, true));
+        }
+        if (this.platforms) this.platforms.clear(true, true);
+        
+        // Stop and remove the game scene
+        this.scene.stop();
+        this.scene.remove();
+        
+        // Clear any remaining game state
+        window.menuControls.setActiveMenu(null);
+        
+        // Force a garbage collection of the scene
+        this.sounds = null;
+        this.player_red = null;
+        this.player_blue = null;
+        this.fires = null;
+        this.platforms = null;
+        this.levelData = null;
+    }
+
+    cleanupEventListeners() {
+        // Remove all keyboard listeners
+        this.input.keyboard.removeAllListeners();
+        
+        // Remove all input listeners
+        this.input.removeAllListeners();
+        
+        // Remove UI event listeners
+        const elements = [
+            'retryButton',
+            'gameOverExitButton',
+            'playAgainButton',
+            'victoryExitButton',
+            'pauseButton',
+            'resumeButton',
+            'restartButton',
+            'exitToMenuButton'
+        ];
+        
+        elements.forEach(id => {
+            const element = document.getElementById(id);
+            if (element) {
+                const clone = element.cloneNode(true);
+                element.parentNode.replaceChild(clone, element);
+            }
+        });
+    }
+
+    destroy() {
+        console.log('Destroying game scene...');
+        
+        // Stop all sounds
+        if (this.sounds) {
+            Object.values(this.sounds).forEach(sound => {
+                if (sound && sound.stop) {
+                    sound.stop();
+                }
+            });
+        }
+        
+        // Clean up event listeners
+        this.cleanupEventListeners();
+        
+        // Clear all game objects
+        if (this.player_red) this.player_red.destroy();
+        if (this.player_blue) this.player_blue.destroy();
+        if (this.fires) {
+            Object.values(this.fires).forEach(group => group.clear(true, true));
+        }
+        if (this.platforms) this.platforms.clear(true, true);
+        
+        // Clear any remaining game state
+        this.sounds = {};
+        this.isPaused = false;
+        this.gameOverScreenVisible = false;
+        
+        // Call parent destroy
+        super.destroy();
+    }
+
+    startFromBeginning() {
+        console.log('Starting game from beginning...');
+        
+        // Reset game state
+        this.isPaused = false;
+        this.gameOverScreenVisible = false;
+        this.startTime = Date.now();
+        this.totalPauseTime = 0;
+        this.playedLevels = new Set([LEVELS.level1]); // Start with just level 1
+        
+        // Hide victory screen
+        const victoryScreen = document.getElementById('victoryScreen');
+        if (victoryScreen) {
+            victoryScreen.classList.add('hidden');
+        }
+        window.menuControls.setActiveMenu(null);
+        
+        // Stop and restart background music
+        if (this.sounds.background) {
+            this.sounds.background.stop();
+            this.sounds.background.play();
+        }
+        
+        // Reset level state
+        this.reachedGoalRed = false;
+        this.reachedGoalBlue = false;
+        this.currentLevel = LEVELS.level1;
+        
+        // Clear existing game objects
+        if (this.player_red) {
+            this.player_red.sprite.destroy();
+            this.player_red = null;
+        }
+        if (this.player_blue) {
+            this.player_blue.sprite.destroy();
+            this.player_blue = null;
+        }
+        if (this.fires) {
+            Object.values(this.fires).forEach(group => {
+                group.getChildren().forEach(fire => fire.destroy());
+                group.clear(true, true);
+            });
+            this.fires = null;
+        }
+        if (this.platforms) {
+            this.platforms.getChildren().forEach(platform => platform.destroy());
+            this.platforms.clear(true, true);
+            this.platforms = null;
+        }
+        if (this.goal_red) {
+            this.goal_red.destroy();
+            this.goal_red = null;
+        }
+        if (this.goal_blue) {
+            this.goal_blue.destroy();
+            this.goal_blue = null;
+        }
+        
+        // Clear any existing background
+        this.children.list.forEach(child => {
+            if (child.type === 'Image') {
+                child.destroy();
+            }
+        });
+        
+        // Load level data
+        this.levelData = this.cache.json.get(this.currentLevel);
+        
+        // Update background
+        const backgroundKey = this.levelData.world.background;
+        this.add.image(0, 0, backgroundKey)
+            .setOrigin(0, 0)
+            .setDisplaySize(this.cameras.main.width, this.cameras.main.height);
+        
+        // Set up camera bounds
+        this.cameras.main.setBounds(0, 0, this.levelData.world.width, this.levelData.world.height);
+        
+        // Set up new level elements
+        this.setupPlatforms();
+        this.setupPlayers();
+        this.setupFires();
+        this.setupGoals();
+        this.setupCollisions();
+        
+        // Reset physics and input
+        this.physics.resume();
+        this.input.keyboard.enabled = true;
+        
+        console.log('Game restarted from beginning');
+        console.log('Current played levels:', Array.from(this.playedLevels));
     }
 } 
