@@ -1,6 +1,7 @@
 /* Global styles */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=MedievalSharp:wght@400;700&display=swap');
 
 * {
     margin: 0;
@@ -65,6 +66,13 @@ body {
     margin-bottom: 30px;
 }
 
+#landingPage h1 span {
+    font-family: 'MedievalSharp', cursive;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.6);
+}
+
 .red {
     color: #b34d00;
     text-shadow: 0 0 10px rgba(179, 77, 0, 0.5);
@@ -97,7 +105,7 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
-    font-family: 'Cinzel', serif;
+    font-family: 'MedievalSharp', cursive;
     min-width: 150px;
     position: relative;
     overflow: hidden;
@@ -222,7 +230,7 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
-    font-family: 'Cinzel', serif;
+    font-family: 'MedievalSharp', cursive;
     position: relative;
     overflow: hidden;
     text-transform: uppercase;
@@ -280,7 +288,7 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
-    font-family: 'Cinzel', serif;
+    font-family: 'MedievalSharp', cursive;
     position: relative;
     overflow: hidden;
     text-transform: uppercase;
@@ -363,7 +371,7 @@ body {
     font-size: 2.8em;
     margin-bottom: 30px;
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.6);
-    font-family: 'Cinzel', serif;
+    font-family: 'MedievalSharp', cursive;
     text-transform: uppercase;
     letter-spacing: 3px;
     position: relative;
@@ -379,7 +387,7 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
-    font-family: 'Cinzel', serif;
+    font-family: 'MedievalSharp', cursive;
     text-transform: uppercase;
     letter-spacing: 2px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
@@ -593,7 +601,7 @@ body {
     font-size: 2.8em;
     margin-bottom: 30px;
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.6);
-    font-family: 'Cinzel', serif;
+    font-family: 'MedievalSharp', cursive;
     text-transform: uppercase;
     letter-spacing: 3px;
     position: relative;
@@ -626,7 +634,7 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
-    font-family: 'Cinzel', serif;
+    font-family: 'MedievalSharp', cursive;
     position: relative;
     overflow: hidden;
     text-transform: uppercase;
@@ -803,7 +811,7 @@ body {
     font-size: 2.8em;
     margin-bottom: 20px;
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.6);
-    font-family: 'Cinzel', serif;
+    font-family: 'MedievalSharp', cursive;
     text-transform: uppercase;
     letter-spacing: 3px;
 }
@@ -846,7 +854,7 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
-    font-family: 'Cinzel', serif;
+    font-family: 'MedievalSharp', cursive;
     text-transform: uppercase;
     letter-spacing: 2px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
@@ -974,7 +982,7 @@ body {
     font-size: 1.3em;
     margin-bottom: 12px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
-    font-family: 'Cinzel', serif;
+    font-family: 'MedievalSharp', cursive;
     text-transform: uppercase;
     letter-spacing: 2px;
 }
@@ -1067,7 +1075,7 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
-    font-family: 'Cinzel', serif;
+    font-family: 'MedievalSharp', cursive;
     position: relative;
     overflow: hidden;
     text-transform: uppercase;
@@ -1113,4 +1121,67 @@ body {
 
 #closeHowToPlayButton:focus-visible::after {
     border-color: #c4e8e8;
+}
+
+/* Scroll indicator arrow */
+.scroll-indicator {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 3px solid rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    animation: pulse 2s infinite;
+    z-index: 10;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.scroll-indicator:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(-50%) scale(1.1);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+}
+
+.scroll-indicator::before {
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 12px solid rgba(255, 255, 255, 0.8);
+    margin-top: 4px;
+    animation: bounce 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 15px rgba(255, 255, 255, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+    }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-5px);
+    }
+    60% {
+        transform: translateY(-3px);
+    }
 } 

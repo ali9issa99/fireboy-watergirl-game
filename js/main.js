@@ -15,6 +15,11 @@ document.addEventListener('DOMContentLoaded', function () {
   let hill4 = document.getElementById('hill4');
   let hill5 = document.getElementById('hill5');
 
+  // Add scroll indicator click handler
+  document.getElementById('scrollIndicator').addEventListener('click', () => {
+    document.querySelector('.sec').scrollIntoView({ behavior: 'smooth' });
+  });
+
   window.addEventListener('scroll', () => {
       let value = window.scrollY;
 
@@ -28,10 +33,13 @@ document.addEventListener('DOMContentLoaded', function () {
       hill5.style.top = value * 0.2 + 'px';
   });
 
+  // Hide game elements initially
   document.getElementById('gameContainer').style.display = 'none';
   document.getElementById('gameOverScreen').classList.add('hidden');
   document.getElementById('levelsMenu').classList.add('hidden');
+  document.getElementById('howToPlayMenu').classList.add('hidden');
 
+  // Initialize game
   const config = {
     ...GAME_CONFIG,
     scene: [GameScene]
@@ -71,24 +79,18 @@ document.addEventListener('DOMContentLoaded', function () {
   // Initial setup
   setupLandingNavigation();
 
-  // Update button click handlers to free keyboard controls
-  document.getElementById('startButton').addEventListener('click', function () {
-      document.getElementById('landingPage').style.display = 'none';
-      document.getElementById('gameContainer').style.display = 'block';
-      document.removeEventListener('keydown', handleLandingKeydown);
-      game.scene.start('Game', { level: 'level1' });
-      document.getElementById('gameContainer').scrollIntoView({ behavior: 'smooth' });
+  // Update button click handlers
+  document.getElementById('startButton').addEventListener('click', function() {
+    document.getElementById('landingPage').style.display = 'none';
+    document.getElementById('gameContainer').style.display = 'block';
+    document.removeEventListener('keydown', handleLandingKeydown);
+    game.scene.start('Game', { level: LEVELS.level1 });
   });
 
-  document.getElementById('levelsButton').addEventListener('click', function () {
-      document.getElementById('levelsMenu').classList.toggle('hidden');
-      if (!document.getElementById('levelsMenu').classList.contains('hidden')) {
-          menuControls.setActiveMenu('levelsMenu');
-          document.removeEventListener('keydown', handleLandingKeydown);
-      } else {
-          menuControls.setActiveMenu(null);
-          setupLandingNavigation();
-      }
+  document.getElementById('levelsButton').addEventListener('click', function() {
+    document.getElementById('levelsMenu').classList.remove('hidden');
+    menuControls.setActiveMenu('levelsMenu');
+    document.removeEventListener('keydown', handleLandingKeydown);
   });
 
   // Dynamically generate level buttons
