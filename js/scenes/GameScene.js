@@ -147,6 +147,11 @@ export class GameScene extends Phaser.Scene {
         if (isStartingGame && this.sounds.background) {
             this.sounds.background.play();
         }
+
+        // Expose menu sound to menu controls
+        if (window.menuControls) {
+            window.menuControls.setMenuSound(this.sounds.menu);
+        }
     }
 
     update() {
@@ -913,5 +918,10 @@ export class GameScene extends Phaser.Scene {
         
         console.log('Game restarted from beginning');
         console.log('Current played levels:', Array.from(this.playedLevels));
+    }
+
+    // Add method to play menu sound
+    playMenuSound() {
+        this.sounds.menu?.play();
     }
 } 

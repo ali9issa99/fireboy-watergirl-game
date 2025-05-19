@@ -3,8 +3,19 @@ class MenuControls {
         this.currentFocusIndex = 0;
         this.menuButtons = [];
         this.activeMenu = null;
+        this.menuSound = null;
         this.handleKeydown = this.handleKeydown.bind(this);
         this.setupKeyboardControls();
+    }
+
+    setMenuSound(sound) {
+        this.menuSound = sound;
+    }
+
+    playMenuSound() {
+        if (this.menuSound) {
+            this.menuSound.play();
+        }
     }
 
     setupKeyboardControls() {
@@ -21,6 +32,7 @@ class MenuControls {
             this.currentFocusIndex = 0;
             if (this.menuButtons.length > 0) {
                 this.menuButtons[this.currentFocusIndex].focus();
+                this.playMenuSound();
             }
             console.log('Menu buttons found:', this.menuButtons.length);
         } else {
@@ -80,6 +92,7 @@ class MenuControls {
 
         const buttonId = menuActions[this.activeMenu.id];
         if (buttonId) {
+            this.playMenuSound();
             document.getElementById(buttonId)?.click();
         }
     }
@@ -88,6 +101,7 @@ class MenuControls {
         if (this.menuButtons.length > 0) {
             this.currentFocusIndex = (this.currentFocusIndex - 1 + this.menuButtons.length) % this.menuButtons.length;
             this.menuButtons[this.currentFocusIndex].focus();
+            this.playMenuSound();
             console.log('Navigated to previous button:', this.currentFocusIndex);
         }
     }
@@ -96,6 +110,7 @@ class MenuControls {
         if (this.menuButtons.length > 0) {
             this.currentFocusIndex = (this.currentFocusIndex + 1) % this.menuButtons.length;
             this.menuButtons[this.currentFocusIndex].focus();
+            this.playMenuSound();
             console.log('Navigated to next button:', this.currentFocusIndex);
         }
     }
@@ -103,6 +118,7 @@ class MenuControls {
     selectCurrentButton() {
         if (this.menuButtons.length > 0) {
             console.log('Selecting button:', this.currentFocusIndex);
+            this.playMenuSound();
             this.menuButtons[this.currentFocusIndex].click();
         }
     }
