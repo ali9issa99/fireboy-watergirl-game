@@ -287,7 +287,26 @@ export class GameScene extends Phaser.Scene {
         // Pause UI
         document.getElementById('pauseButton').removeEventListener('click', this.pauseListener);
         document.getElementById('resumeButton').removeEventListener('click', this.resumeListener);
-        document.getElementById('restartButton').removeEventListener('click', this.restartListener);
+        this.restartListener = () => {
+            console.log('Restart button clicked');
+            this.isPaused = false;
+            this.physics.resume();
+            this.input.keyboard.enabled = true;
+            
+            // Hide the pause menu
+            const pauseMenu = document.getElementById('pauseMenu');
+            pauseMenu.classList.add('hidden');
+            pauseMenu.style.display = 'none';
+            window.menuControls.setActiveMenu(null);
+            
+            // Restart the scene
+            this.scene.restart({ 
+                level: this.currentLevel,
+                playedLevels: Array.from(this.playedLevels),
+                startTime: this.startTime,
+                totalPauseTime: this.totalPauseTime
+            });
+        };
         document.getElementById('exitToMenuButton').removeEventListener('click', this.exitToMenuListener);
 
         this.pauseListener = () => {
@@ -298,16 +317,6 @@ export class GameScene extends Phaser.Scene {
         this.resumeListener = () => {
             console.log('Resume button clicked');
             this.resumeGame();
-        };
-
-        this.restartListener = () => {
-            console.log('Restart button clicked');
-            this.scene.restart({ 
-                level: this.currentLevel,
-                playedLevels: Array.from(this.playedLevels),
-                startTime: this.startTime,
-                totalPauseTime: this.totalPauseTime
-            });
         };
 
         this.exitToMenuListener = () => {
