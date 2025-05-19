@@ -2,7 +2,7 @@
 
 A modern web-based implementation of a cooperative platformer game, built with Phaser and JavaScript.
 
-## 🎮 [Play Now!](https://fireboy-watergirl-game.vercel.app/) Red Flame & Blue Flame is hosted on Vercel
+### <a href="https://fireboy-watergirl-game.vercel.app/" target="_blank">▶️ Play Now!</a>
 
 ## Game Description
 
@@ -65,6 +65,7 @@ Red Flame & Blue Flame is a cooperative platformer where players control two cha
 - Responsive design
 - Modern web standards
 - No external dependencies required
+- Hosted on Vercel for optimal performance and reliability
 
 ---
 
