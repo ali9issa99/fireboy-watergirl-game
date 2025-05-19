@@ -13,8 +13,13 @@ export class GameScene extends Phaser.Scene {
         this.reachedGoalBlue = false;
         this.gameOverScreenVisible = false;
         this.isPaused = false;
-        this.startTime = Date.now();
+        this.startTime = data.startTime || Date.now();
+        this.pauseStartTime = null;
+        this.totalPauseTime = data.totalPauseTime || 0;
+        this.playedLevels = new Set(data.playedLevels || []);
+        this.playedLevels.add(this.currentLevel);
         console.log('Initializing level:', this.currentLevel);
+        console.log('Played levels:', Array.from(this.playedLevels));
     }
 
     preload() {
@@ -207,11 +212,14 @@ export class GameScene extends Phaser.Scene {
 
         // ESC key to toggle pause menu
         this.input.keyboard.on('keydown-ESC', () => {
+            console.log('ESC pressed, gameOverScreenVisible:', this.gameOverScreenVisible);
             if (this.gameOverScreenVisible) return;
             
             if (this.isPaused) {
+                console.log('Resuming game from keyboard');
                 this.resumeGame();
             } else {
+                console.log('Pausing game from keyboard');
                 this.pauseGame();
             }
         });
@@ -233,11 +241,16 @@ export class GameScene extends Phaser.Scene {
 
         this.retryListener = () => {
             this.gameOverScreenVisible = false;
-            this.input.keyboard.enabled = true; // Keep keyboard enabled
+            this.input.keyboard.enabled = true;
             this.physics.resume();
-            this.scene.restart({ level: this.currentLevel });
+            this.scene.restart({ 
+                level: this.currentLevel,
+                playedLevels: Array.from(this.playedLevels),
+                startTime: this.startTime,
+                totalPauseTime: this.totalPauseTime
+            });
             document.getElementById('gameOverScreen').classList.add('hidden');
-            window.menuControls.setActiveMenu(null); // Clear active menu
+            window.menuControls.setActiveMenu(null);
         };
 
         this.exitListener = () => {
@@ -253,8 +266,13 @@ export class GameScene extends Phaser.Scene {
 
         this.playAgainListener = () => {
             document.getElementById('victoryScreen').classList.add('hidden');
-            window.menuControls.setActiveMenu(null); // Clear active menu
-            location.reload();
+            window.menuControls.setActiveMenu(null);
+            this.scene.restart({ 
+                level: this.currentLevel,
+                playedLevels: Array.from(this.playedLevels),
+                startTime: this.startTime,
+                totalPauseTime: this.totalPauseTime
+            });
         };
 
         this.victoryExitListener = () => {
@@ -273,18 +291,27 @@ export class GameScene extends Phaser.Scene {
         document.getElementById('exitToMenuButton').removeEventListener('click', this.exitToMenuListener);
 
         this.pauseListener = () => {
+            console.log('Pause button clicked');
             this.pauseGame();
         };
 
         this.resumeListener = () => {
+            console.log('Resume button clicked');
             this.resumeGame();
         };
 
         this.restartListener = () => {
-            this.restartLevel();
+            console.log('Restart button clicked');
+            this.scene.restart({ 
+                level: this.currentLevel,
+                playedLevels: Array.from(this.playedLevels),
+                startTime: this.startTime,
+                totalPauseTime: this.totalPauseTime
+            });
         };
 
         this.exitToMenuListener = () => {
+            console.log('Exit to menu button clicked');
             this.exitToMenu();
         };
 
@@ -352,7 +379,12 @@ export class GameScene extends Phaser.Scene {
                 const nextLevelKey = levelKeys[currentLevelIndex + 1];
                 const nextLevel = LEVELS[nextLevelKey];
                 console.log('Switching to next level:', nextLevel);
-                this.scene.restart({ level: nextLevel });
+                this.scene.restart({ 
+                    level: nextLevel,
+                    playedLevels: Array.from(this.playedLevels),
+                    startTime: this.startTime,
+                    totalPauseTime: this.totalPauseTime
+                });
             } else {
                 // This is the last level, show victory screen
                 console.log('All levels completed!');
@@ -363,18 +395,24 @@ export class GameScene extends Phaser.Scene {
 
     showVictoryScreen() {
         this.physics.pause();
-        this.input.keyboard.enabled = true; // Keep keyboard enabled for menu navigation
+        this.input.keyboard.enabled = true;
         this.player_red.sprite.anims.stop();
         this.player_blue.sprite.anims.stop();
 
-        // Calculate total time
-        const totalTime = Math.floor((Date.now() - this.startTime) / 1000);
+        // Add any remaining pause time if the game was paused
+        if (this.pauseStartTime) {
+            this.totalPauseTime += Date.now() - this.pauseStartTime;
+            this.pauseStartTime = null;
+        }
+
+        // Calculate total time from game start, subtracting total pause time
+        const totalTime = Math.floor((Date.now() - this.startTime - this.totalPauseTime) / 1000);
         const minutes = Math.floor(totalTime / 60);
         const seconds = totalTime % 60;
         const timeString = `${minutes}:${seconds.toString().padStart(2, '0')}`;
 
         // Update stats
-        document.getElementById('levelsCompleted').textContent = Object.keys(LEVELS).length;
+        document.getElementById('levelsCompleted').textContent = this.playedLevels.size;
         document.getElementById('totalTime').textContent = timeString;
 
         // Show victory screen
@@ -390,20 +428,45 @@ export class GameScene extends Phaser.Scene {
         }
     }
 
-    resumeGame() {
-        this.isPaused = false;
-        this.physics.resume();
-        this.input.keyboard.enabled = true; // Keep keyboard enabled
-        document.getElementById('pauseMenu').classList.add('hidden');
-        window.menuControls.setActiveMenu(null); // Clear active menu
-    }
-
     pauseGame() {
+        console.log('Pausing game...');
         this.isPaused = true;
         this.physics.pause();
         this.input.keyboard.enabled = true; // Keep keyboard enabled for menu navigation
-        document.getElementById('pauseMenu').classList.remove('hidden');
+        
+        // Start tracking pause time
+        this.pauseStartTime = Date.now();
+        
+        const pauseMenu = document.getElementById('pauseMenu');
+        pauseMenu.classList.remove('hidden');
+        pauseMenu.style.display = 'flex';
         window.menuControls.setActiveMenu('pauseMenu');
+        
+        // Focus the resume button
+        const resumeButton = document.getElementById('resumeButton');
+        if (resumeButton) {
+            resumeButton.focus();
+        }
+        console.log('Game paused, menu should be visible');
+    }
+
+    resumeGame() {
+        console.log('Resuming game...');
+        this.isPaused = false;
+        this.physics.resume();
+        this.input.keyboard.enabled = true; // Keep keyboard enabled
+        
+        // Add the current pause duration to total pause time
+        if (this.pauseStartTime) {
+            this.totalPauseTime += Date.now() - this.pauseStartTime;
+            this.pauseStartTime = null;
+        }
+        
+        const pauseMenu = document.getElementById('pauseMenu');
+        pauseMenu.classList.add('hidden');
+        pauseMenu.style.display = 'none';
+        window.menuControls.setActiveMenu(null); // Clear active menu
+        console.log('Game resumed');
     }
 
     restartLevel() {

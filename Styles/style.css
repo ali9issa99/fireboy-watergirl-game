@@ -455,6 +455,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 1;
 }
 
 #gameContainer canvas {
@@ -535,13 +536,17 @@ body {
     width: 100%;
     height: 100%;
     background: rgba(26, 26, 26, 0.95);
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 2000;
     backdrop-filter: blur(5px);
     overflow-y: auto;
     padding: 10px;
+}
+
+#pauseMenu:not(.hidden) {
+    display: flex;
 }
 
 .menu-content {
@@ -921,24 +926,34 @@ body {
 /* How to Play Menu styles */
 #howToPlayMenu {
     position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3000;
+    display: none;
+}
+
+#howToPlayMenu.from-landing {
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.85);
-    display: flex;
+    transform: none;
+    background: rgba(26, 26, 26, 0.95);
+    backdrop-filter: blur(5px);
     justify-content: center;
     align-items: center;
-    z-index: 1000;
-    backdrop-filter: blur(5px);
-    overflow-y: auto;
-    padding: 20px;
+}
+
+#howToPlayMenu:not(.hidden) {
+    display: flex;
 }
 
 #howToPlayMenu .menu-content {
     max-width: 600px;
     width: 90%;
     padding: 30px;
+    margin: auto;
 }
 
 .controls-section, .goals-section {
@@ -1049,17 +1064,53 @@ body {
     color: #fff;
     padding: 12px 20px;
     font-size: 1.1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    font-family: 'Cinzel', serif;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    clip-path: polygon(
+        0% 10%, 10% 0%, 90% 0%, 100% 10%,
+        100% 90%, 90% 100%, 10% 100%, 0% 90%
+    );
 }
 
 #closeHowToPlayButton:hover {
+    transform: translateY(-3px);
     background: linear-gradient(135deg, #3c4a4a, #993300);
     border-color: #994400;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 #closeHowToPlayButton:focus,
 #closeHowToPlayButton:focus-visible {
+    transform: translateY(-3px);
     background: linear-gradient(135deg, #993300, #b34d00);
     border-color: #994400;
+    color: #fff;
     box-shadow: 0 0 0 4px #994400,
                 0 8px 25px rgba(153, 68, 0, 0.3);
+    outline: none;
+}
+
+/* Add keyboard navigation indicator for close button */
+#closeHowToPlayButton::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease;
+    pointer-events: none;
+}
+
+#closeHowToPlayButton:focus-visible::after {
+    border-color: #c4e8e8;
 } 

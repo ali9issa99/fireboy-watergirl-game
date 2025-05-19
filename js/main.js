@@ -5,6 +5,7 @@ import MenuControls from './controls/MenuControls.js';
 document.addEventListener('DOMContentLoaded', function () {
   // Initialize menu controls
   const menuControls = new MenuControls();
+  window.menuControls = menuControls; // Make it globally accessible
 
   let text = document.getElementById('text');
   let leaf = document.getElementById('leaf');
@@ -133,30 +134,43 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const closeHowToPlay = () => {
       howToPlayMenu.classList.add('hidden');
-      window.menuControls.setActiveMenu(null);
-      setupLandingNavigation();
+      howToPlayMenu.style.display = 'none';
+      howToPlayMenu.classList.remove('from-landing');
+      
+      // If we came from pause menu, return to it
+      if (!document.getElementById('pauseMenu').classList.contains('hidden')) {
+          // Keep pause menu open and just focus the how to play button
+          menuControls.setActiveMenu('pauseMenu');
+          howToPlayPauseButton.focus();
+      } else {
+          // Otherwise return to landing page
+          menuControls.setActiveMenu(null);
+          setupLandingNavigation();
+      }
   };
 
   howToPlayButton.addEventListener('click', () => {
       howToPlayMenu.classList.remove('hidden');
-      window.menuControls.setActiveMenu('howToPlayMenu');
+      howToPlayMenu.style.display = 'flex';
+      howToPlayMenu.classList.add('from-landing');
+      menuControls.setActiveMenu('howToPlayMenu');
       document.removeEventListener('keydown', handleLandingKeydown);
       closeHowToPlayButton.focus();
   });
 
   closeHowToPlayButton.addEventListener('click', closeHowToPlay);
 
-  // Add keyboard controls for How to Play menu
-  const handleHowToPlayKeydown = (event) => {
-      if (!howToPlayMenu.classList.contains('hidden')) {
-          if (event.key === 'Escape' || event.key === 'Enter') {
-              event.preventDefault();
-              closeHowToPlay();
-          }
-      }
-  };
-
-  document.addEventListener('keydown', handleHowToPlayKeydown);
+  // How to Play from Pause Menu
+  const howToPlayPauseButton = document.getElementById('howToPlayPauseButton');
+  
+  howToPlayPauseButton.addEventListener('click', () => {
+      // Don't hide the pause menu, just show the how to play menu on top
+      howToPlayMenu.classList.remove('hidden');
+      howToPlayMenu.style.display = 'flex';
+      howToPlayMenu.classList.remove('from-landing');
+      menuControls.setActiveMenu('howToPlayMenu');
+      closeHowToPlayButton.focus();
+  });
 
   // Expose menuControls to the game scene
   window.menuControls = menuControls;
