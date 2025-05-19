@@ -2,7 +2,7 @@
 
 A modern web-based implementation of a cooperative platformer game, built with Phaser and JavaScript.
 
-### <a href="https://fireboy-watergirl-game.vercel.app/" target="_blank">▶️ Play Now!</a>
+### [▶️ Play Now!](https://fireboy-watergirl-game.vercel.app/)
 
 ## Game Description
 
