@@ -73,7 +73,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const setupLandingNavigation = () => {
     document.addEventListener('keydown', handleLandingKeydown);
-    document.getElementById(landingButtons[currentButtonIndex]).focus();
+    // Remove automatic focus on first button
+    // document.getElementById(landingButtons[currentButtonIndex]).focus();
   };
 
   // Initial setup
